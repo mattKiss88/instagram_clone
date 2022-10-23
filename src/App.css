@@ -11,7 +11,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   max-width: 100vw;
-  color: #13212d;
+  color: #262626;
   background: #f1f6f9;
 }
 
@@ -35,36 +35,28 @@ html {
 }
 
 h1 {
-  font-family: "roc-grotesk";
   font-weight: 350;
   font-size: 56px;
   line-height: 57px;
-  letter-spacing: -0.01em;
 }
 
 h2 {
-  font-family: "roc-grotesk";
   font-weight: 400;
   font-size: 48px;
-  letter-spacing: -0.01em;
 }
 h3 {
-  font-family: "roc-grotesk";
   font-weight: 350;
   font-size: 24px;
   line-height: 35px;
-  letter-spacing: -0.01em;
 }
 
 p {
-  font-family: "lato";
   font-weight: 400;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 150%;
-  letter-spacing: 0.02em;
 }
 
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
   h1 {
     font-size: 30px;
     line-height: 36px;
@@ -84,4 +76,4 @@ p {
     line-height: 143%;
     font-weight: 350;
   }
-}
+} */

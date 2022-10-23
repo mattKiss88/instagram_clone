@@ -6,6 +6,7 @@ export const Section = styled.section`
   width: 234px;
   border-right: 1px solid #e6e6e6;
   position: fixed;
+  background: #ffffff;
 `;
 export const Logo = styled.img`
   width: 123px;
