@@ -5,6 +5,7 @@ import three from "../../Assets/3.jpg";
 import four from "../../Assets/4.jpg";
 import five from "../../Assets/5.jpg";
 import six from "../../Assets/6.jpg";
+import seven from "../../Assets/7.jpg";
 
 const seedData: any = [
   {
@@ -12,7 +13,7 @@ const seedData: any = [
     email: randEmail(),
     avatar: "https://i.pravatar.cc/150?img=1",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    image: one,
+    image: seven,
     likes: 123,
   },
   {
