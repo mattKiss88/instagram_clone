@@ -19,7 +19,7 @@ const seedData: any = [
   {
     fullName: randFullName(),
     email: randEmail(),
-    avatar: "https://i.pravatar.cc/150?img=1",
+    avatar: "https://i.pravatar.cc/150?img=2",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     image: two,
     likes: 123000,
@@ -27,7 +27,7 @@ const seedData: any = [
   {
     fullName: randFullName(),
     email: randEmail(),
-    avatar: "https://i.pravatar.cc/150?img=1",
+    avatar: "https://i.pravatar.cc/150?img=3",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     image: three,
     likes: 180,
@@ -35,7 +35,7 @@ const seedData: any = [
   {
     fullName: randFullName(),
     email: randEmail(),
-    avatar: "https://i.pravatar.cc/150?img=1",
+    avatar: "https://i.pravatar.cc/150?img=4",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     image: four,
     likes: 13,
@@ -43,7 +43,7 @@ const seedData: any = [
   {
     fullName: randFullName(),
     email: randEmail(),
-    avatar: "https://i.pravatar.cc/150?img=1",
+    avatar: "https://i.pravatar.cc/150?img=5",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     image: five,
     likes: 3,
@@ -51,10 +51,18 @@ const seedData: any = [
   {
     fullName: randFullName(),
     email: randEmail(),
-    avatar: "https://i.pravatar.cc/150?img=1",
+    avatar: "https://i.pravatar.cc/150?img=6",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     image: six,
     likes: 130,
+  },
+  {
+    fullName: randFullName(),
+    email: randEmail(),
+    avatar: "https://i.pravatar.cc/150?img=7",
+    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    image: one,
+    likes: 112,
   },
 ];
 

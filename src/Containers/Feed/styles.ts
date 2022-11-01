@@ -13,5 +13,5 @@ export const LeftContainer = styled.div``;
 
 export const RightContainer = styled.div`
   width: 320px;
-  margin-left: 25px;
+  margin-left: 35px;
 `;
