@@ -12,7 +12,7 @@ import {
   SeeAll,
 } from "./styles";
 import { seedData } from "../Feed/data";
-import { ProfilePic } from "../../Components/FeedCard/styles";
+import { ProfilePic } from "../../Components/Reusable/misc";
 
 const Suggested = () => {
   return (
