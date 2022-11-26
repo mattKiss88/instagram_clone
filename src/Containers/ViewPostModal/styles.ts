@@ -20,6 +20,16 @@ export const Container = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
+
+  .x {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    stroke: #ffffff;
+  }
 `;
 
 export const ImageContainer = styled.div`
@@ -44,6 +54,10 @@ export const SideBar = styled.div`
   > div:first-child {
     border-bottom: 1px solid #dbdbdb;
     padding: 15px;
+
+    > div p {
+      margin-left: 16px;
+    }
   }
 `;
 

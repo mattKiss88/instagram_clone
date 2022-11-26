@@ -12,10 +12,12 @@ import {
 } from "./styles";
 import logo from "../../Assets/instagram-text-icon.png";
 import { SearchIcon } from "@heroicons/react/outline";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [search, setSearch] = useState(false);
   const ref: any = useRef(null);
+  const navigate = useNavigate();
 
   const onClickOutside = () => {
     setSearch(false);
@@ -36,7 +38,7 @@ const Navbar = () => {
   return (
     <Section>
       <Wrapper>
-        <Logo alt="Instagram" src={logo} />
+        <Logo alt="Instagram" src={logo} onClick={() => navigate("/")} />
         <Center>
           <SearchContainer>
             {!search && <SearchIcon style={{ width: "20px" }} />}
@@ -45,7 +47,10 @@ const Navbar = () => {
         </Center>
         <Right>
           {navData.map((item) => (
-            <IconContainer key={item.name}>
+            <IconContainer
+              key={item.name}
+              onClick={() => navigate(item.pathName)}
+            >
               <>{item.icon}</>
             </IconContainer>
           ))}

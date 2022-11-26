@@ -42,7 +42,7 @@ const Comment = ({
         </Container>
       </div>
       <HeartIcon
-        className={liked ? "heart " : "heart activeHeart"}
+        className={liked ? "heart activeHeart" : "heart"}
         onClick={() => setLiked(!liked)}
       />
     </CommentContainer>

@@ -14,11 +14,34 @@ import Comment from "../../Components/Comment";
 import { commentArr } from "../../Components/Comment/data";
 import { AccountName, ProfilePic } from "../../Components/Reusable/misc";
 import { Caption } from "../../Components/Reusable/PostFooter/styles";
+import { XIcon } from "@heroicons/react/outline";
+import { useEffect } from "react";
+import { useIsClickOutside } from "../../Hooks/useClickOutside";
+import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
+import { isOpen, toggleModal } from "../../Redux/modalSlice";
+import { useEscape } from "../../Hooks/useEscape";
 
-const ViewPostModal = () => {
+interface props {}
+
+const ViewPostModal = ({}: props) => {
+  const dispatch = useAppDispatch();
+  const { ref, isClickOutside, setisClickOutside } = useIsClickOutside(false);
+  const { isEscapeEvent, setIsEscapeEvent } = useEscape();
+
+  const isModalOpen = useAppSelector(isOpen);
+
+  useEffect(() => {
+    if (isModalOpen && (isClickOutside || isEscapeEvent)) {
+      setisClickOutside(false);
+      dispatch(toggleModal());
+      setIsEscapeEvent(false);
+    }
+  }, [isClickOutside, isModalOpen, isEscapeEvent]);
+
   return (
     <Container>
-      <Modal>
+      <XIcon className="x" />
+      <Modal ref={ref}>
         <ImageContainer>
           <Image src={img} />
         </ImageContainer>

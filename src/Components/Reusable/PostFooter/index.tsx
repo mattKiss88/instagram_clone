@@ -16,6 +16,8 @@ import {
   Likes,
   PostButton,
 } from "./styles";
+import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
+import { isOpen, toggleModal } from "../../../Redux/modalSlice";
 interface props {
   likes: number;
   fullName: string;
@@ -24,11 +26,18 @@ interface props {
 }
 
 const PostFooter = ({ likes, fullName, content, showCaption }: props) => {
+  const dispatch = useAppDispatch();
+
+  const [liked, setLiked] = React.useState<boolean>(false);
+
   return (
     <CardFooter>
       <IconContainer>
         <Left>
-          <HeartIcon />
+          <HeartIcon
+            className={liked ? "heart activeHeart" : "heart"}
+            onClick={() => setLiked(!liked)}
+          />
           <ChatIcon />
           <PaperAirplaneIcon className="messages" />
         </Left>

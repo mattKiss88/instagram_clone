@@ -1,9 +1,36 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
+const likeAnimation = keyframes`
+
+50% {
+    transform: scale(1.25);
+    fill: red;
+    stroke: red;
+}
+
+to {
+    transform: scale(1);
+    fill: red;
+    stroke: red;
+}
+`;
 export const CardFooter = styled.div`
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   background: #ffffff;
+
+  svg {
+    cursor: pointer;
+  }
+
+  .heart {
+    transition: 0.4s;
+    cursor: pointer;
+  }
+
+  .activeHeart {
+    animation: ${likeAnimation} 0.35s ease-in-out forwards;
+  }
 `;
 
 export const IconContainer = styled.div`

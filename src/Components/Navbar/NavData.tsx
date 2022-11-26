@@ -35,7 +35,7 @@ const navData: { name: string; icon: any; pathName: string }[] = [
   {
     name: "profile",
     icon: <UserCircleIcon />,
-    pathName: "/:username",
+    pathName: "/profile",
   },
 ];
 

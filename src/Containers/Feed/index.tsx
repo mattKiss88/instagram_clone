@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import FeedCard from "../../Components/FeedCard";
 import { RightContainer, Section, LeftContainer } from "./styles";
 import { seedData } from "./data";

@@ -2,8 +2,14 @@ import styled, { keyframes } from "styled-components";
 
 const likeAnimation = keyframes`
 
+50% {
+    transform: scale(1.3);
+    fill: red;
+    stroke: red;
+}
+
 to {
-    transform: scale(1.2);
+    transform: scale(1);
     fill: red;
     stroke: red;
 }
@@ -24,8 +30,6 @@ export const CommentContainer = styled.div`
   .heart {
     min-width: 12px;
     max-width: 12px;
-    margin-bottom: auto;
-    margin-top: 5px;
     margin: 10px 0px auto 16px;
     transition: 0.4s;
     cursor: pointer;
