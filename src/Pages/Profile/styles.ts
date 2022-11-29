@@ -110,8 +110,9 @@ export const TaggedBtn = styled(btnStyle)<IButtonProps>``;
 
 export const BottomContainer = styled.div`
   margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 24px;
 `;
 
 export const ButtonContainer = styled.div`

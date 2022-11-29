@@ -38,7 +38,7 @@ const PostFooter = ({ likes, fullName, content, showCaption }: props) => {
             className={liked ? "heart activeHeart" : "heart"}
             onClick={() => setLiked(!liked)}
           />
-          <ChatIcon />
+          <ChatIcon onClick={() => dispatch(toggleModal())} />
           <PaperAirplaneIcon className="messages" />
         </Left>
         <BookmarkIcon />

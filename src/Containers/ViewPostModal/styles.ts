@@ -20,6 +20,7 @@ export const Container = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
+  z-index: 200;
 
   .x {
     position: absolute;
@@ -72,8 +73,9 @@ export const CommentsWrapper = styled.div`
 
 export const CaptionContainer = styled.div`
   display: flex;
+  margin-bottom: 16px;
 
   p {
-    margin: 0px 4px 16px;
+    margin: 0px 4px 0px;
   }
 `;

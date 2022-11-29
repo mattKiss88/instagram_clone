@@ -2,7 +2,7 @@ import { ViewGridIcon } from "@heroicons/react/outline";
 import { CogIcon } from "@heroicons/react/outline";
 import { BookmarkIcon } from "@heroicons/react/outline";
 import { UserCircleIcon } from "@heroicons/react/outline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar";
 import Post from "../../Components/Post";
 import {
@@ -23,12 +23,32 @@ import {
   TopRow,
   Username,
 } from "./styles";
-import img from "../../Assets/6.jpg";
-import img2 from "../../Assets/5.jpg";
 import img3 from "../../Assets/1.jpg";
+import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
+import { isOpen, addModalData } from "../../Redux/modalSlice";
+import { getPosts } from "../../Redux/userPostsSlice";
+import axios from "axios";
 
 const Profile = () => {
   const [active, setActive] = useState("posts");
+  const posts = useAppSelector((state) => state.userPosts.posts);
+  const isModalOpen = useAppSelector(isOpen);
+
+  const dispatch = useAppDispatch();
+
+  console.log(posts);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/post/1")
+      .then((res) => {
+        console.log(res);
+        dispatch(getPosts(res.data.posts));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <>
@@ -81,9 +101,15 @@ const Profile = () => {
           </TaggedBtn>
         </ButtonContainer>
         <BottomContainer>
-          <Post image={img} />
-          <Post image={img2} />
-          <Post image={img3} />
+          {posts.map((post, x) => {
+            return (
+              <Post
+                image={`http://localhost:3001/post/image/${post.images[0].mediaFileId}`}
+                i={x}
+              />
+            );
+          })}
+          {/* <Post image={img3} i={2} /> */}
         </BottomContainer>
       </Section>
     </>

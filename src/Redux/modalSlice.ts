@@ -1,14 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./store";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface InitialState {
   isOpen: boolean;
-  text: string;
+  username: string;
+  caption: string;
+  images: any[];
 }
 
 const initialState: InitialState = {
   isOpen: false,
-  text: "",
+  username: "",
+  caption: "",
+  images: [],
 };
 
 export const modalSlice = createSlice({
@@ -18,10 +23,16 @@ export const modalSlice = createSlice({
     toggleModal: (state) => {
       state.isOpen = !state.isOpen;
     },
+    addModalData: (state, action: PayloadAction<any>) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
   },
 });
 
-export const { toggleModal } = modalSlice.actions;
+export const { toggleModal, addModalData } = modalSlice.actions;
 
 export const isOpen = (state: RootState) => state.modal.isOpen;
 

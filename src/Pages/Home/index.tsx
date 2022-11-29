@@ -6,9 +6,8 @@ import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { increment } from "../../Redux/counter";
 import { isOpen, toggleModal } from "../../Redux/modalSlice";
 const Home = () => {
-  const [showModal, setShowModal] = useState(false);
   const [image, setImage] = useState<string>("");
-  const count = useAppSelector((state) => state.counter.value);
+  const [test, setTest] = useState<any>();
   const dispatch = useAppDispatch();
 
   const isModalOpen = useAppSelector(isOpen);
@@ -28,18 +27,18 @@ const Home = () => {
       "http://localhost:3001/post/image/bce0b3cc8ff73305644d6bf281b8ece6"
     );
 
-    console.log(res.data);
+    setTest(res.data);
   };
 
-  useEffect(() => {
-    axios
-      .post("http://localhost:3001/auth/login", {
-        email: "matt.kiss96@gmail.com",
-      })
-      .then((res) => {
-        console.log(res.data);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .post("http://localhost:3001/auth/login", {
+  //       email: "matt.kiss96@gmail.com",
+  //     })
+  //     .then((res) => {
+  //       console.log(res.data);
+  //     });
+  // }, []);
 
   const onChange = (e: any) => {
     setImage(e.target.files[0]);
@@ -48,8 +47,6 @@ const Home = () => {
   const incrementIt = () => {
     dispatch(increment());
   };
-
-  console.log(isModalOpen);
 
   const signUp = async () => {
     await axios
@@ -82,6 +79,10 @@ const Home = () => {
       <button onClick={incrementIt}>increment</button>
       <button onClick={() => dispatch(toggleModal())}>open modal</button>
       <button onClick={getPhoto}>get image</button>
+      <img
+        src="http://localhost:3001/post/image/bce0b3cc8ff73305644d6bf281b8ece6"
+        style={{ maxWidth: "20px" }}
+      />
     </div>
   );
 };

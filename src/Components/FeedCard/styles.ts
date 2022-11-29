@@ -28,16 +28,16 @@ const likeAnimation = keyframes`
 }
 
 
-70% {
+80% {
   transform: scale(1) translate(-50%, -50%);
   opacity: 1;
 }
 
 
-80% {
-  transform: scale(0.66) translate(-50%, -50%);
-  opacity: 0.66;
-}
+// 80% {
+//   transform: scale(0.66) translate(-50%, -50%);
+//   opacity: 0.66;
+// }
 90% {
   transform: scale(0.33) translate(-50%, -50%);
   opacity: 0.33;
@@ -75,4 +75,10 @@ export const Image = styled.img`
   max-height: 587.5px;
   object-fit: cover;
   pointer-events: none;
+
+  -khtml-user-select: none;
+  -o-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 `;

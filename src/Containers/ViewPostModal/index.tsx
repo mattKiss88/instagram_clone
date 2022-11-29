@@ -29,7 +29,9 @@ const ViewPostModal = ({}: props) => {
   const { isEscapeEvent, setIsEscapeEvent } = useEscape();
 
   const isModalOpen = useAppSelector(isOpen);
+  const modalData = useAppSelector((state) => state.modal);
 
+  console.log(modalData);
   useEffect(() => {
     if (isModalOpen && (isClickOutside || isEscapeEvent)) {
       setisClickOutside(false);
@@ -38,24 +40,24 @@ const ViewPostModal = ({}: props) => {
     }
   }, [isClickOutside, isModalOpen, isEscapeEvent]);
 
+  console.log("modalData", modalData);
+
   return (
     <Container>
       <XIcon className="x" />
       <Modal ref={ref}>
         <ImageContainer>
-          <Image src={img} />
+          <Image
+            src={`http://localhost:3001/post/image/${modalData.images[0].mediaFileId}`}
+          />
         </ImageContainer>
         <SideBar>
-          <PostHeader avatar={img} fullName="The romanian" />
+          <PostHeader avatar={img} fullName={modalData.username} />
           <CommentsWrapper>
             <CaptionContainer>
               <ProfilePic src={img} />
               <Caption>
-                <span>The Romanian </span>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis
-                quisquam facilis neque dolorem, rem tenetur dicta harum velit
-                eveniet doloremque iure architecto aspernatur repudiandae
-                consectetur! Aspernatur eius obcaecati facere iure.
+                <span>{modalData.username} </span> {modalData.caption}
               </Caption>
             </CaptionContainer>
             {commentArr.map((c: any) => (

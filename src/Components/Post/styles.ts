@@ -5,6 +5,7 @@ export const Wrapper = styled.div`
   height: 293px;
   position: relative;
   aspect-ratio: 1/1;
+  cursor: pointer;
 
   :hover {
     ::after {
