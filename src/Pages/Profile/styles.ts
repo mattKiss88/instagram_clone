@@ -5,14 +5,18 @@ export const Section = styled.section`
 `;
 
 export const Container = styled.section`
-  padding: 70px 0 40px;
+  padding: 90px 0 40px;
   display: flex;
   border-bottom: 1px solid #dbdbdb;
+`;
 
-  .profilePic {
-    width: 170px;
-    margin: 0px 60px;
-  }
+export const Avatar = styled.img`
+  cursor: pointer;
+
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  margin: 0px 70px;
 `;
 
 export const ProfileDetails = styled.div`

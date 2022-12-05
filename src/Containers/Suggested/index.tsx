@@ -10,17 +10,18 @@ import {
   UserWrapper,
   SuggestedText,
   SeeAll,
+  Avatar,
 } from "./styles";
 import { seedData } from "../Feed/data";
 import { ProfilePic } from "../../Components/Reusable/misc";
+import { useAppSelector } from "../../Redux/hooks";
 
 const Suggested = () => {
+  const user = useAppSelector((state) => state.userAccount);
   return (
     <SuggestedWrapper>
       <UserWrapper>
-        <UserCircleIcon
-          style={{ width: "56px", height: "56px", cursor: "pointer" }}
-        />
+        <Avatar src={`http://localhost:3001/post/image/${user.avatar}` || ""} />
         <UsernameContainer>
           <Username>test124</Username>
           <Name>Matt Kiss</Name>

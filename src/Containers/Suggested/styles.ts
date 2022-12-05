@@ -63,3 +63,10 @@ export const SeeAll = styled.button`
   font-weight: 600;
   cursor: pointer;
 `;
+
+export const Avatar = styled.img`
+  cursor: pointer;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+`;

@@ -15,52 +15,38 @@ const Home = () => {
   const addPhoto = async () => {
     const formData = new FormData();
     formData.append("image", image);
-    formData.append("caption", "hey jude");
-    formData.append("userId", "1");
+    formData.append("caption", "hellooooooooooooo guys");
+    formData.append("userId", "4");
 
     const res = await axios.post("http://localhost:3001/post", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   };
-  const getPhoto = async () => {
-    const res = await axios.get(
-      "http://localhost:3001/post/image/bce0b3cc8ff73305644d6bf281b8ece6"
-    );
-
-    setTest(res.data);
-  };
-
-  // useEffect(() => {
-  //   axios
-  //     .post("http://localhost:3001/auth/login", {
-  //       email: "matt.kiss96@gmail.com",
-  //     })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //     });
-  // }, []);
 
   const onChange = (e: any) => {
     setImage(e.target.files[0]);
   };
 
-  const incrementIt = () => {
-    dispatch(increment());
-  };
-
   const signUp = async () => {
-    await axios
-      .post("http://localhost:3001/auth/signup", {
-        email: "matt.kiss96@gmail.com",
-        password: "hello",
-        username: "theRomanian",
-        fullName: "Matt Kiss",
-        bio: "I am the creator of the universe",
-        dob: "10/10/2000",
-      })
-      .then((res) => {
-        console.log(res.data);
-      });
+    const formData = new FormData();
+    formData.append("image", image);
+
+    let data = {
+      email: "jeezusweezus@gmail.com",
+      password: "password123",
+      username: "jeezusweezus",
+      fullName: "edgar allan poe",
+      dob: "2000-12-02",
+      bio: "helloooooo chicken nugget",
+    };
+
+    formData.append("userData", JSON.stringify(data));
+
+    console.log(formData);
+
+    await axios.post("http://localhost:3001/auth/signup", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
   };
   return (
     <div>
@@ -76,13 +62,7 @@ const Home = () => {
       <button onClick={addPhoto} style={{ marginTop: "100px" }}>
         submit
       </button>
-      <button onClick={incrementIt}>increment</button>
-      <button onClick={() => dispatch(toggleModal())}>open modal</button>
-      <button onClick={getPhoto}>get image</button>
-      <img
-        src="http://localhost:3001/post/image/bce0b3cc8ff73305644d6bf281b8ece6"
-        style={{ maxWidth: "20px" }}
-      />
+      <button onClick={signUp}>create user</button>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar";
 import Post from "../../Components/Post";
 import {
+  Avatar,
   BottomContainer,
   ButtonContainer,
   Container,
@@ -28,11 +29,13 @@ import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { isOpen, addModalData } from "../../Redux/modalSlice";
 import { getPosts } from "../../Redux/userPostsSlice";
 import axios from "axios";
+import { AccountName } from "../../Components/Reusable/misc";
 
 const Profile = () => {
   const [active, setActive] = useState("posts");
   const posts = useAppSelector((state) => state.userPosts.posts);
   const isModalOpen = useAppSelector(isOpen);
+  const user = useAppSelector((state) => state.userAccount);
 
   const dispatch = useAppDispatch();
 
@@ -40,7 +43,7 @@ const Profile = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/post/1")
+      .get("http://localhost:3001/post/4")
       .then((res) => {
         console.log(res);
         dispatch(getPosts(res.data.posts));
@@ -55,26 +58,28 @@ const Profile = () => {
       <Navbar />
       <Section>
         <Container>
-          <UserCircleIcon className="profilePic" />
+          <Avatar
+            src={`http://localhost:3001/post/image/${user.avatar}` || ""}
+          />
           <ProfileDetails>
             <TopRow>
-              <Username>The Romanian</Username>
+              <Username>{user.username}</Username>
               <EditButton>Edit Profile</EditButton>
               <CogIcon style={{ width: "20px" }} />
             </TopRow>
             <MiddleRow>
               <Posts>
-                <span>3</span> Posts
+                <span>{user.posts}</span> Posts
               </Posts>
               <Followers>
-                <span>120</span> Followers
+                <span>{user.followers}</span> Followers
               </Followers>
               <Following>
-                <span>2</span> Following
+                <span>{user.following}</span> Following
               </Following>
             </MiddleRow>
 
-            <FullName>Matt kiss</FullName>
+            <FullName>{user.fullName}</FullName>
           </ProfileDetails>
         </Container>
         <ButtonContainer>
@@ -109,7 +114,6 @@ const Profile = () => {
               />
             );
           })}
-          {/* <Post image={img3} i={2} /> */}
         </BottomContainer>
       </Section>
     </>
