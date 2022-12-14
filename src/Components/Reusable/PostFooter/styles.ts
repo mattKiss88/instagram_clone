@@ -60,14 +60,24 @@ export const Likes = styled.p`
   margin-bottom: 12px;
 `;
 
-export const Caption = styled.p`
-  font-weight: 400;
-  padding: 0 12px 0px;
-  margin-bottom: 12px;
+export const Caption = styled.div`
+  padding: 0 12px 12px;
 
-  span {
+  .username {
     font-weight: 700;
+    margin-right: 4px;
   }
+
+  .more {
+    font-weight: 700;
+    color: #8e8e8e;
+    cursor: pointer;
+  }
+`;
+
+export const Username = styled.p`
+  font-weight: 700;
+  margin-right: 4px;
 `;
 
 export const CommentWrapper = styled.div`
@@ -79,13 +89,24 @@ export const CommentWrapper = styled.div`
 
   > div {
     display: flex;
+    flex: 1;
   }
 `;
 
-export const Input = styled.input`
+export const Input = styled.textarea`
   border: none;
   margin-left: 12px;
   font-size: 14px;
+  width: 100%;
+  padding-right: 0 8px;
+  // height: 52px !important;
+  resize: none;
+  max-height: 80px;
+  max-width: 100%;
+  font-family: "Roboto", sans-serif;
+  :focus-visible {
+    outline-offset: 0px;
+  }
 
   ::placeholder {
     font-weight: 500;
@@ -99,4 +120,5 @@ export const PostButton = styled.button`
   color: #0095f6;
   font-weight: 700;
   float: right;
+  cursor: pointer;
 `;

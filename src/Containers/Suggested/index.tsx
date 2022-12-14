@@ -18,13 +18,15 @@ import { useAppSelector } from "../../Redux/hooks";
 
 const Suggested = () => {
   const user = useAppSelector((state) => state.userAccount);
+
+  console.log(user, "user");
   return (
     <SuggestedWrapper>
       <UserWrapper>
-        <Avatar src={`http://localhost:3001/post/image/${user.avatar}` || ""} />
+        <Avatar src={`http://localhost:3001/post/image/${user.avatar}`} />
         <UsernameContainer>
-          <Username>test124</Username>
-          <Name>Matt Kiss</Name>
+          <Username>{user?.username}</Username>
+          <Name>{user?.fullName}</Name>
         </UsernameContainer>
         <Button>Switch</Button>
       </UserWrapper>

@@ -12,7 +12,8 @@ const seedData: any = [
     fullName: randFullName(),
     email: randEmail(),
     avatar: "https://i.pravatar.cc/150?img=1",
-    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    content:
+      "lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing elit.lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     image: seven,
     likes: 123,
   },
@@ -20,7 +21,8 @@ const seedData: any = [
     fullName: randFullName(),
     email: randEmail(),
     avatar: "https://i.pravatar.cc/150?img=2",
-    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.csdsdf sdf sdf dsf dsf dsf dsf dsf dsfsdf sdfdsfdsf dsfdsfsdf dsfsdfds dsfdsfsdf dsfdsfsd dsfs",
     image: two,
     likes: 123000,
   },
