@@ -19,7 +19,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/user/4`)
+      .get(`${process.env.REACT_APP_API_URL}/user/3`)
       .then((res) => {
         console.log(res.data.user, "user");
         dispatch(getUserData(res.data.user));

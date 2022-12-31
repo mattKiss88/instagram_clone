@@ -43,7 +43,7 @@ const Profile = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/post/4")
+      .get("http://localhost:3001/post/1")
       .then((res) => {
         console.log(res);
         dispatch(getPosts(res.data.posts));
@@ -109,7 +109,9 @@ const Profile = () => {
           {posts.map((post, x) => {
             return (
               <Post
-                image={`http://localhost:3001/post/image/${post.images[0].mediaFileId}`}
+                image={
+                  "https://instagramclonebucket.s3.us-east-2.amazonaws.com/3d6b37107cf6ac0b59ba1d208f126643"
+                }
                 i={x}
               />
             );

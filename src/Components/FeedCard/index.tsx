@@ -1,6 +1,5 @@
 import React from "react";
 import { FeedWrapper, Image, ImageContainer } from "./styles";
-
 import PostHeader from "../Reusable/PostHeader";
 import PostFooter from "../Reusable/PostFooter";
 import { HeartIcon } from "@heroicons/react/outline";
@@ -21,6 +20,8 @@ const FeedCard = ({ fullName, likes, avatar, content, image }: props) => {
       setLiked(false);
     }, 1000);
   };
+
+  console.log(fullName, likes, avatar, content, image);
   return (
     <FeedWrapper>
       <PostHeader avatar={avatar} fullName={fullName} />

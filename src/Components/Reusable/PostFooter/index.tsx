@@ -1,13 +1,11 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import {
   BookmarkIcon,
   HeartIcon,
   PaperAirplaneIcon,
   ChatIcon,
   EmojiHappyIcon,
-} from "@heroicons/react/outline";
-import ShowMoreText from "react-show-more-text";
-
+} from "@heroicons/react/outline"
 import {
   Caption,
   CardFooter,
@@ -17,10 +15,9 @@ import {
   Left,
   Likes,
   PostButton,
-  Username,
 } from "./styles";
 import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
-import { isOpen, toggleModal } from "../../../Redux/modalSlice";
+import { toggleModal } from "../../../Redux/modalSlice";
 import ReadMore from "../ReadMore";
 import axios from "axios";
 interface props {
@@ -62,17 +59,7 @@ const PostFooter = ({ likes, fullName, content, showCaption }: props) => {
       });
   };
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`${process.env.REACT_APP_API_URL}/comment/1`)
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setTest(res.data[1].comment);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
+
 
   return (
     <CardFooter>
