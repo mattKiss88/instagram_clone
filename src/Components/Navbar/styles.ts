@@ -14,6 +14,10 @@ export const Logo = styled.img`
   box-sizing: initial;
   margin-top: 7px;
   cursor: pointer;
+
+  @media (max-width: 910px) {
+    margin-right: 20px;
+  }
 `;
 
 export const IconContainer = styled.div`
@@ -34,6 +38,16 @@ export const Center = styled.div`
   width: 100%;
   max-width: 268px;
   margin-left: 160px;
+
+  @media (max-width: 910px) {
+    width: 33%;
+    margin-left: auto;
+    margin-right: 20px;
+  }
+
+  @media (max-width: 650px) {
+    display: none;
+  }
 `;
 export const Wrapper = styled.div`
   display: flex;

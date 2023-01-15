@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BookmarkIcon,
   HeartIcon,
   PaperAirplaneIcon,
   ChatIcon,
   EmojiHappyIcon,
-} from "@heroicons/react/outline"
+} from "@heroicons/react/outline";
 import {
   Caption,
   CardFooter,
@@ -17,7 +17,7 @@ import {
   PostButton,
 } from "./styles";
 import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
-import { toggleModal } from "../../../Redux/modalSlice";
+import { addModalData, toggleModal } from "../../../Redux/modalSlice";
 import ReadMore from "../ReadMore";
 import axios from "axios";
 interface props {
@@ -25,9 +25,16 @@ interface props {
   fullName: string;
   content: string;
   showCaption?: boolean;
+  postData?: any;
 }
 
-const PostFooter = ({ likes, fullName, content, showCaption }: props) => {
+const PostFooter = ({
+  likes,
+  fullName,
+  content,
+  showCaption,
+  postData,
+}: props) => {
   const dispatch = useAppDispatch();
 
   const [liked, setLiked] = React.useState<boolean>(false);
@@ -35,7 +42,7 @@ const PostFooter = ({ likes, fullName, content, showCaption }: props) => {
   const [submittedComments, setSubmittedComments] = React.useState<string[]>(
     []
   );
-  const username = useAppSelector((state) => state.userAccount.username);
+  const { username, id } = useAppSelector((state) => state.userAccount);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -45,10 +52,10 @@ const PostFooter = ({ likes, fullName, content, showCaption }: props) => {
   };
 
   const onSubmit = () => {
+    if (comment.length === 0) return;
     axios
       .post(`${process.env.REACT_APP_API_URL}/comment/1`, { comment })
       .then((res) => {
-        console.log(res.data);
         setSubmittedComments([...submittedComments, res.data.comment]);
       })
       .catch((err) => {
@@ -59,7 +66,31 @@ const PostFooter = ({ likes, fullName, content, showCaption }: props) => {
       });
   };
 
+  const openModal = () => {
+    dispatch(addModalData(postData));
+    dispatch(toggleModal());
+  };
 
+  console.log(postData);
+  useEffect(() => {
+    setLiked(postData?.post.likes);
+    console.log(postData?.post.likes);
+  }, [postData]);
+
+  const handleLike = () => {
+    setLiked(!liked);
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/post/like`, {
+        postId: postData?.post.id,
+        userId: id,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <CardFooter>
@@ -67,9 +98,9 @@ const PostFooter = ({ likes, fullName, content, showCaption }: props) => {
         <Left>
           <HeartIcon
             className={liked ? "heart activeHeart" : "heart"}
-            onClick={() => setLiked(!liked)}
+            onClick={handleLike}
           />
-          <ChatIcon onClick={() => dispatch(toggleModal())} />
+          <ChatIcon onClick={openModal} />
           <PaperAirplaneIcon className="messages" />
         </Left>
         <BookmarkIcon />

@@ -17,6 +17,7 @@ to {
 export const CommentContainer = styled.div`
   margin-bottom: 16px;
   display: flex;
+  justify-content: space-between;
 
   > div {
     display: flex;

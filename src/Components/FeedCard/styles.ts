@@ -7,6 +7,7 @@ export const FeedWrapper = styled.div`
   border-radius: 10px;
   border: 1px solid #dbdbdb;
   margin-bottom: 12px;
+  position: relative;
 `;
 
 const likeAnimation = keyframes`

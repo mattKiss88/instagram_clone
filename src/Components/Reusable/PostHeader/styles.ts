@@ -8,6 +8,7 @@ export const CardHeader = styled.div`
   border-top-right-radius: 10px;
   justify-content: space-between;
   padding: 8px 12px;
+  position: relative;
 `;
 
 export const ProfilePic = styled.img`
@@ -20,6 +21,7 @@ export const AccountName = styled.p`
   margin-left: 10px;
   font-weight: 700;
   cursor: pointer;
+  padding: 7px 0;
 `;
 
 export const LeftContainer = styled.div`

@@ -1,20 +1,37 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
+import { useAppDispatch } from "./hooks";
 
 interface InitialState {
   isOpen: boolean;
-  username: string;
-  caption: string;
+  user: any;
+  post: any;
   images: any[];
+  comments: any[];
 }
 
 const initialState: InitialState = {
   isOpen: false,
-  username: "",
-  caption: "",
+  user: {},
+  post: {},
   images: [],
+  comments: [],
 };
+
+export const fetchCommentsByPostId = createAsyncThunk(
+  "comments/fetchByPostIdStatus",
+  async (postId: number, thunkAPI) => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}/comment/${postId}}`
+    );
+
+    console.log("222", response.data);
+
+    return response.data.comments;
+  }
+);
 
 export const modalSlice = createSlice({
   name: "modal",
@@ -29,6 +46,12 @@ export const modalSlice = createSlice({
         ...action.payload,
       };
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchCommentsByPostId.fulfilled, (state, action) => {
+      // Add user to the state array
+      state.comments = action.payload;
+    });
   },
 });
 

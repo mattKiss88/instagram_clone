@@ -11,16 +11,11 @@ const Post = ({ image, i }: props) => {
   const [hovered, setHovered] = useState(false);
   const dispatch = useAppDispatch();
   const posts = useAppSelector((state) => state.userPosts.posts);
-  const modalData = useAppSelector((state) => state.modal);
   const [post, setPost] = useState({
     images: posts[i].images,
     caption: posts[i].post.caption,
     username: "ammar",
   });
-
-  console.log("zzz", modalData);
-
-  console.log("post", post);
 
   const openModal = () => {
     dispatch(toggleModal());

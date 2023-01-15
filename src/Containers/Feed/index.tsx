@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import FeedCard from "../../Components/FeedCard";
 import { RightContainer, Section, LeftContainer } from "./styles";
-import { seedData } from "./data";
 import Suggested from "../Suggested";
 import Stories from "../Stories";
-import axios from "axios";
+import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
+import { fetchFeedByUserId, feed as feedState } from "../../Redux/feedSlice";
+import useWindowSize from "../../Hooks/useWindowSize";
+
 const Feed = () => {
-  const [feed, setFeed] = useState<any>([]);
+  const dispatch = useAppDispatch();
+  let feed = useAppSelector(feedState);
+  const { width }: any = useWindowSize();
+  const { username, id } = useAppSelector((state) => state.userAccount);
 
   useEffect(() => {
-    getFeed();
-  }, []);
+    dispatch(fetchFeedByUserId(id));
+  }, [id]);
 
-  const getFeed = async () => {
-    let a = await axios.get(`${process.env.REACT_APP_API_URL}/post/feed/1`);
-    setFeed(a.data.feed);
-  };
   return (
     <Section>
       <LeftContainer>
@@ -24,15 +25,20 @@ const Feed = () => {
           <FeedCard
             fullName={item.user.username}
             likes={item.user.id}
-            avatar={`https://instagramclonebucket.s3.us-east-2.amazonaws.com/${item.user.avatar}`}
+            avatar={`${process.env.REACT_APP_S3_URL + item.user.avatar}`}
             content={item.post.caption}
-            image={`https://instagramclonebucket.s3.us-east-2.amazonaws.com/${item.images[0].mediaFileId}`}
+            image={`${
+              process.env.REACT_APP_S3_URL + item.images[0].mediaFileId
+            }`}
+            postId={item.post?.id}
           />
         ))}
       </LeftContainer>
-      <RightContainer>
-        <Suggested />
-      </RightContainer>
+      {width > 1000 && (
+        <RightContainer>
+          <Suggested />
+        </RightContainer>
+      )}
     </Section>
   );
 };

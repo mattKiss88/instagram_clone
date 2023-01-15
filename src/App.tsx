@@ -1,19 +1,21 @@
 import "./App.css";
 import Home from "./Pages/Home";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Profile from "./Pages/Profile";
-import ViewPostModal from "./Containers/ViewPostModal";
+import Profile from "./Components/Profile";
 import { useAppDispatch, useAppSelector } from "./Redux/hooks";
 import { isOpen, toggleModal } from "./Redux/modalSlice";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState, lazy } from "react";
 import axios from "axios";
 import { getUserData } from "./Redux/userAccountSlice";
+import UserProfile from "./Pages/Profile";
+import Loader from "./Components/loader";
 
 function App() {
   const isModalOpen = useAppSelector(isOpen);
   const [isMount, setIsMount] = useState(false);
   const user = useAppSelector((state) => state.userAccount);
   const dispatch = useAppDispatch();
+  const ViewPostModal = lazy(() => import("./Containers/ViewPostModal"));
 
   console.log(user, "user");
 
@@ -29,8 +31,6 @@ function App() {
       });
   }, []);
 
-  console.log("in here");
-
   useEffect(() => {
     setIsMount(true);
 
@@ -42,11 +42,12 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<UserProfile />} />
         </Routes>
       </Router>
-
-      {isModalOpen && <ViewPostModal />}
+      <Suspense fallback={<Loader />}>
+        {isModalOpen && <ViewPostModal />}
+      </Suspense>
     </div>
   );
 }

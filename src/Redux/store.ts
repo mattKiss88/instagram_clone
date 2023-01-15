@@ -3,6 +3,7 @@ import counterReducer from "./counter";
 import modalReducer from "./modalSlice";
 import userPostReducer from "./userPostsSlice";
 import userAccountReducer from "./userAccountSlice";
+import feedReducer from "./feedSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     modal: modalReducer,
     userPosts: userPostReducer,
     userAccount: userAccountReducer,
+    feed: feedReducer,
   },
 });
 

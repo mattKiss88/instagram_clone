@@ -5,6 +5,7 @@ export const ProfilePic = styled.img`
   width: 32px;
   height: 32px;
   cursor: pointer;
+  min-width: 32px;
 `;
 export const AccountName = styled.p`
   margin-left: 10px;

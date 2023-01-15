@@ -9,7 +9,9 @@ export const Section = styled.section`
   justify-content: center;
 `;
 
-export const LeftContainer = styled.div``;
+export const LeftContainer = styled.div`
+  overflow: hidden;
+`;
 
 export const RightContainer = styled.div`
   width: 320px;

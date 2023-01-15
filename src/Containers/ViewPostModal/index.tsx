@@ -15,11 +15,17 @@ import { commentArr } from "../../Components/Comment/data";
 import { AccountName, ProfilePic } from "../../Components/Reusable/misc";
 import { Caption } from "../../Components/Reusable/PostFooter/styles";
 import { XIcon } from "@heroicons/react/outline";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useIsClickOutside } from "../../Hooks/useClickOutside";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
-import { isOpen, toggleModal } from "../../Redux/modalSlice";
+import {
+  fetchCommentsByPostId,
+  isOpen,
+  toggleModal,
+} from "../../Redux/modalSlice";
 import { useEscape } from "../../Hooks/useEscape";
+import { updateLikes } from "../../Redux/feedSlice";
+import axios from "axios";
 
 interface props {}
 
@@ -27,11 +33,14 @@ const ViewPostModal = ({}: props) => {
   const dispatch = useAppDispatch();
   const { ref, isClickOutside, setisClickOutside } = useIsClickOutside(false);
   const { isEscapeEvent, setIsEscapeEvent } = useEscape();
+  const { id } = useAppSelector((state) => state.userAccount);
 
   const isModalOpen = useAppSelector(isOpen);
   const modalData = useAppSelector((state) => state.modal);
 
-  console.log(modalData);
+  const { comments, user, post, images } = modalData;
+  const [liked, setLiked] = useState<boolean>(false);
+
   useEffect(() => {
     if (isModalOpen && (isClickOutside || isEscapeEvent)) {
       setisClickOutside(false);
@@ -40,33 +49,61 @@ const ViewPostModal = ({}: props) => {
     }
   }, [isClickOutside, isModalOpen, isEscapeEvent]);
 
-  console.log("modalData", modalData);
+  const onDoubleClick = () => {
+    setLiked(true);
+    dispatch(updateLikes(post?.id));
+    handleLike();
+
+    setTimeout(() => {
+      setLiked(false);
+    }, 1000);
+  };
+
+  const handleLike = () => {
+    setLiked(!liked);
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/post/like`, {
+        postId: post?.id,
+        userId: id,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    dispatch(fetchCommentsByPostId(post?.id));
+  }, []);
 
   return (
     <Container>
       <XIcon className="x" />
       <Modal ref={ref}>
-        <ImageContainer>
+        <ImageContainer onDoubleClick={onDoubleClick}>
           <Image
-            src={`http://localhost:3001/post/image/${modalData.images[0].mediaFileId}`}
+            src={`${process.env.REACT_APP_S3_URL + images[0].mediaFileId}`}
           />
         </ImageContainer>
         <SideBar>
-          <PostHeader avatar={img} fullName={modalData.username} />
+          <PostHeader avatar={img} fullName={user.username} postId={post?.id} />
           <CommentsWrapper>
             <CaptionContainer>
               <ProfilePic src={img} />
               <Caption>
-                <span>{modalData.username} </span> {modalData.caption}
+                <span className="username">{user.username} </span>{" "}
+                {post?.caption}
               </Caption>
             </CaptionContainer>
-            {commentArr.map((c: any) => (
+            {comments?.map((c: any) => (
               <Comment
-                profilePic={c.avatar}
-                fullName={c.fullName}
+                profilePic={c.user?.avatar}
+                fullName={c.user.fullName}
                 comment={c.comment}
-                timeStamp={c.timeStamp}
-                likes={c.likes}
+                timeStamp={c.createdAt}
+                likes={c.id}
               />
             ))}
           </CommentsWrapper>

@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense, lazy } from "react";
 import Navbar from "../../Components/Navbar";
 import Feed from "../../Containers/Feed";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { increment } from "../../Redux/counter";
 import { isOpen, toggleModal } from "../../Redux/modalSlice";
+import Loader from "../../Components/loader";
 const Home = () => {
   const [image, setImage] = useState<string>("");
   const dispatch = useAppDispatch();
 
   const isModalOpen = useAppSelector(isOpen);
+
+  const Navbar = lazy(() => import("../../Components/Navbar"));
+  const Feed = lazy(() => import("../../Containers/Feed"));
 
   // const addPhoto = async () => {
   //   const formData = new FormData();
@@ -48,10 +52,12 @@ const Home = () => {
   //   });
   // };
   return (
-    <div>
-      <Navbar />
-      <Feed />
-    </div>
+    <Suspense fallback={<Loader />}>
+      <div>
+        <Navbar />
+        <Feed />
+      </div>
+    </Suspense>
   );
 };
 

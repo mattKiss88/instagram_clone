@@ -10,6 +10,12 @@ import {
   Reply,
   TimeStamp,
 } from "./styles";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
+
+// let relativeTime = require("dayjs/plugin/relativeTime");
+// dayjs.extend(relativeTime);
 
 interface props {
   profilePic: string;
@@ -27,16 +33,18 @@ const Comment = ({
   likes,
 }: props) => {
   const [liked, setLiked] = useState(false);
+
+  console.log("goo");
   return (
     <CommentContainer>
       <div>
-        <ProfilePic src={profilePic} />
+        <ProfilePic src={`${process.env.REACT_APP_S3_URL + profilePic}`} />
         <Container onDoubleClick={() => setLiked(!liked)}>
           <AccountName>{fullName} </AccountName>
           <CommentText>{comment}</CommentText>
           <ActionsContainer>
-            <TimeStamp>{timeStamp}</TimeStamp>
-            <Likes>{likes}</Likes>
+            <TimeStamp>{dayjs(timeStamp).fromNow()}</TimeStamp>
+            <Likes>{likes + " likes"}</Likes>
             <Reply>Reply</Reply>
           </ActionsContainer>
         </Container>
