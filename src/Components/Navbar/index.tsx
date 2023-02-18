@@ -22,11 +22,9 @@ const Navbar = () => {
   const onClickOutside = () => {
     setSearch(false);
   };
-  console.log(ref);
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (ref.current && !ref?.current?.contains(event.target)) {
-        console.log("clicked outside");
         onClickOutside();
       }
     };

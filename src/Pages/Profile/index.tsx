@@ -5,7 +5,7 @@ const Profile = lazy(() => import("../../Components/Profile"));
 const UserProfile = () => {
   return (
     <Suspense fallback={<Loader />}>
-      <Profile />
+      <Profile ownAccount={true} />
     </Suspense>
   );
 };

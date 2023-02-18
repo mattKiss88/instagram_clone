@@ -4,22 +4,17 @@ import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { addModalData, toggleModal } from "../../Redux/modalSlice";
 import { CommentContainer, Img, Wrapper } from "./styles";
 interface props {
-  image: string;
-  i: any;
+  post: any;
 }
-const Post = ({ image, i }: props) => {
+const Post = ({ post }: props) => {
   const [hovered, setHovered] = useState(false);
   const dispatch = useAppDispatch();
-  const posts = useAppSelector((state) => state.userPosts.posts);
-  const [post, setPost] = useState({
-    images: posts[i].images,
-    caption: posts[i].post.caption,
-    username: "ammar",
-  });
+  // const posts = useAppSelector((state) => state.userPosts.posts);
+  console.log(post);
 
   const openModal = () => {
-    dispatch(toggleModal());
     dispatch(addModalData(post));
+    dispatch(toggleModal());
   };
 
   return (
@@ -28,7 +23,7 @@ const Post = ({ image, i }: props) => {
       onMouseLeave={() => setHovered(false)}
       onClick={openModal}
     >
-      <Img src={image} />
+      <Img src={process.env.REACT_APP_S3_URL + post.images[0].mediaFileId} />
       {hovered && (
         <CommentContainer>
           <ChatIcon />

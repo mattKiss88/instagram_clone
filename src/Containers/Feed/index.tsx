@@ -14,7 +14,7 @@ const Feed = () => {
   const { username, id } = useAppSelector((state) => state.userAccount);
 
   useEffect(() => {
-    dispatch(fetchFeedByUserId(id));
+    dispatch(fetchFeedByUserId(id) as any);
   }, [id]);
 
   return (

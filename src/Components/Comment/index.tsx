@@ -34,7 +34,6 @@ const Comment = ({
 }: props) => {
   const [liked, setLiked] = useState(false);
 
-  console.log("goo");
   return (
     <CommentContainer>
       <div>

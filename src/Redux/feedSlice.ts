@@ -28,8 +28,6 @@ export const feedSlice = createSlice({
   initialState,
   reducers: {
     getUserData: (state, action: PayloadAction<any>) => {
-      console.log("payload", action.payload);
-
       return action.payload;
     },
     updateLikes: (state, action: PayloadAction<any>) => {

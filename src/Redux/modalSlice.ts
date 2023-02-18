@@ -27,8 +27,6 @@ export const fetchCommentsByPostId = createAsyncThunk(
       `${process.env.REACT_APP_API_URL}/comment/${postId}}`
     );
 
-    console.log("222", response.data);
-
     return response.data.comments;
   }
 );

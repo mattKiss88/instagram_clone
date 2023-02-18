@@ -20,6 +20,7 @@ import {
   StatsContainer,
   Username,
 } from "./styles";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   post: any;
@@ -44,11 +45,19 @@ const ViewAccount = ({
 
   const { user } = post;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  console.log(post);
 
   const openModal = (postData: any) => {
     dispatch(addModalData(postData));
     dispatch(toggleModal());
   };
+
+  const onProfileClick = () => {
+    navigate(`/profile/${user.id}`);
+  };
+
   return (
     <Container
       onMouseEnter={() => hovered("toolTip")}
@@ -57,10 +66,13 @@ const ViewAccount = ({
     >
       <Header>
         <Left>
-          <Avatar src={`${process.env.REACT_APP_S3_URL + user.avatar}`} />
+          <Avatar
+            src={`${process.env.REACT_APP_S3_URL + user.avatar}`}
+            onClick={onProfileClick}
+          />
         </Left>
         <Right>
-          <Username>{user.username}</Username>
+          <Username onClick={onProfileClick}>{user.username}</Username>
           <Name>{user.fullName}</Name>
           <Bio>{user.bio}</Bio>
         </Right>

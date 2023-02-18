@@ -28,20 +28,25 @@ import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { isOpen, addModalData } from "../../Redux/modalSlice";
 import { getPosts } from "../../Redux/userPostsSlice";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
-const Profile: React.FC = () => {
+interface Props {
+  ownAccount: boolean;
+  userId?: number;
+}
+
+const Profile = ({ ownAccount, userId }: Props) => {
   const [active, setActive] = useState("posts");
   const posts = useAppSelector((state) => state.userPosts.posts);
   const isModalOpen = useAppSelector(isOpen);
   const user = useAppSelector((state) => state.userAccount);
+  const { id } = useParams<{ id: string }>();
 
   const dispatch = useAppDispatch();
 
-  console.log(posts);
-
   useEffect(() => {
     axios
-      .get("http://localhost:3001/post/1")
+      .get(`http://localhost:3001/post/${id || user.id}`)
       .then((res) => {
         console.log(res);
         dispatch(getPosts(res.data.posts));
@@ -51,12 +56,14 @@ const Profile: React.FC = () => {
       });
   }, []);
 
+  console.log(user);
+
   return (
     <>
       <Navbar />
       <Section>
         <Container>
-          <Avatar src={`${process.env.REACT_APP_S3_URL + user.avatar}` || ""} />
+          <Avatar src={`${process.env.REACT_APP_S3_URL + user.avatar}`} />
           <ProfileDetails>
             <TopRow>
               <Username>{user.username}</Username>
@@ -74,7 +81,6 @@ const Profile: React.FC = () => {
                 <span>{user.following}</span> Following
               </Following>
             </MiddleRow>
-
             <FullName>{user.fullName}</FullName>
           </ProfileDetails>
         </Container>
@@ -86,13 +92,16 @@ const Profile: React.FC = () => {
             <ViewGridIcon />
             <span>POSTS</span>
           </PostBtn>
-          <SavedBtn
-            active={active === "saved"}
-            onClick={() => setActive("saved")}
-          >
-            <BookmarkIcon />
-            <span>SAVED</span>
-          </SavedBtn>
+          {ownAccount && (
+            <SavedBtn
+              active={active === "saved"}
+              onClick={() => setActive("saved")}
+            >
+              <BookmarkIcon />
+              <span>SAVED</span>
+            </SavedBtn>
+          )}
+
           <TaggedBtn
             active={active === "tagged"}
             onClick={() => setActive("tagged")}
@@ -103,14 +112,7 @@ const Profile: React.FC = () => {
         </ButtonContainer>
         <BottomContainer>
           {posts.map((post, x) => {
-            return (
-              <Post
-                image={
-                  process.env.REACT_APP_S3_URL + post.images[0].mediaFileId
-                }
-                i={x}
-              />
-            );
+            return <Post post={{ ...post, user: { ...user, posts } }} />;
           })}
         </BottomContainer>
       </Section>

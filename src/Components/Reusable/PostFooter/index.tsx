@@ -71,11 +71,11 @@ const PostFooter = ({
     dispatch(toggleModal());
   };
 
-  console.log(postData);
   useEffect(() => {
     setLiked(postData?.post.likes);
-    console.log(postData?.post.likes);
   }, [postData]);
+
+  console.log(postData);
 
   const handleLike = () => {
     setLiked(!liked);

@@ -29,7 +29,7 @@ import axios from "axios";
 
 interface props {}
 
-const ViewPostModal = ({}: props) => {
+const ViewPostModal = () => {
   const dispatch = useAppDispatch();
   const { ref, isClickOutside, setisClickOutside } = useIsClickOutside(false);
   const { isEscapeEvent, setIsEscapeEvent } = useEscape();
@@ -75,7 +75,7 @@ const ViewPostModal = ({}: props) => {
   };
 
   useEffect(() => {
-    dispatch(fetchCommentsByPostId(post?.id));
+    dispatch(fetchCommentsByPostId(post?.id) as any);
   }, []);
 
   return (
