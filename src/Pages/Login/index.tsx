@@ -1,35 +1,20 @@
 import React, { useEffect } from "react";
-import {
-  Bottom,
-  ForgotPassword,
-  FormContainer,
-  ImageContainer,
-  Img1,
-  Img2,
-  Img3,
-  Input,
-  LoginBtn,
-  NoAccount,
-  Section,
-  Top,
-} from "./styles";
-import phones from "../../Assets/insta-login.png";
+import { ImageContainer, Img1, Section } from "./styles";
 import logo from "../../Assets/instagram-text-icon.png";
 import { Link } from "react-router-dom";
 import ss1 from "../../Assets/screenshot1.png";
 import ss2 from "../../Assets/screenshot2.png";
 import ss3 from "../../Assets/screenshot3.png";
 import { useState } from "react";
-import { useAppDispatch } from "../../Redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { loginUser } from "../../Redux/userAccountSlice";
+import Form from "./form";
 
 const Login = () => {
   const [activeImg, setActiveImg] = useState(1);
-  const [userDetails, setUserDetails] = useState({
-    email: "",
-    password: "",
-  });
-  const dispatch = useAppDispatch();
+  const accountUser = useAppSelector((state) => state.userAccount);
+
+  console.log(accountUser, "accountUser");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -54,15 +39,6 @@ const Login = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dispatch(loginUser(userDetails) as any);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
-  };
-
   return (
     <Section>
       <ImageContainer>
@@ -70,30 +46,7 @@ const Login = () => {
         <Img1 src={ss2} order={orderImages(2)} />
         <Img1 src={ss3} order={orderImages(3)} />
       </ImageContainer>
-      <FormContainer>
-        <Top onSubmit={handleSubmit}>
-          <img src={logo} className="logo" />
-          <Input
-            type="text"
-            placeholder="Phone number, username, or email"
-            onChange={handleChange}
-            name="email"
-          />
-          <Input
-            type="password"
-            placeholder="Password"
-            onChange={handleChange}
-            name="password"
-          />
-          <LoginBtn>Log in</LoginBtn>
-          <ForgotPassword>Forgotten your password?</ForgotPassword>
-        </Top>
-        <Bottom>
-          <NoAccount>
-            Don't have an account? <Link to="/signup">Sign up</Link>
-          </NoAccount>
-        </Bottom>
-      </FormContainer>
+      <Form />
     </Section>
   );
 };

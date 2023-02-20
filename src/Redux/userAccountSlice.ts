@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 interface InitialState {
   id: number;
@@ -17,6 +17,12 @@ interface InitialState {
 
 interface LoginDetails {
   email: string;
+  password: string;
+}
+interface SignUpDetails {
+  email: string;
+  username: string;
+  fullName: string;
   password: string;
 }
 
@@ -35,11 +41,34 @@ const initialState: InitialState = {
 export const loginUser = createAsyncThunk(
   "userAccount/loginUserStatus",
   async (user: LoginDetails, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/auth/login`,
+        {
+          email: user.email,
+          password: user.password,
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error?.response?.data);
+    }
+  }
+);
+export const signUpUser = createAsyncThunk(
+  "userAccount/signUpUserStatus",
+  async (user: SignUpDetails, thunkAPI) => {
+    console.log(user, "user");
     const response = await axios.post(
-      `${process.env.REACT_APP_API_URL}/auth/login`,
+      `${process.env.REACT_APP_API_URL}/auth/signup`,
       {
-        email: user.email,
-        password: user.password,
+        userData: {
+          email: user.email,
+          password: user.password,
+          username: user.username,
+          fullName: user.fullName,
+        },
       }
     );
 
@@ -59,7 +88,18 @@ export const userAccountSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.fulfilled, (state, action) => {
-      state.token = action.payload.accessToken;
+      return {
+        ...state,
+        token: action.payload.accessToken,
+        ...action.payload.user,
+      };
+    });
+    builder.addCase(signUpUser.fulfilled, (state, action) => {
+      return {
+        ...state,
+        token: action.payload.accessToken,
+        ...action.payload.user,
+      };
     });
   },
 });

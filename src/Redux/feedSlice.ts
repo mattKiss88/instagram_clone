@@ -15,7 +15,7 @@ export const fetchFeedByUserId = createAsyncThunk(
   "users/fetchByIdStatus",
   async (userId: number, thunkAPI) => {
     const response = await axios.get(
-      `${process.env.REACT_APP_API_URL}/post/feed/${userId}}`
+      `${process.env.REACT_APP_API_URL}/post/feed/${userId}`
     );
 
     console.log("111", response);

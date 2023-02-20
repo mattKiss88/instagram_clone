@@ -16,6 +16,7 @@ import UserProfile from "./Pages/Profile";
 import Loader from "./Components/loader";
 import ViewAccount from "./Components/ToolTips/ViewAccount";
 import Login from "./Pages/Login";
+import SignUp from "./Pages/SignUp";
 
 function App() {
   const isModalOpen = useAppSelector(isOpen);
@@ -25,16 +26,6 @@ function App() {
   const token = useAppSelector((state) => state.userAccount.token);
   const navigate = useNavigate();
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/user/3`)
-      .then((res) => {
-        console.log(res.data.user, "user");
-        dispatch(getUserData(res.data.user));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
     if (!token) {
       navigate("/login");
     }
@@ -54,6 +45,7 @@ function App() {
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/profile/:id" element={<UserProfile />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
       {/* </Router> */}
       <Suspense fallback={<Loader />}>

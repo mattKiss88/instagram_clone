@@ -37,16 +37,6 @@ export const Img1 = styled.img<{ order: number }>`
   z-index: ${({ order }) => (order === 1 ? 1 : 0)};
 `;
 
-export const Img2 = styled.img`
-  ${style}
-  opacity: 0;
-`;
-
-export const Img3 = styled.img`
-  ${style}
-  opacity: 0;
-`;
-
 export const FormContainer = styled.div`
   max-width: 350px;
   padding: 10px 0;
