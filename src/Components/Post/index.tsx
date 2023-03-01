@@ -10,7 +10,6 @@ const Post = ({ post }: props) => {
   const [hovered, setHovered] = useState(false);
   const dispatch = useAppDispatch();
   // const posts = useAppSelector((state) => state.userPosts.posts);
-  console.log(post);
 
   const openModal = () => {
     dispatch(addModalData(post));

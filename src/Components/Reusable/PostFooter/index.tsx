@@ -21,7 +21,7 @@ import { addModalData, toggleModal } from "../../../Redux/modalSlice";
 import ReadMore from "../ReadMore";
 import axios from "axios";
 interface props {
-  likes: number;
+  likes: any;
   fullName: string;
   content: string;
   showCaption?: boolean;
@@ -43,6 +43,9 @@ const PostFooter = ({
     []
   );
   const { username, id } = useAppSelector((state) => state.userAccount);
+  const feed = useAppSelector((state) => state.feed.posts);
+
+  console.log(feed);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -71,11 +74,10 @@ const PostFooter = ({
     dispatch(toggleModal());
   };
 
+  console.log(postData?.post?.likes);
   useEffect(() => {
-    setLiked(postData?.post.likes);
-  }, [postData]);
-
-  console.log(postData);
+    setLiked(postData?.post?.likes || false);
+  }, [feed, postData?.post?.likes]);
 
   const handleLike = () => {
     setLiked(!liked);

@@ -1,5 +1,3 @@
-import React from "react";
-import { UserCircleIcon } from "@heroicons/react/outline";
 import {
   Button,
   Name,
@@ -12,18 +10,27 @@ import {
   SeeAll,
   Avatar,
 } from "./styles";
-import { seedData } from "../Feed/data";
-import { ProfilePic } from "../../Components/Reusable/misc";
 import { useAppSelector } from "../../Redux/hooks";
-
+import defaultImg from "../../Assets/defaultPP.png";
+import { shallowEqual } from "react-redux";
+import User from "./user";
 const Suggested = () => {
-  const user = useAppSelector((state) => state.userAccount);
+  const user = useAppSelector((state) => state.userAccount, shallowEqual);
+  const recommendedUsers = useAppSelector(
+    (state) => state.feed.recommendedUsers,
+    shallowEqual
+  );
 
-  console.log(user, "user");
   return (
     <SuggestedWrapper>
       <UserWrapper>
-        <Avatar src={`http://localhost:3001/post/image/${user.avatar}`} />
+        <Avatar
+          src={
+            user?.avatar
+              ? `http://localhost:3001/post/image/${user?.avatar}`
+              : defaultImg
+          }
+        />
         <UsernameContainer>
           <Username>{user?.username}</Username>
           <Name>{user?.fullName}</Name>
@@ -34,15 +41,8 @@ const Suggested = () => {
         <SuggestedText>Suggested For You</SuggestedText>
         <SeeAll>See All</SeeAll>
       </SuggestedContainer>
-      {seedData.map((item: any) => (
-        <SuggestedContainer>
-          <ProfilePic src={item.avatar} />
-          <UsernameContainer>
-            <Username>{item.fullName}</Username>
-            <Name>Popular</Name>
-          </UsernameContainer>
-          <Button>Follow</Button>
-        </SuggestedContainer>
+      {recommendedUsers?.map((user: any, i: number) => (
+        <User key={i} user={user} />
       ))}
     </SuggestedWrapper>
   );

@@ -33,15 +33,23 @@ const FeedCard = ({
     setPost(feed.find((item: any) => item.post.id === postId));
   }, [feed]);
 
+  console.log(post);
+
   const onDoubleClick = () => {
+    if (liked) return null;
     setLiked(true);
     dispatch(updateLikes(postId));
     handleLike();
-
-    setTimeout(() => {
-      setLiked(false);
-    }, 1000);
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log("timeout");
+      if (liked) setLiked(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [liked]);
 
   const handleLike = () => {
     setLiked(!liked);

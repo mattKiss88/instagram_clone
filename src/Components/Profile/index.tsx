@@ -44,19 +44,17 @@ const Profile = ({ ownAccount, userId }: Props) => {
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3001/post/${id || user.id}`)
-      .then((res) => {
-        console.log(res);
-        dispatch(getPosts(res.data.posts));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  console.log(user);
+  // useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:3001/post/${id || user.id}`)
+  //     .then((res) => {
+  //       console.log(res);
+  //       dispatch(getPosts(res.data.posts));
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   return (
     <>

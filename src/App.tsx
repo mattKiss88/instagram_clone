@@ -30,6 +30,7 @@ function App() {
       navigate("/login");
     }
   }, []);
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   useEffect(() => {
     setIsMount(true);

@@ -47,7 +47,6 @@ const ViewAccount = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(post);
 
   const openModal = (postData: any) => {
     dispatch(addModalData(postData));

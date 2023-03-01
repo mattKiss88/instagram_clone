@@ -4,17 +4,23 @@ import { RightContainer, Section, LeftContainer } from "./styles";
 import Suggested from "../Suggested";
 import Stories from "../Stories";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
-import { fetchFeedByUserId, feed as feedState } from "../../Redux/feedSlice";
+import {
+  fetchFeedByUserId,
+  feed as feedState,
+  fetchRecommendedUsers,
+} from "../../Redux/feedSlice";
 import useWindowSize from "../../Hooks/useWindowSize";
 
 const Feed = () => {
   const dispatch = useAppDispatch();
   let feed = useAppSelector(feedState);
   const { width }: any = useWindowSize();
-  const { username, id } = useAppSelector((state) => state.userAccount);
-
+  const id = useAppSelector((state) => state.userAccount.id);
+  const state = useAppSelector((state) => state);
+  console.log(state);
   useEffect(() => {
     dispatch(fetchFeedByUserId(id) as any);
+    dispatch(fetchRecommendedUsers() as any);
   }, [id]);
 
   return (

@@ -14,7 +14,6 @@ const Login = () => {
   const [activeImg, setActiveImg] = useState(1);
   const accountUser = useAppSelector((state) => state.userAccount);
 
-  console.log(accountUser, "accountUser");
 
   useEffect(() => {
     const interval = setInterval(() => {

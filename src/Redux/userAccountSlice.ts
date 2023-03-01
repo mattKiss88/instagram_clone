@@ -41,13 +41,19 @@ const initialState: InitialState = {
 export const loginUser = createAsyncThunk(
   "userAccount/loginUserStatus",
   async (user: LoginDetails, thunkAPI) => {
+    const header = {
+      "Content-Type": "application/json",
+      credentials: "include",
+      withCredentials: true,
+    };
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/auth/login`,
         {
           email: user.email,
           password: user.password,
-        }
+        },
+        { headers: header }
       );
 
       return response.data;
@@ -59,7 +65,6 @@ export const loginUser = createAsyncThunk(
 export const signUpUser = createAsyncThunk(
   "userAccount/signUpUserStatus",
   async (user: SignUpDetails, thunkAPI) => {
-    console.log(user, "user");
     const response = await axios.post(
       `${process.env.REACT_APP_API_URL}/auth/signup`,
       {
@@ -71,8 +76,6 @@ export const signUpUser = createAsyncThunk(
         },
       }
     );
-
-    console.log(response.data, "response.data");
 
     return response.data;
   }
