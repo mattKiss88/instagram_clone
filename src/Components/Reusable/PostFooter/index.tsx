@@ -17,13 +17,18 @@ import {
   PostButton,
 } from "./styles";
 import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
-import { addModalData, toggleModal } from "../../../Redux/modalSlice";
+import {
+  addModalData,
+  toggleModal,
+  updateModalLikes,
+} from "../../../Redux/modalSlice";
 import ReadMore from "../ReadMore";
-import axios from "axios";
+import { updateLikes, updatePostLikes } from "../../../Redux/feedSlice";
+import { likePost, postComment } from "../../../Api";
 interface props {
   likes: any;
   fullName: string;
-  content: string;
+  content?: string;
   showCaption?: boolean;
   postData?: any;
 }
@@ -44,8 +49,8 @@ const PostFooter = ({
   );
   const { username, id } = useAppSelector((state) => state.userAccount);
   const feed = useAppSelector((state) => state.feed.posts);
-
-  console.log(feed);
+  const modalIsOpen = useAppSelector((state) => state.modal.isOpen);
+  const modal = useAppSelector((state) => state.modal);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -54,19 +59,11 @@ const PostFooter = ({
     }
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (comment.length === 0) return;
-    axios
-      .post(`${process.env.REACT_APP_API_URL}/comment/1`, { comment })
-      .then((res) => {
-        setSubmittedComments([...submittedComments, res.data.comment]);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setComment("");
-      });
+    let newComment = await postComment(postData?.post?.id, comment);
+    setSubmittedComments([...submittedComments, newComment]);
+    setComment("");
   };
 
   const openModal = () => {
@@ -74,24 +71,15 @@ const PostFooter = ({
     dispatch(toggleModal());
   };
 
-  console.log(postData?.post?.likes);
   useEffect(() => {
     setLiked(postData?.post?.likes || false);
   }, [feed, postData?.post?.likes]);
 
-  const handleLike = () => {
+  const handleLike = async () => {
     setLiked(!liked);
-    axios
-      .post(`${process.env.REACT_APP_API_URL}/post/like`, {
-        postId: postData?.post.id,
-        userId: id,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(updatePostLikes(postData?.post.id) as any);
+
+    await likePost(postData?.post.id, id);
   };
 
   return (

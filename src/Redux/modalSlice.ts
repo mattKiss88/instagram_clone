@@ -44,6 +44,18 @@ export const modalSlice = createSlice({
         ...action.payload,
       };
     },
+    updateModalLikes: (state, action: PayloadAction<undefined>) => {
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          likes: !state.post.likes,
+          totalLikes: !state.post.likes
+            ? state.post.totalLikes + 1
+            : state.post.totalLikes - 1,
+        },
+      };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCommentsByPostId.fulfilled, (state, action) => {
@@ -53,7 +65,8 @@ export const modalSlice = createSlice({
   },
 });
 
-export const { toggleModal, addModalData } = modalSlice.actions;
+export const { toggleModal, addModalData, updateModalLikes } =
+  modalSlice.actions;
 
 export const isOpen = (state: RootState) => state.modal.isOpen;
 

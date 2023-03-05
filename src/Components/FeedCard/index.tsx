@@ -1,12 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { FeedWrapper, Image, ImageContainer } from "./styles";
 import PostHeader from "../Reusable/PostHeader";
 import PostFooter from "../Reusable/PostFooter";
 import { HeartIcon } from "@heroicons/react/outline";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
-import { feed as feedState, updateLikes } from "../../Redux/feedSlice";
+import {
+  feed as feedState,
+  updateLikes,
+  updatePostLikes,
+} from "../../Redux/feedSlice";
 import { shallowEqual } from "react-redux";
 import axios from "axios";
+import { likePost } from "../../Api";
 interface props {
   fullName: string;
   likes: number;
@@ -28,23 +33,21 @@ const FeedCard = ({
   let feed = useAppSelector(feedState, shallowEqual);
   const dispatch = useAppDispatch();
   const { id } = useAppSelector((state) => state.userAccount);
-
+  const countLikes = useRef(0);
   useEffect(() => {
     setPost(feed.find((item: any) => item.post.id === postId));
   }, [feed]);
 
-  console.log(post);
-
   const onDoubleClick = () => {
-    if (liked) return null;
     setLiked(true);
-    dispatch(updateLikes(postId));
+    if (post.post.likes) return null;
+    dispatch(updatePostLikes(postId) as any);
+
     handleLike();
   };
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      console.log("timeout");
       if (liked) setLiked(false);
     }, 1000);
 
@@ -53,18 +56,7 @@ const FeedCard = ({
 
   const handleLike = () => {
     setLiked(!liked);
-
-    axios
-      .post(`${process.env.REACT_APP_API_URL}/post/like`, {
-        postId: postId,
-        userId: id,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    Promise.resolve(likePost(postId, id));
   };
 
   return (

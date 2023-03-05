@@ -10,7 +10,7 @@ export const FeedWrapper = styled.div`
   position: relative;
 `;
 
-const likeAnimation = keyframes`
+export const likeAnimation = keyframes`
 
 0%, 10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%, 100% {
   transform: translate(-50%, -50%);

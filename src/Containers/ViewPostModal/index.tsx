@@ -24,8 +24,9 @@ import {
   toggleModal,
 } from "../../Redux/modalSlice";
 import { useEscape } from "../../Hooks/useEscape";
-import { updateLikes } from "../../Redux/feedSlice";
-import axios from "axios";
+import { updateLikes, updatePostLikes } from "../../Redux/feedSlice";
+import { likePost } from "../../Api";
+import { HeartIcon } from "@heroicons/react/outline";
 
 interface props {}
 
@@ -51,7 +52,8 @@ const ViewPostModal = () => {
 
   const onDoubleClick = () => {
     setLiked(true);
-    dispatch(updateLikes(post?.id));
+    dispatch(updatePostLikes(post?.id) as any);
+
     handleLike();
 
     setTimeout(() => {
@@ -59,30 +61,25 @@ const ViewPostModal = () => {
     }, 1000);
   };
 
-  const handleLike = () => {
+  const handleLike = async () => {
     setLiked(!liked);
-    axios
-      .post(`${process.env.REACT_APP_API_URL}/post/like`, {
-        postId: post?.id,
-        userId: id,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    await likePost(post?.id, id);
   };
 
   useEffect(() => {
     dispatch(fetchCommentsByPostId(post?.id) as any);
   }, []);
 
+  console.log(comments, "comments");
+
   return (
     <Container>
       <XIcon className="x" />
       <Modal ref={ref}>
         <ImageContainer onDoubleClick={onDoubleClick}>
+          <HeartIcon className={liked && "liked"} />
+
           <Image
             src={`${process.env.REACT_APP_S3_URL + images[0].mediaFileId}`}
           />
@@ -108,9 +105,9 @@ const ViewPostModal = () => {
             ))}
           </CommentsWrapper>
           <PostFooter
-            likes={1000}
-            content={"hey jude"}
-            fullName={"The romanian"}
+            likes={post?.totalLikes}
+            fullName={user?.fullName}
+            postData={{ user, post, images }}
           />
         </SideBar>
       </Modal>

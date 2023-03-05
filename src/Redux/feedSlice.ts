@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import modalSlice, { updateModalLikes } from "./modalSlice";
 
 interface InitialState {
   posts: any[];
@@ -31,8 +32,6 @@ export const fetchRecommendedUsers = createAsyncThunk(
       `${process.env.REACT_APP_API_URL}/post/recommended`
     );
 
-    console.log(response, "response ------------------------->");
-
     return response.data.users;
   }
 );
@@ -47,9 +46,16 @@ export const followRecommendedUsers = createAsyncThunk(
       }
     );
 
-    console.log(response, "response01 ------------------------->");
-
     return response.data;
+  }
+);
+
+export const updatePostLikes = createAsyncThunk(
+  "feed/updatePostLikes",
+  async (postId: number, { getState, dispatch }) => {
+    dispatch(feedSlice.actions.updateLikes(postId));
+    dispatch(updateModalLikes());
+    return postId;
   }
 );
 
@@ -68,15 +74,15 @@ export const feedSlice = createSlice({
             post: {
               ...data.post,
               likes: !data.post.likes,
+              totalLikes: !data.post.likes
+                ? data.post.totalLikes + 1
+                : data.post.totalLikes - 1,
             },
           };
         }
-        return {
-          ...data,
-        };
-      });
 
-      console.log(updatePostLike, "updatePostLike ------------------------");
+        return data;
+      });
 
       return {
         ...state,

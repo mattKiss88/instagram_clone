@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { likeAnimation } from "../../Components/FeedCard/styles";
 
 export const Modal = styled.div`
   position: relative;
@@ -38,11 +39,34 @@ export const ImageContainer = styled.div`
   background: black;
   height: 100%;
   width: fit-content;
+  position: relative;
+
+  svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    fill: #fff;
+    stroke: white;
+    opacity: 0;
+  }
+
+  .liked {
+    animation: ${likeAnimation} 1s ease-in forwards;
+  }
 `;
 
 export const Image = styled.img`
   width: auto;
   height: 100%;
+  pointer-events: none;
+
+  -khtml-user-select: none;
+  -o-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 `;
 
 export const SideBar = styled.div`

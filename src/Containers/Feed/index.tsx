@@ -30,7 +30,7 @@ const Feed = () => {
         {feed.map((item: any) => (
           <FeedCard
             fullName={item.user.username}
-            likes={item.user.id}
+            likes={item.post.totalLikes}
             avatar={`${process.env.REACT_APP_S3_URL + item.user.avatar}`}
             content={item.post.caption}
             image={`${
