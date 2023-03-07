@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   BookmarkIcon,
   HeartIcon,
@@ -15,6 +15,7 @@ import {
   Left,
   Likes,
   PostButton,
+  ReplyPopUp,
 } from "./styles";
 import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
 import {
@@ -26,6 +27,7 @@ import {
 import ReadMore from "../ReadMore";
 import { updateLikes, updatePostLikes } from "../../../Redux/feedSlice";
 import { likePost, postComment } from "../../../Api";
+import { IReplyData } from "../../../Containers/ViewPostModal";
 interface props {
   likes: any;
   fullName: string;
@@ -33,6 +35,8 @@ interface props {
   showCaption?: boolean;
   postData?: any;
   location?: string;
+  replyData?: IReplyData | null;
+  setReply?: (reply: IReplyData | null) => void;
 }
 
 const PostFooter = ({
@@ -42,16 +46,19 @@ const PostFooter = ({
   showCaption,
   postData,
   location,
+  replyData,
+  setReply,
 }: props) => {
   const dispatch = useAppDispatch();
-
-  const [liked, setLiked] = React.useState<boolean>(false);
-  const [comment, setComment] = React.useState<string>("");
-  const [submittedComments, setSubmittedComments] = React.useState<string[]>(
-    []
+  const [liked, setLiked] = useState<boolean>(false);
+  const [comment, setComment] = useState<string>("");
+  const [commentRepliedToId, setCommentRepliedToId] = useState<number | null>(
+    null
   );
+  const [submittedComments, setSubmittedComments] = useState<string[]>([]);
   const { username, id } = useAppSelector((state) => state.userAccount);
   const feed = useAppSelector((state) => state.feed.posts);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -62,9 +69,14 @@ const PostFooter = ({
 
   const onSubmit = async () => {
     if (comment.length === 0) return;
-    let newComment = await postComment(postData?.post?.id, comment);
+    let newComment = await postComment(
+      postData?.post?.id,
+      comment,
+      commentRepliedToId
+    );
     setSubmittedComments([...submittedComments, newComment]);
     setComment("");
+    setReply && setReply(null);
     location === "modal" &&
       dispatch(fetchCommentsByPostId(postData?.post?.id) as any);
   };
@@ -84,6 +96,26 @@ const PostFooter = ({
 
     await likePost(postData?.post.id, id);
   };
+
+  const handleInputChange = async (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setComment(e.target.value);
+  };
+
+  const exitReplyHandler = () => {
+    setCommentRepliedToId(null);
+    setComment("");
+    setReply && setReply(null);
+  };
+
+  useEffect(() => {
+    if (replyData) {
+      setComment(replyData.reply);
+      setCommentRepliedToId(replyData.commentRepliedToId);
+      inputRef.current?.focus();
+    }
+  }, [replyData]);
 
   return (
     <CardFooter>
@@ -121,17 +153,22 @@ const PostFooter = ({
         })}
 
       <CommentWrapper>
+        {replyData && (
+          <ReplyPopUp>
+            Replying to {replyData?.username}
+            <span onClick={exitReplyHandler}>x</span>
+          </ReplyPopUp>
+        )}
+
         <div>
           <EmojiHappyIcon style={{ width: "24px", cursor: "pointer" }} />
           <Input
             rows={1}
             placeholder="Add a comment..."
             value={comment}
-            contentEditable="true"
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-              setComment(e.target.value)
-            }
+            onChange={handleInputChange}
             onKeyDown={onKeyDown}
+            ref={inputRef}
           />
         </div>
         <PostButton onClick={onSubmit}>Post</PostButton>

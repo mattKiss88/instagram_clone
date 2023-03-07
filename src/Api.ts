@@ -16,10 +16,15 @@ export const likePost = async (postId: number, userId: number) => {
   }
 };
 
-export const postComment = async (postId: number, comment: string) => {
+export const postComment = async (
+  postId: number,
+  comment: string,
+  commentRepliedToId: number | null
+) => {
   try {
     const response = await axios.post(`${API_URL}/comment/${postId}`, {
       comment,
+      commentRepliedToId,
     });
 
     return response.data.comment;

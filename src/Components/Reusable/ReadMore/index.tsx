@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-interface props {
+interface ReadMoreProps {
   children: any;
 }
 
-const ReadMore = ({ children }: props) => {
+const ReadMore: React.FC<ReadMoreProps> = ({ children }) => {
   const text = children[1];
 
   const [isReadMore, setIsReadMore] = useState(true);

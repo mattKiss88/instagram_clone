@@ -95,4 +95,5 @@ export const ViewSubcomments = styled.p`
   cursor: pointer;
   margin: 12px 0;
   display: block !important;
+  padding-left: 50px;
 `;

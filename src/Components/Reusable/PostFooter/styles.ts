@@ -87,6 +87,7 @@ export const CommentWrapper = styled.div`
   padding: 10px 14px;
   display: flex;
   justify-content: space-between;
+  position: relative;
 
   > div {
     display: flex;
@@ -122,4 +123,26 @@ export const PostButton = styled.button`
   font-weight: 700;
   float: right;
   cursor: pointer;
+`;
+
+export const ReplyPopUp = styled.div`
+  background: lightgrey;
+  color: #ffffff;
+  font-weight: 400;
+  top: -15px;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  text-align: center;
+  display: block !important;
+  padding: 4px 20px;
+  font-size: 10px;
+
+  span {
+    font-weight: 700;
+    color: black;
+    float: right;
+    padding: 0 4px;
+    cursor: pointer;
+  }
 `;

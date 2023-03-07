@@ -17,24 +17,31 @@ import { useAppDispatch } from "../../Redux/hooks";
 import { likeComment } from "../../Redux/modalSlice";
 import { usePopperTooltip } from "react-popper-tooltip";
 import ViewAccount from "../ToolTips/ViewAccount/indexCopy";
+import { IReplyData } from "../../Containers/ViewPostModal";
 
 dayjs.extend(relativeTime);
 
 // let relativeTime = require("dayjs/plugin/relativeTime");
 // dayjs.extend(relativeTime);
 
-interface props {
+interface CommentProps {
   comment: any;
-  children?: any;
+  children?: React.ReactNode;
   type: string;
+  setReply: (reply: IReplyData | null) => void;
 }
 
-const Comment = ({ comment, children, type }: props) => {
+const Comment: React.FC<CommentProps> = ({
+  comment,
+  children,
+  type,
+  setReply,
+}) => {
   const { createdAt, totalLikes } = comment;
-  const { fullName, avatar } = comment.user;
+  const { fullName, avatar, username } = comment.user;
   const [liked, setLiked] = useState(false);
-  const [showReplies, setShowReplies] = useState(false);
-
+  const dispatch = useAppDispatch();
+  const [showReplies, setShowReplies] = useState<boolean>(false);
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
       placement: "right",
@@ -43,9 +50,7 @@ const Comment = ({ comment, children, type }: props) => {
       interactive: true,
     });
 
-  const dispatch = useAppDispatch();
-
-  const handleLike = async () => {
+  const handleLike = async (e: React.MouseEvent<HTMLDivElement>) => {
     setLiked(!liked);
     dispatch(likeComment({ commentId: comment.id, commentType: type }) as any);
   };
@@ -54,12 +59,19 @@ const Comment = ({ comment, children, type }: props) => {
 
   useEffect(() => {
     setLiked(comment.liked || false);
-  }, [comment.liked, comment.s]);
+  }, [comment.liked]);
 
   const handleDisplayReplies = async () => {
-    setShowReplies((prev) => !prev);
+    setShowReplies(!showReplies);
   };
 
+  const handleReplyEvent = () => {
+    setReply({
+      reply: `@${username} `,
+      commentRepliedToId: comment.commentRepliedToId || comment.id,
+      username: username,
+    });
+  };
   return (
     <CommentContainer type={type}>
       <div>
@@ -76,28 +88,28 @@ const Comment = ({ comment, children, type }: props) => {
           </div>
         )}
         <Container onDoubleClick={handleLike}>
-          <AccountName>{fullName} </AccountName>
+          <AccountName>{username} </AccountName>
           <CommentText>{comment?.comment}</CommentText>
           <ActionsContainer>
             <TimeStamp>{dayjs(createdAt).fromNow()}</TimeStamp>
             <Likes>{totalLikes + " likes"}</Likes>
-            <Reply>Reply</Reply>
+            <Reply onClick={handleReplyEvent}>Reply</Reply>
           </ActionsContainer>
-          {comment.subCommentCount ? (
-            <>
-              <ViewSubcomments onClick={handleDisplayReplies}>
-                View replies ({comment.subCommentCount})
-              </ViewSubcomments>
-            </>
-          ) : (
-            ""
-          )}
         </Container>
         <HeartIcon
           className={liked ? "heart activeHeart" : "heart"}
           onClick={handleLike}
         />
       </div>
+      {comment.subCommentCount ? (
+        <>
+          <ViewSubcomments onClick={handleDisplayReplies} id="show">
+            View replies ({comment.subCommentCount})
+          </ViewSubcomments>
+        </>
+      ) : (
+        ""
+      )}
       {showReplies && children}
     </CommentContainer>
   );

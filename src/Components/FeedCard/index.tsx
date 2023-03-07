@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { createRef, useEffect, useRef } from "react";
 import { FeedWrapper, Image, ImageContainer } from "./styles";
 import PostHeader from "../Reusable/PostHeader";
 import PostFooter from "../Reusable/PostFooter";
@@ -33,7 +33,7 @@ const FeedCard = ({
   let feed = useAppSelector(feedState, shallowEqual);
   const dispatch = useAppDispatch();
   const { id } = useAppSelector((state) => state.userAccount);
-  const countLikes = useRef(0);
+  const inputRef = createRef();
   useEffect(() => {
     setPost(feed.find((item: any) => item.post.id === postId));
   }, [feed]);
@@ -57,6 +57,8 @@ const FeedCard = ({
     setLiked(!liked);
     Promise.resolve(likePost(postId, id));
   };
+
+  console.log(inputRef.current, "inputRef.current");
 
   return (
     <FeedWrapper>

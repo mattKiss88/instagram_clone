@@ -32,6 +32,12 @@ import { Facebook } from "react-content-loader";
 
 interface props {}
 
+export interface IReplyData {
+  commentRepliedToId: number;
+  reply: string;
+  username: string;
+}
+
 const ViewPostModal = () => {
   const dispatch = useAppDispatch();
   const { ref, isClickOutside, setisClickOutside } = useIsClickOutside(false);
@@ -44,6 +50,7 @@ const ViewPostModal = () => {
   const { comments, user, post, images } = modalData;
   const [liked, setLiked] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [reply, setReply] = useState<IReplyData | null>(null);
 
   useEffect(() => {
     if (isModalOpen && (isClickOutside || isEscapeEvent)) {
@@ -104,9 +111,9 @@ const ViewPostModal = () => {
                 MyFacebookLoader()
               ) : (
                 <>
-                  <Comment comment={c} type="new">
+                  <Comment comment={c} type="new" setReply={setReply}>
                     {c?.subComments.map((sub: any) => (
-                      <Comment comment={sub} type="sub" />
+                      <Comment comment={sub} type="sub" setReply={setReply} />
                     ))}
                   </Comment>
                 </>
@@ -118,6 +125,8 @@ const ViewPostModal = () => {
             fullName={user?.fullName}
             postData={{ user, post, images }}
             location="modal"
+            replyData={reply}
+            setReply={setReply}
           />
         </SideBar>
       </Modal>
