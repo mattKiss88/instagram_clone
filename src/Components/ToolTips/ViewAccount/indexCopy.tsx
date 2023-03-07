@@ -24,19 +24,9 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
   post: any;
-  unhovered: (value: string) => void;
-  hovered: (value: string) => void;
-  hoveredOnToolTip: boolean;
-  hoveredOnName: boolean;
 }
 
-const ViewAccount = ({
-  post,
-  unhovered,
-  hovered,
-  hoveredOnToolTip,
-  hoveredOnName,
-}: Props) => {
+const ViewAccount = ({ post }: Props) => {
   const stats = [
     { key: "posts", number: post.user.posts.length },
     { key: "followers", number: post.user.followers },
@@ -52,18 +42,14 @@ const ViewAccount = ({
     dispatch(toggleModal());
   };
 
+  console.log(user, "user101");
+
   const onProfileClick = () => {
     navigate(`/profile/${user.id}`);
   };
 
-  console.log(post, "POST");
-
   return (
-    <Container
-      onMouseEnter={() => hovered("toolTip")}
-      onMouseLeave={() => unhovered("toolTip")}
-      show={hoveredOnName || hoveredOnToolTip}
-    >
+    <Container style={{ display: "block", position: "static" }}>
       <Header>
         <Left>
           <Avatar

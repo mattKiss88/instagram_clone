@@ -1,6 +1,6 @@
 import styled from "styled-components";
 interface props {
-  show: boolean;
+  show?: boolean;
 }
 
 export const Container = styled.div<props>`

@@ -42,7 +42,6 @@ const FeedCard = ({
     setLiked(true);
     if (post.post.likes) return null;
     dispatch(updatePostLikes(postId) as any);
-
     handleLike();
   };
 

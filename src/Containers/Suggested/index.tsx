@@ -11,7 +11,6 @@ import {
   Avatar,
 } from "./styles";
 import { useAppSelector } from "../../Redux/hooks";
-import defaultImg from "../../Assets/defaultPP.png";
 import { shallowEqual } from "react-redux";
 import User from "./user";
 const Suggested = () => {
@@ -21,16 +20,12 @@ const Suggested = () => {
     shallowEqual
   );
 
+  console.log(user, "user101");
+
   return (
     <SuggestedWrapper>
       <UserWrapper>
-        <Avatar
-          src={
-            user?.avatar
-              ? `http://localhost:3001/post/image/${user?.avatar}`
-              : defaultImg
-          }
-        />
+        <Avatar src={`${process.env.REACT_APP_S3_URL + user?.profilePic}`} />
         <UsernameContainer>
           <Username>{user?.username}</Username>
           <Name>{user?.fullName}</Name>

@@ -14,13 +14,20 @@ to {
     stroke: red;
 }
 `;
-export const CommentContainer = styled.div`
+
+interface props {
+  type: string | undefined;
+}
+export const CommentContainer = styled.div<props>`
   margin-bottom: 16px;
-  display: flex;
-  justify-content: space-between;
+  // display: flex;
+  // justify-content: space-between;
+  ${(props) => props.type === "sub" && "margin-left: 50px"};
 
   > div {
     display: flex;
+    width: 100%;
+    ${(props) => props.type === "sub" && "width: calc(100% - 50px);"}
 
     > img {
       box-sizing: initial;
@@ -42,6 +49,7 @@ export const CommentContainer = styled.div`
 `;
 
 export const Container = styled.div`
+  width: 100%;
   p {
     display: inline;
   }
@@ -78,4 +86,13 @@ export const Reply = styled.p`
   font-size: 12px;
   color: #8e8e8e;
   cursor: pointer;
+`;
+
+export const ViewSubcomments = styled.p`
+  font-weight: 600;
+  font-size: 12px;
+  color: #8e8e8e;
+  cursor: pointer;
+  margin: 12px 0;
+  display: block !important;
 `;

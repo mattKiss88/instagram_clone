@@ -17,7 +17,7 @@ const Feed = () => {
   const { width }: any = useWindowSize();
   const id = useAppSelector((state) => state.userAccount.id);
   const state = useAppSelector((state) => state);
-  console.log(state);
+  console.log(state, "state");
   useEffect(() => {
     dispatch(fetchFeedByUserId(id) as any);
     dispatch(fetchRecommendedUsers() as any);

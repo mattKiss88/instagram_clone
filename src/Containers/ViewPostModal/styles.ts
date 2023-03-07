@@ -102,4 +102,8 @@ export const CaptionContainer = styled.div`
   p {
     margin: 0px 4px 0px;
   }
+
+  img {
+    margin-right: 4px;
+  }
 `;

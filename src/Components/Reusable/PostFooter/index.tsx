@@ -19,6 +19,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
 import {
   addModalData,
+  fetchCommentsByPostId,
   toggleModal,
   updateModalLikes,
 } from "../../../Redux/modalSlice";
@@ -31,6 +32,7 @@ interface props {
   content?: string;
   showCaption?: boolean;
   postData?: any;
+  location?: string;
 }
 
 const PostFooter = ({
@@ -39,6 +41,7 @@ const PostFooter = ({
   content,
   showCaption,
   postData,
+  location,
 }: props) => {
   const dispatch = useAppDispatch();
 
@@ -49,8 +52,6 @@ const PostFooter = ({
   );
   const { username, id } = useAppSelector((state) => state.userAccount);
   const feed = useAppSelector((state) => state.feed.posts);
-  const modalIsOpen = useAppSelector((state) => state.modal.isOpen);
-  const modal = useAppSelector((state) => state.modal);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -64,6 +65,8 @@ const PostFooter = ({
     let newComment = await postComment(postData?.post?.id, comment);
     setSubmittedComments([...submittedComments, newComment]);
     setComment("");
+    location === "modal" &&
+      dispatch(fetchCommentsByPostId(postData?.post?.id) as any);
   };
 
   const openModal = () => {
@@ -105,6 +108,7 @@ const PostFooter = ({
         </Caption>
       )}
       {submittedComments.length > 0 &&
+        location !== "modal" &&
         submittedComments.map((comment: string) => {
           return (
             <Caption>
