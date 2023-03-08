@@ -27,6 +27,7 @@ import { getPosts } from "../../Redux/userPostsSlice";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Tabs from "./tabs";
+import EmojiSelector from "../Reusable/EmojiSelector";
 
 interface Props {
   ownAccount: boolean;

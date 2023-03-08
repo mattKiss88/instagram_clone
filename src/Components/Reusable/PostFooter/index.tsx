@@ -28,6 +28,7 @@ import ReadMore from "../ReadMore";
 import { updateLikes, updatePostLikes } from "../../../Redux/feedSlice";
 import { likePost, postComment } from "../../../Api";
 import { IReplyData } from "../../../Containers/ViewPostModal";
+import EmojiSelector from "../EmojiSelector";
 interface props {
   likes: any;
   fullName: string;
@@ -56,6 +57,7 @@ const PostFooter = ({
     null
   );
   const [submittedComments, setSubmittedComments] = useState<string[]>([]);
+  const [showEmojiSelector, setShowEmojiSelector] = useState<boolean>(false);
   const { username, id } = useAppSelector((state) => state.userAccount);
   const feed = useAppSelector((state) => state.feed.posts);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -117,6 +119,12 @@ const PostFooter = ({
     }
   }, [replyData]);
 
+  const handleEmojiSelector = () => {
+    setShowEmojiSelector((prev) => !prev);
+  };
+
+  console.log(document.getElementById("preview"));
+
   return (
     <CardFooter>
       <IconContainer>
@@ -160,8 +168,12 @@ const PostFooter = ({
           </ReplyPopUp>
         )}
 
-        <div>
-          <EmojiHappyIcon style={{ width: "24px", cursor: "pointer" }} />
+        <div style={{ position: "relative" }}>
+          <EmojiHappyIcon
+            style={{ width: "24px", cursor: "pointer" }}
+            onClick={handleEmojiSelector}
+          />
+          {showEmojiSelector && <EmojiSelector />}
           <Input
             rows={1}
             placeholder="Add a comment..."

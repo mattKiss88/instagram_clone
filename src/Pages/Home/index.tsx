@@ -1,6 +1,7 @@
 import { useEffect, useState, Suspense, lazy } from "react";
 import { useAppDispatch } from "../../Redux/hooks";
 import Loader from "../../Components/loader";
+import EmojiSelector from "../../Components/Reusable/EmojiSelector";
 const Home = () => {
   const dispatch = useAppDispatch();
 
