@@ -74,9 +74,9 @@ export const feedSlice = createSlice({
             post: {
               ...data.post,
               likes: !data.post.likes,
-              totalLikes: !data.post.likes
-                ? data.post.totalLikes + 1
-                : data.post.totalLikes - 1,
+              likeCount: !data.post.likes
+                ? data.post.likeCount + 1
+                : data.post.likeCount - 1,
             },
           };
         }

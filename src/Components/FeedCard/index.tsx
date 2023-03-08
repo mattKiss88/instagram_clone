@@ -62,7 +62,12 @@ const FeedCard = ({
 
   return (
     <FeedWrapper>
-      <PostHeader avatar={avatar} fullName={fullName} postId={postId} />
+      <PostHeader
+        avatar={avatar}
+        fullName={fullName}
+        postId={postId}
+        userId={post?.user?.id}
+      />
       <ImageContainer onDoubleClick={onDoubleClick}>
         <HeartIcon className={liked && "liked"} />
         <Image src={image} />

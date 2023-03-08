@@ -38,12 +38,12 @@ const ViewAccount = ({
   hoveredOnName,
 }: Props) => {
   const stats = [
-    { key: "posts", number: post.user.posts.length },
-    { key: "followers", number: post.user.followers },
-    { key: "following", number: post.user.following },
+    { key: "posts", number: post?.user?.posts?.length },
+    { key: "followers", number: post?.user?.followers },
+    { key: "following", number: post?.user?.following },
   ];
 
-  const { user } = post;
+  const user = post?.user;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -67,14 +67,14 @@ const ViewAccount = ({
       <Header>
         <Left>
           <Avatar
-            src={`${process.env.REACT_APP_S3_URL + user.avatar}`}
+            src={`${process.env.REACT_APP_S3_URL + user?.avatar}`}
             onClick={onProfileClick}
           />
         </Left>
         <Right>
-          <Username onClick={onProfileClick}>{user.username}</Username>
-          <Name>{user.fullName}</Name>
-          <Bio>{user.bio}</Bio>
+          <Username onClick={onProfileClick}>{user?.username}</Username>
+          <Name>{user?.fullName}</Name>
+          <Bio>{user?.bio}</Bio>
         </Right>
       </Header>
       <StatsContainer>
@@ -86,11 +86,11 @@ const ViewAccount = ({
         ))}
       </StatsContainer>
       <Posts>
-        {post.user.posts.slice(0, 3).map((post: any) => (
+        {post?.user?.posts.slice(0, 3).map((post: any) => (
           <PostWrapper onClick={() => openModal({ ...post, user })}>
             <Image
               src={`${
-                process.env.REACT_APP_S3_URL + post.images[0].mediaFileId
+                process.env.REACT_APP_S3_URL + post?.images?.[0]?.mediaFileId
               }`}
             />
           </PostWrapper>

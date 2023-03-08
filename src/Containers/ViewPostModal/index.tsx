@@ -86,6 +86,8 @@ const ViewPostModal = () => {
     );
   }, []);
 
+  console.log(modalData);
+
   return (
     <Container>
       <XIcon className="x" />
@@ -97,10 +99,17 @@ const ViewPostModal = () => {
           />
         </ImageContainer>
         <SideBar>
-          <PostHeader avatar={img} fullName={user.username} postId={post?.id} />
+          <PostHeader
+            avatar={`${process.env.REACT_APP_S3_URL + user.avatar}`}
+            fullName={user.username}
+            postId={post?.id}
+            userId={user.id}
+          />
           <CommentsWrapper>
             <CaptionContainer>
-              <ProfilePic src={img} />
+              <ProfilePic
+                src={`${process.env.REACT_APP_S3_URL + user.avatar}`}
+              />
               <Caption>
                 <span className="username">{user.username} </span>{" "}
                 {post?.caption}
@@ -121,7 +130,7 @@ const ViewPostModal = () => {
             )}
           </CommentsWrapper>
           <PostFooter
-            likes={post?.totalLikes}
+            likes={post?.likeCount}
             fullName={user?.fullName}
             postData={{ user, post, images }}
             location="modal"

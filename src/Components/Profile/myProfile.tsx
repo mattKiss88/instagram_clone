@@ -1,8 +1,5 @@
-import { ViewGridIcon } from "@heroicons/react/outline";
 import { CogIcon } from "@heroicons/react/outline";
-import { BookmarkIcon } from "@heroicons/react/outline";
-import { UserCircleIcon } from "@heroicons/react/outline";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Navbar from "../Navbar";
 import Post from "../Post";
 import {
@@ -29,6 +26,7 @@ import { isOpen, addModalData } from "../../Redux/modalSlice";
 import { getPosts } from "../../Redux/userPostsSlice";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Tabs from "./tabs";
 
 interface Props {
   ownAccount: boolean;
@@ -38,23 +36,10 @@ interface Props {
 const Profile = ({ ownAccount, userId }: Props) => {
   const [active, setActive] = useState("posts");
   const posts = useAppSelector((state) => state.userPosts.posts);
-  const isModalOpen = useAppSelector(isOpen);
   const user = useAppSelector((state) => state.userAccount);
   const { id } = useParams<{ id: string }>();
 
   const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:3001/post/${id || user.id}`)
-  //     .then((res) => {
-  //       console.log(res);
-  //       dispatch(getPosts(res.data.posts));
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
 
   return (
     <>
@@ -82,32 +67,7 @@ const Profile = ({ ownAccount, userId }: Props) => {
             <FullName>{user.fullName}</FullName>
           </ProfileDetails>
         </Container>
-        <ButtonContainer>
-          <PostBtn
-            active={active === "posts"}
-            onClick={() => setActive("posts")}
-          >
-            <ViewGridIcon />
-            <span>POSTS</span>
-          </PostBtn>
-          {ownAccount && (
-            <SavedBtn
-              active={active === "saved"}
-              onClick={() => setActive("saved")}
-            >
-              <BookmarkIcon />
-              <span>SAVED</span>
-            </SavedBtn>
-          )}
-
-          <TaggedBtn
-            active={active === "tagged"}
-            onClick={() => setActive("tagged")}
-          >
-            <UserCircleIcon />
-            <span>TAGGED</span>
-          </TaggedBtn>
-        </ButtonContainer>
+        <Tabs ownAccount={ownAccount} active={active} setActive={setActive} />
         <BottomContainer>
           {posts.map((post, x) => {
             return <Post post={{ ...post, user: { ...user, posts } }} />;

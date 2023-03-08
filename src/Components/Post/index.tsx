@@ -1,8 +1,9 @@
+import { HeartIcon } from "@heroicons/react/outline";
 import { ChatIcon } from "@heroicons/react/outline";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { addModalData, toggleModal } from "../../Redux/modalSlice";
-import { CommentContainer, Img, Wrapper } from "./styles";
+import { CommentContainer, DataCtn, Img, Wrapper } from "./styles";
 interface props {
   post: any;
 }
@@ -22,11 +23,19 @@ const Post = ({ post }: props) => {
       onMouseLeave={() => setHovered(false)}
       onClick={openModal}
     >
-      <Img src={process.env.REACT_APP_S3_URL + post.images[0].mediaFileId} />
+      <Img
+        src={process.env.REACT_APP_S3_URL + post?.images?.[0]?.mediaFileId}
+      />
       {hovered && (
         <CommentContainer>
-          <ChatIcon />
-          <p>0</p>
+          <DataCtn>
+            <HeartIcon />
+            <p>{post.post.likeCount}</p>
+          </DataCtn>
+          <DataCtn>
+            <ChatIcon />
+            <p>{post.post.commentCount}</p>
+          </DataCtn>
         </CommentContainer>
       )}
     </Wrapper>

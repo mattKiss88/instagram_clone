@@ -74,9 +74,9 @@ export const modalSlice = createSlice({
         post: {
           ...state.post,
           likes: !state.post.likes,
-          totalLikes: !state.post.likes
-            ? state.post.totalLikes + 1
-            : state.post.totalLikes - 1,
+          likeCount: !state.post.likes
+            ? state.post.likeCount + 1
+            : state.post.likeCount - 1,
         },
       };
     },
@@ -86,7 +86,7 @@ export const modalSlice = createSlice({
           return {
             ...c,
             liked: !c.liked,
-            totalLikes: !c.liked ? c.totalLikes + 1 : c.totalLikes - 1,
+            likeCount: !c.liked ? c.likeCount + 1 : c.likeCount - 1,
           };
         }
 
@@ -104,7 +104,7 @@ export const modalSlice = createSlice({
             return {
               ...sub,
               liked: !sub.liked,
-              totalLikes: !sub.liked ? sub.totalLikes + 1 : sub.totalLikes - 1,
+              likeCount: !sub.liked ? sub.likeCount + 1 : sub.likeCount - 1,
             };
           }
 

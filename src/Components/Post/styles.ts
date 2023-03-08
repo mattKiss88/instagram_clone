@@ -34,16 +34,21 @@ export const CommentContainer = styled.div`
   transform: translate(-50%, -50%);
   z-index: 1;
   display: flex;
+`;
 
+export const DataCtn = styled.div`
+  display: flex;
+  padding: 0 15px;
   svg {
     fill: White;
     stroke: White;
-    width: 20px;
+    width: 24px;
   }
 
   p {
     margin-left: 10px;
     color: white;
     font-weight: 600;
+    font-size: 16px;
   }
 `;

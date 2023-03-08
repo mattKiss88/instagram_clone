@@ -37,7 +37,7 @@ const Comment: React.FC<CommentProps> = ({
   type,
   setReply,
 }) => {
-  const { createdAt, totalLikes } = comment;
+  const { createdAt, likeCount } = comment;
   const { fullName, avatar, username } = comment.user;
   const [liked, setLiked] = useState(false);
   const dispatch = useAppDispatch();
@@ -72,6 +72,7 @@ const Comment: React.FC<CommentProps> = ({
       username: username,
     });
   };
+
   return (
     <CommentContainer type={type}>
       <div>
@@ -92,7 +93,7 @@ const Comment: React.FC<CommentProps> = ({
           <CommentText>{comment?.comment}</CommentText>
           <ActionsContainer>
             <TimeStamp>{dayjs(createdAt).fromNow()}</TimeStamp>
-            <Likes>{totalLikes + " likes"}</Likes>
+            <Likes>{likeCount + " likes"}</Likes>
             <Reply onClick={handleReplyEvent}>Reply</Reply>
           </ActionsContainer>
         </Container>

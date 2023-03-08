@@ -1,13 +1,13 @@
 import React, { Suspense, lazy } from "react";
 import Loader from "../../Components/loader";
-const Profile = lazy(() => import("../../Components/Profile/myProfile"));
+const Profile = lazy(() => import("../../Components/Profile/profile"));
 
-const MyProfile = () => {
+const UserProfile = () => {
   return (
     <Suspense fallback={<Loader />}>
-      <Profile ownAccount={true} />
+      <Profile ownAccount={false} />
     </Suspense>
   );
 };
 
-export default MyProfile;
+export default UserProfile;

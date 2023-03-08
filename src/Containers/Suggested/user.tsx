@@ -10,6 +10,8 @@ import {
 import defaultImg from "../../Assets/defaultPP.png";
 import { useAppDispatch } from "../../Redux/hooks";
 import { followRecommendedUsers } from "../../Redux/feedSlice";
+import { usePopperTooltip } from "react-popper-tooltip";
+import ViewAccount from "../../Components/ToolTips/ViewAccount/indexCopy";
 
 interface IProps {
   user: any;
@@ -31,6 +33,14 @@ const User = ({ user }: IProps) => {
     dispatch(followRecommendedUsers(user.id) as any);
   };
 
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    usePopperTooltip({
+      placement: "right",
+      delayHide: 100,
+      delayShow: 100,
+      interactive: true,
+    });
+
   return (
     <SuggestedContainer>
       <ProfilePic
@@ -39,10 +49,20 @@ const User = ({ user }: IProps) => {
             ? process.env.REACT_APP_S3_URL + user?.avatar
             : defaultImg
         }`}
+        ref={setTriggerRef}
       />
       <UsernameContainer>
-        <Username>{user.fullName}</Username>
-        <Name>Popular</Name>
+        <Username>{user.username}</Username>
+        {visible && (
+          <div
+            ref={setTooltipRef}
+            {...getTooltipProps({ className: "tooltip-container" })}
+          >
+            <ViewAccount post={{ user }} />
+          </div>
+        )}
+
+        <Name>{user.fullName}</Name>
       </UsernameContainer>
       <Button onClick={onClickHandler}>{buttonName}</Button>
     </SuggestedContainer>

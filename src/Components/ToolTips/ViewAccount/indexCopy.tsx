@@ -28,9 +28,9 @@ interface Props {
 
 const ViewAccount = ({ post }: Props) => {
   const stats = [
-    { key: "posts", number: post.user.posts.length },
-    { key: "followers", number: post.user.followers },
-    { key: "following", number: post.user.following },
+    { key: "posts", number: post?.user?.posts?.length },
+    { key: "followers", number: post?.user?.followers },
+    { key: "following", number: post?.user?.following },
   ];
 
   const { user } = post;
@@ -53,21 +53,21 @@ const ViewAccount = ({ post }: Props) => {
       <Header>
         <Left>
           <Avatar
-            src={`${process.env.REACT_APP_S3_URL + user.avatar}`}
+            src={`${process.env.REACT_APP_S3_URL + user?.avatar}`}
             onClick={onProfileClick}
           />
         </Left>
         <Right>
-          <Username onClick={onProfileClick}>{user.username}</Username>
-          <Name>{user.fullName}</Name>
-          <Bio>{user.bio}</Bio>
+          <Username onClick={onProfileClick}>{user?.username}</Username>
+          <Name>{user?.fullName}</Name>
+          <Bio>{user?.bio}</Bio>
         </Right>
       </Header>
       <StatsContainer>
         {stats.map((stat: any) => (
           <Stats>
             <Number>{stat?.number}</Number>
-            <Stat>{stat.key}</Stat>
+            <Stat>{stat?.key}</Stat>
           </Stats>
         ))}
       </StatsContainer>
@@ -76,7 +76,7 @@ const ViewAccount = ({ post }: Props) => {
           <PostWrapper onClick={() => openModal({ ...post, user })}>
             <Image
               src={`${
-                process.env.REACT_APP_S3_URL + post.images[0].mediaFileId
+                process.env.REACT_APP_S3_URL + post?.images?.[0]?.mediaFileId
               }`}
             />
           </PostWrapper>

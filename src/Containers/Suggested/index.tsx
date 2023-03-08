@@ -13,6 +13,7 @@ import {
 import { useAppSelector } from "../../Redux/hooks";
 import { shallowEqual } from "react-redux";
 import User from "./user";
+import { usePopperTooltip } from "react-popper-tooltip";
 const Suggested = () => {
   const user = useAppSelector((state) => state.userAccount, shallowEqual);
   const recommendedUsers = useAppSelector(
@@ -20,7 +21,7 @@ const Suggested = () => {
     shallowEqual
   );
 
-  console.log(user, "user101");
+  console.log(recommendedUsers, "user101");
 
   return (
     <SuggestedWrapper>

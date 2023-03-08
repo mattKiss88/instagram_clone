@@ -85,6 +85,7 @@ const btnStyle = styled.div<IButtonProps>`
   cursor: pointer;
   border-top: 1px solid transparent;
   opacity: 0.5;
+  padding: 21px 30px 0px;
   svg {
     width: 15px;
   }
@@ -99,7 +100,11 @@ const btnStyle = styled.div<IButtonProps>`
   ${(props) =>
     props.active &&
     `border-top: 1px solid black;
-  opacity: 1;`}
+  opacity: 1;
+
+ 
+  
+  `}
 `;
 
 interface IButtonProps {
@@ -107,9 +112,7 @@ interface IButtonProps {
 }
 
 export const PostBtn = styled(btnStyle)<IButtonProps>``;
-export const SavedBtn = styled(btnStyle)<IButtonProps>`
-  margin: 0 60px;
-`;
+export const SavedBtn = styled(btnStyle)<IButtonProps>``;
 export const TaggedBtn = styled(btnStyle)<IButtonProps>``;
 
 export const BottomContainer = styled.div`
@@ -122,6 +125,9 @@ export const BottomContainer = styled.div`
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
+
+  button {
+  }
 `;
 
 export const PostsContainer = styled.div``;
