@@ -1,5 +1,5 @@
 import * as React from "react";
-import { isOpen } from "../Redux/modalSlice";
+import { isOpen } from "../Redux/postModalSlice";
 import { useAppSelector } from "../Redux/hooks";
 
 export const useIsClickOutside = (initialState: boolean) => {

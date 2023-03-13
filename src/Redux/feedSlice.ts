@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import modalSlice, { updateModalLikes } from "./modalSlice";
+import modalSlice, { updateModalLikes } from "./postModalSlice";
 
 interface InitialState {
   posts: any[];

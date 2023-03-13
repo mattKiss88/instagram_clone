@@ -2,7 +2,7 @@ import { HeartIcon } from "@heroicons/react/outline";
 import { ChatIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
-import { addModalData, toggleModal } from "../../Redux/modalSlice";
+import { addModalData, toggleModal } from "../../Redux/postModalSlice";
 import { CommentContainer, DataCtn, Img, Wrapper } from "./styles";
 interface props {
   post: any;

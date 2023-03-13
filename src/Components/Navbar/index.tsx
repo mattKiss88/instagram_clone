@@ -13,26 +13,22 @@ import {
 import logo from "../../Assets/instagram-text-icon.png";
 import { SearchIcon } from "@heroicons/react/outline";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../Redux/hooks";
+import { toggleModal } from "../../Redux/createPostModalSlice";
 
 const Navbar = () => {
   const [search, setSearch] = useState(false);
   const ref: any = useRef(null);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const onClickOutside = () => {
-    setSearch(false);
+  const handleLinkClick = (name: string, pathName: string) => {
+    if (name === "Create") {
+      return dispatch(toggleModal());
+    }
+
+    navigate(pathName);
   };
-  useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (ref.current && !ref?.current?.contains(event.target)) {
-        onClickOutside();
-      }
-    };
-    document.addEventListener("click", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  }, []);
   return (
     <Section>
       <Wrapper>
@@ -47,7 +43,7 @@ const Navbar = () => {
           {navData.map((item) => (
             <IconContainer
               key={item.name}
-              onClick={() => navigate(item.pathName)}
+              onClick={() => handleLinkClick(item.name, item.pathName)}
             >
               <>{item.icon}</>
             </IconContainer>

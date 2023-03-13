@@ -14,7 +14,7 @@ import {
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useAppDispatch } from "../../Redux/hooks";
-import { likeComment } from "../../Redux/modalSlice";
+import { likeComment } from "../../Redux/postModalSlice";
 import { usePopperTooltip } from "react-popper-tooltip";
 import ViewAccount from "../ToolTips/ViewAccount/indexCopy";
 import { IReplyData } from "../../Containers/ViewPostModal";

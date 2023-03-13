@@ -22,7 +22,7 @@ import {
   isOpen,
   resetModal,
   toggleModal,
-} from "../../Redux/modalSlice";
+} from "../../Redux/postModalSlice";
 import { useEscape } from "../../Hooks/useEscape";
 import { updateLikes, updatePostLikes } from "../../Redux/feedSlice";
 import { likePost } from "../../Api";
@@ -45,7 +45,7 @@ const ViewPostModal = () => {
   const { id } = useAppSelector((state) => state.userAccount);
 
   const isModalOpen = useAppSelector(isOpen);
-  const modalData = useAppSelector((state) => state.modal);
+  const modalData = useAppSelector((state) => state.postModal);
 
   const { comments, user, post, images } = modalData;
   const [liked, setLiked] = useState<boolean>(false);

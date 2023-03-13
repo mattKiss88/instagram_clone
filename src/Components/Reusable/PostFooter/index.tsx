@@ -23,7 +23,7 @@ import {
   fetchCommentsByPostId,
   toggleModal,
   updateModalLikes,
-} from "../../../Redux/modalSlice";
+} from "../../../Redux/postModalSlice";
 import ReadMore from "../ReadMore";
 import { updateLikes, updatePostLikes } from "../../../Redux/feedSlice";
 import { likePost, postComment } from "../../../Api";

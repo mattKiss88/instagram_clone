@@ -7,7 +7,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./Redux/hooks";
-import { isOpen } from "./Redux/modalSlice";
+import { isOpen } from "./Redux/postModalSlice";
 import { Suspense, useEffect, useState, lazy } from "react";
 import axios from "axios";
 import MyProfile from "./Pages/Profile";
@@ -15,26 +15,23 @@ import Loader from "./Components/loader";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import UserProfile from "./Pages/UserProfile";
+import { isModalOpen } from "./Redux/createPostModalSlice";
+import CreatePostModal from "./Containers/CreatePostModal";
 
 function App() {
-  const isModalOpen = useAppSelector(isOpen);
-  const [isMount, setIsMount] = useState(false);
+  const isPostModalOpen = useAppSelector(isOpen);
+  const isCreatePostModalOpen = useAppSelector(isModalOpen);
   const dispatch = useAppDispatch();
   const ViewPostModal = lazy(() => import("./Containers/ViewPostModal"));
   const token = useAppSelector((state) => state.userAccount.token);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!token) {
       navigate("/login");
     }
   }, []);
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-  useEffect(() => {
-    setIsMount(true);
-
-    return () => setIsMount(false);
-  }, []);
 
   return (
     <div>
@@ -48,7 +45,8 @@ function App() {
       </Routes>
       {/* </Router> */}
       <Suspense fallback={<Loader />}>
-        {isModalOpen && <ViewPostModal />}
+        {isPostModalOpen && <ViewPostModal />}
+        {isCreatePostModalOpen && <CreatePostModal />}
       </Suspense>
     </div>
   );

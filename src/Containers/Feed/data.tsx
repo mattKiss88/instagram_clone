@@ -1,6 +1,6 @@
 import { randEmail, randFullName } from "@ngneat/falso";
 import one from "../../Assets/1.jpg";
-import two from "../../Assets/2.jpg";
+import two from "../../Assets/1.jpg";
 import three from "../../Assets/3.jpg";
 import four from "../../Assets/4.jpg";
 import five from "../../Assets/5.jpg";

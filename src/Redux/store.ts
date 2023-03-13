@@ -1,19 +1,19 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./counter";
+import createPost from "./createPostModalSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import thunk from "redux-thunk";
-import modalReducer from "./modalSlice";
+import modalReducer from "./postModalSlice";
 import userPostReducer from "./userPostsSlice";
 import userAccountReducer from "./userAccountSlice";
 import feedReducer from "./feedSlice";
 
 const reducer = combineReducers({
-  counter: counterReducer,
-  modal: modalReducer,
+  postModal: modalReducer,
   userPosts: userPostReducer,
   userAccount: userAccountReducer,
   feed: feedReducer,
+  createPost,
 });
 const persistConfig = {
   key: "root",

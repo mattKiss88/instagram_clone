@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addModalData, toggleModal } from "../../../Redux/modalSlice";
+import { addModalData, toggleModal } from "../../../Redux/postModalSlice";
 import {
   Avatar,
   Bio,

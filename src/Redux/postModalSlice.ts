@@ -160,6 +160,6 @@ export const modalSlice = createSlice({
 export const { toggleModal, addModalData, updateModalLikes, resetModal } =
   modalSlice.actions;
 
-export const isOpen = (state: RootState) => state.modal.isOpen;
+export const isOpen = (state: RootState) => state.postModal.isOpen;
 
 export default modalSlice.reducer;

@@ -25,7 +25,7 @@ import {
   Username,
 } from "./styles";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
-import { isOpen, addModalData } from "../../Redux/modalSlice";
+import { isOpen, addModalData } from "../../Redux/postModalSlice";
 import { getPosts } from "../../Redux/userPostsSlice";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -41,7 +41,6 @@ const Profile = ({ ownAccount }: Props) => {
   const [active, setActive] = useState("posts");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   //   const posts = useAppSelector((state) => state.userPosts.posts);
-  const isModalOpen = useAppSelector(isOpen);
   const { id } = useParams<{ id: string }>();
   const [user, setUser] = useState({
     avatar: "",
@@ -63,7 +62,6 @@ const Profile = ({ ownAccount }: Props) => {
         console.log(res);
         setUser(res.data.user);
         setIsLoading(false);
-        // dispatch(getPosts(res.data.posts));
       })
       .catch((err) => {
         console.log(err);

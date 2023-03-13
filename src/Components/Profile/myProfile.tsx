@@ -22,12 +22,8 @@ import {
   Username,
 } from "./styles";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
-import { isOpen, addModalData } from "../../Redux/modalSlice";
-import { getPosts } from "../../Redux/userPostsSlice";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import Tabs from "./tabs";
-import EmojiSelector from "../Reusable/EmojiSelector";
 
 interface Props {
   ownAccount: boolean;
@@ -38,9 +34,6 @@ const Profile = ({ ownAccount, userId }: Props) => {
   const [active, setActive] = useState("posts");
   const posts = useAppSelector((state) => state.userPosts.posts);
   const user = useAppSelector((state) => state.userAccount);
-  const { id } = useParams<{ id: string }>();
-
-  const dispatch = useAppDispatch();
 
   return (
     <>

@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
 import ViewAccount from "../../ToolTips/ViewAccount";
 import { CardHeader, LeftContainer, ProfilePic, AccountName } from "./styles";
 import { useNavigate } from "react-router-dom";
-import { toggleModal } from "../../../Redux/modalSlice";
+import { toggleModal } from "../../../Redux/postModalSlice";
 
 interface props {
   avatar: string;
@@ -22,7 +22,7 @@ const PostHeader = ({ avatar, fullName, postId, userId }: props) => {
   const feedState = useAppSelector(feed, shallowEqual);
   const post = feedState.find((item: any) => item.post.id === postId);
 
-  const modalIsOpen = useAppSelector((state) => state.modal.isOpen);
+  const modalIsOpen = useAppSelector((state) => state.postModal.isOpen);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
