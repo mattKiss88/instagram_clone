@@ -13,8 +13,9 @@ import {
 import { useAppSelector } from "../../Redux/hooks";
 import { shallowEqual } from "react-redux";
 import User from "./user";
-import { usePopperTooltip } from "react-popper-tooltip";
-const Suggested = () => {
+import { useNavigate } from "react-router-dom";
+const Suggested: React.FC = () => {
+  const navigate = useNavigate();
   const user = useAppSelector((state) => state.userAccount, shallowEqual);
   const recommendedUsers = useAppSelector(
     (state) => state.feed.recommendedUsers,
@@ -23,11 +24,18 @@ const Suggested = () => {
 
   console.log(recommendedUsers, "user101");
 
+  const goToAccount = () => {
+    navigate("/profile");
+  };
+
   return (
     <SuggestedWrapper>
       <UserWrapper>
-        <Avatar src={`${process.env.REACT_APP_S3_URL + user?.profilePic}`} />
-        <UsernameContainer>
+        <Avatar
+          src={`${process.env.REACT_APP_S3_URL + user?.profilePic}`}
+          onClick={goToAccount}
+        />
+        <UsernameContainer onClick={goToAccount}>
           <Username>{user?.username}</Username>
           <Name>{user?.fullName}</Name>
         </UsernameContainer>

@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { FeedWrapper, Image, ImageContainer } from "./styles";
+import React, { useEffect, useState } from "react";
+import { FeedWrapper, Image as Img, ImageContainer } from "./styles";
 import PostHeader from "../Reusable/PostHeader";
 import PostFooter from "../Reusable/PostFooter";
 import { HeartIcon } from "@heroicons/react/outline";
@@ -7,6 +7,8 @@ import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { feed as feedState, updatePostLikes } from "../../Redux/feedSlice";
 import { shallowEqual } from "react-redux";
 import { likePost } from "../../Api";
+import { Facebook } from "react-content-loader";
+
 interface props {
   fullName: string;
   likes: number;
@@ -25,8 +27,9 @@ const FeedCard: React.FC<props> = ({
   postId,
   filter,
 }) => {
-  const [liked, setLiked] = React.useState<boolean>(false);
-  const [post, setPost] = React.useState<any>();
+  const [liked, setLiked] = useState<boolean>(false);
+  const [post, setPost] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(true);
   let feed = useAppSelector(feedState, shallowEqual);
   const dispatch = useAppDispatch();
   const { id } = useAppSelector((state) => state.userAccount);
@@ -55,6 +58,24 @@ const FeedCard: React.FC<props> = ({
     setPost(feed.find((item: any) => item.post.id === postId));
   }, [feed]);
 
+  const MyFacebookLoader = () => <Facebook />;
+
+  const onLoad = () => {
+    console.log("loaded");
+    setLoading(false);
+  };
+
+  let loadImg = () => {
+    let img = new Image();
+    img.src = image;
+    img.onload = onLoad;
+  };
+
+  if (loading) {
+    loadImg();
+    return <MyFacebookLoader />;
+  }
+
   return (
     <FeedWrapper>
       <PostHeader
@@ -65,7 +86,7 @@ const FeedCard: React.FC<props> = ({
       />
       <ImageContainer onDoubleClick={onDoubleClick}>
         <HeartIcon className={liked && "liked"} />
-        <Image src={image} className={`filter-${filter}`} />
+        <Img src={image} className={`filter-${filter}`} />
       </ImageContainer>
       <PostFooter
         likes={likes}

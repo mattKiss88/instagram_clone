@@ -77,6 +77,8 @@ export const signUpUser = createAsyncThunk(
       }
     );
 
+    console.log(response.data, "sign up response");
+
     return response.data;
   }
 );
@@ -100,7 +102,7 @@ export const userAccountSlice = createSlice({
     builder.addCase(signUpUser.fulfilled, (state, action) => {
       return {
         ...state,
-        token: action.payload.accessToken,
+        token: action.payload.token,
         ...action.payload.user,
       };
     });
