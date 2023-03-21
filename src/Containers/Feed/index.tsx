@@ -27,16 +27,17 @@ const Feed = () => {
     <Section>
       <LeftContainer>
         <Stories />
-        {feed.map((item: any) => (
+        {feed?.map((item: any) => (
           <FeedCard
             fullName={item.user.username}
             likes={item.post.likeCount}
             avatar={`${process.env.REACT_APP_S3_URL + item.user.avatar}`}
             content={item.post.caption}
             image={`${
-              process.env.REACT_APP_S3_URL + item.images[0].mediaFileId
+              process.env.REACT_APP_S3_URL + item?.images?.[0]?.mediaFileId
             }`}
             postId={item.post?.id}
+            filter={item?.images?.[0]?.filter}
           />
         ))}
       </LeftContainer>

@@ -1,10 +1,7 @@
-import { useEffect, useState, Suspense, lazy } from "react";
-import { useAppDispatch } from "../../Redux/hooks";
+import { Suspense, lazy } from "react";
 import Loader from "../../Components/loader";
-import EmojiSelector from "../../Components/Reusable/EmojiSelector";
-const Home = () => {
-  const dispatch = useAppDispatch();
 
+const Home = () => {
   const Navbar = lazy(() => import("../../Components/Navbar"));
   const Feed = lazy(() => import("../../Containers/Feed"));
 

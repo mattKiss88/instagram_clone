@@ -38,7 +38,7 @@ const Comment: React.FC<CommentProps> = ({
   setReply,
 }) => {
   const { createdAt, likeCount } = comment;
-  const { fullName, avatar, username } = comment.user;
+  const { avatar, username } = comment.user;
   const [liked, setLiked] = useState(false);
   const dispatch = useAppDispatch();
   const [showReplies, setShowReplies] = useState<boolean>(false);
@@ -54,8 +54,6 @@ const Comment: React.FC<CommentProps> = ({
     setLiked(!liked);
     dispatch(likeComment({ commentId: comment.id, commentType: type }) as any);
   };
-
-  if (comment.id === 11) console.log(comment, "ccc");
 
   useEffect(() => {
     setLiked(comment.liked || false);

@@ -1,16 +1,11 @@
-import React, { createRef, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { FeedWrapper, Image, ImageContainer } from "./styles";
 import PostHeader from "../Reusable/PostHeader";
 import PostFooter from "../Reusable/PostFooter";
 import { HeartIcon } from "@heroicons/react/outline";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
-import {
-  feed as feedState,
-  updateLikes,
-  updatePostLikes,
-} from "../../Redux/feedSlice";
+import { feed as feedState, updatePostLikes } from "../../Redux/feedSlice";
 import { shallowEqual } from "react-redux";
-import axios from "axios";
 import { likePost } from "../../Api";
 interface props {
   fullName: string;
@@ -19,30 +14,33 @@ interface props {
   content: string;
   image: string;
   postId: number;
+  filter?: string;
 }
-const FeedCard = ({
+const FeedCard: React.FC<props> = ({
   fullName,
   likes,
   avatar,
   content,
   image,
   postId,
-}: props) => {
+  filter,
+}) => {
   const [liked, setLiked] = React.useState<boolean>(false);
   const [post, setPost] = React.useState<any>();
   let feed = useAppSelector(feedState, shallowEqual);
   const dispatch = useAppDispatch();
   const { id } = useAppSelector((state) => state.userAccount);
-  const inputRef = createRef();
-  useEffect(() => {
-    setPost(feed.find((item: any) => item.post.id === postId));
-  }, [feed]);
 
   const onDoubleClick = () => {
     setLiked(true);
     if (post.post.likes) return null;
     dispatch(updatePostLikes(postId) as any);
     handleLike();
+  };
+
+  const handleLike = () => {
+    setLiked(!liked);
+    Promise.resolve(likePost(postId, id));
   };
 
   useEffect(() => {
@@ -53,12 +51,9 @@ const FeedCard = ({
     return () => clearTimeout(timer);
   }, [liked]);
 
-  const handleLike = () => {
-    setLiked(!liked);
-    Promise.resolve(likePost(postId, id));
-  };
-
-  console.log(inputRef.current, "inputRef.current");
+  useEffect(() => {
+    setPost(feed.find((item: any) => item.post.id === postId));
+  }, [feed]);
 
   return (
     <FeedWrapper>
@@ -70,7 +65,7 @@ const FeedCard = ({
       />
       <ImageContainer onDoubleClick={onDoubleClick}>
         <HeartIcon className={liked && "liked"} />
-        <Image src={image} />
+        <Image src={image} className={`filter-${filter}`} />
       </ImageContainer>
       <PostFooter
         likes={likes}

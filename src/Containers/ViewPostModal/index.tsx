@@ -7,11 +7,10 @@ import {
   Modal,
   SideBar,
 } from "./styles";
-import img from "../../Assets/8.jpg";
 import PostHeader from "../../Components/Reusable/PostHeader";
 import PostFooter from "../../Components/Reusable/PostFooter";
 import Comment from "../../Components/Comment";
-import { AccountName, ProfilePic } from "../../Components/Reusable/misc";
+import { ProfilePic } from "../../Components/Reusable/misc";
 import { Caption } from "../../Components/Reusable/PostFooter/styles";
 import { XIcon } from "@heroicons/react/outline";
 import { useEffect, useState } from "react";
@@ -24,13 +23,10 @@ import {
   toggleModal,
 } from "../../Redux/postModalSlice";
 import { useEscape } from "../../Hooks/useEscape";
-import { updateLikes, updatePostLikes } from "../../Redux/feedSlice";
+import { updatePostLikes } from "../../Redux/feedSlice";
 import { likePost } from "../../Api";
 import { HeartIcon } from "@heroicons/react/outline";
-import Loader from "../../Components/loader";
 import { Facebook } from "react-content-loader";
-
-interface props {}
 
 export interface IReplyData {
   commentRepliedToId: number;
@@ -39,18 +35,23 @@ export interface IReplyData {
 }
 
 const ViewPostModal = () => {
-  const dispatch = useAppDispatch();
+  // hooks
   const { ref, isClickOutside, setisClickOutside } = useIsClickOutside(false);
   const { isEscapeEvent, setIsEscapeEvent } = useEscape();
-  const { id } = useAppSelector((state) => state.userAccount);
 
+  // redux
+  const { id } = useAppSelector((state) => state.userAccount);
   const isModalOpen = useAppSelector(isOpen);
   const modalData = useAppSelector((state) => state.postModal);
-
   const { comments, user, post, images } = modalData;
+
+  // local state
   const [liked, setLiked] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [reply, setReply] = useState<IReplyData | null>(null);
+
+  const dispatch = useAppDispatch();
+  const MyFacebookLoader = () => <Facebook />;
 
   useEffect(() => {
     if (isModalOpen && (isClickOutside || isEscapeEvent)) {
@@ -60,8 +61,6 @@ const ViewPostModal = () => {
       dispatch(resetModal());
     }
   }, [isClickOutside, isModalOpen, isEscapeEvent]);
-
-  const MyFacebookLoader = () => <Facebook />;
 
   const onDoubleClick = () => {
     setLiked(true);
@@ -85,8 +84,6 @@ const ViewPostModal = () => {
       setLoading(false)
     );
   }, []);
-
-  console.log(modalData);
 
   return (
     <Container>

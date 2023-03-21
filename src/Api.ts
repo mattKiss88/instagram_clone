@@ -33,3 +33,14 @@ export const postComment = async (
     return error;
   }
 };
+
+export const getUserPosts = async (userId: number) => {
+  try {
+    const response = await axios.get(`${API_URL}/post/${userId}`);
+
+    return response.data.posts;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+};

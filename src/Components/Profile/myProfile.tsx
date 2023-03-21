@@ -1,40 +1,47 @@
 import { CogIcon } from "@heroicons/react/outline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../Navbar";
 import Post from "../Post";
 import {
   Avatar,
   BottomContainer,
-  ButtonContainer,
   Container,
   EditButton,
   Followers,
   Following,
   FullName,
   MiddleRow,
-  PostBtn,
   Posts,
   ProfileDetails,
-  SavedBtn,
   Section,
-  TaggedBtn,
   TopRow,
   Username,
 } from "./styles";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
-import { useParams } from "react-router-dom";
 import Tabs from "./tabs";
+import { getUserPosts } from "../../Api";
+import { getPosts } from "../../Redux/userPostsSlice";
 
 interface Props {
   ownAccount: boolean;
   userId?: number;
 }
 
-const Profile = ({ ownAccount, userId }: Props) => {
+const Profile = ({ ownAccount }: Props) => {
   const [active, setActive] = useState("posts");
   const posts = useAppSelector((state) => state.userPosts.posts);
   const user = useAppSelector((state) => state.userAccount);
+  const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    handlePosts();
+  }, []);
+
+  const handlePosts = async () => {
+    let res = await getUserPosts(user.id);
+    dispatch(getPosts(res));
+    console.log(res, "rest");
+  };
   return (
     <>
       <Navbar />

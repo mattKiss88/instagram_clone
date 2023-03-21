@@ -2,14 +2,19 @@ import React from "react";
 import { Navbar, NextBtn, StepName, StepTwoNav } from "./styles";
 import arrow from "../../../Assets/backArrow.svg";
 import { useAppDispatch } from "../../../Redux/hooks";
-import { resetImage, setStep } from "../../../Redux/createPostModalSlice";
+import {
+  createNewPost,
+  resetImage,
+  setStep,
+  setLoading,
+} from "../../../Redux/createPostModalSlice";
+import { Notify } from "notiflix";
 
 interface Props {
   step: number;
 }
 
 const NavBar: React.FC<Props> = ({ step }) => {
-  console.log(step);
   const dispatch = useAppDispatch();
 
   const handleBackClick = () => {
@@ -19,6 +24,16 @@ const NavBar: React.FC<Props> = ({ step }) => {
 
   const handleNextClick = () => {
     dispatch(setStep(step + 1));
+  };
+
+  const handleSubmit = async () => {
+    dispatch(setLoading(true));
+    const createPost = await dispatch(createNewPost() as any);
+
+    if (createPost.meta.requestStatus === "rejected") {
+      dispatch(setLoading(false));
+      return Notify.failure("Something went wrong, please try again later");
+    }
   };
 
   const renderNav = () => {
@@ -46,13 +61,14 @@ const NavBar: React.FC<Props> = ({ step }) => {
           <StepTwoNav>
             <img src={arrow} onClick={handleBackClick} />
             <StepName>Create new post</StepName>
-            <NextBtn>Share</NextBtn>
+            <NextBtn onClick={handleSubmit}>Share</NextBtn>
           </StepTwoNav>
         );
       default:
         return <img src={arrow} />;
     }
   };
+
   return <Navbar>{renderNav()}</Navbar>;
 };
 

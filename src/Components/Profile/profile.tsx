@@ -1,32 +1,22 @@
-import { ViewGridIcon } from "@heroicons/react/outline";
-import { CogIcon } from "@heroicons/react/outline";
-import { BookmarkIcon } from "@heroicons/react/outline";
-import { UserCircleIcon } from "@heroicons/react/outline";
 import { useEffect, useState } from "react";
 import Navbar from "../Navbar";
 import Post from "../Post";
 import {
   Avatar,
   BottomContainer,
-  ButtonContainer,
   Container,
   EditButton,
   Followers,
   Following,
   FullName,
   MiddleRow,
-  PostBtn,
   Posts,
   ProfileDetails,
-  SavedBtn,
   Section,
-  TaggedBtn,
   TopRow,
   Username,
 } from "./styles";
-import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
-import { isOpen, addModalData } from "../../Redux/postModalSlice";
-import { getPosts } from "../../Redux/userPostsSlice";
+import { useAppDispatch } from "../../Redux/hooks";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Tabs from "./tabs";
@@ -40,7 +30,6 @@ interface Props {
 const Profile = ({ ownAccount }: Props) => {
   const [active, setActive] = useState("posts");
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  //   const posts = useAppSelector((state) => state.userPosts.posts);
   const { id } = useParams<{ id: string }>();
   const [user, setUser] = useState({
     avatar: "",
@@ -50,10 +39,6 @@ const Profile = ({ ownAccount }: Props) => {
     following: 0,
     fullName: "",
   });
-
-  console.log(user, "iddd");
-
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     axios

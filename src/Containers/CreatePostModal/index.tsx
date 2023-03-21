@@ -3,31 +3,27 @@ import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import {
   currentStep,
   isModalOpen,
+  loading,
+  resetState,
   toggleModal,
 } from "../../Redux/createPostModalSlice";
 import NavBar from "./Navbar";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
-import StepThree from "./StepThree";
-import { customStyles } from "./styles";
+import Loader from "../../Components/loader";
 
 const CreatePostModal = () => {
   const isOpen = useAppSelector(isModalOpen);
   const step = useAppSelector(currentStep);
   const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(loading);
 
   Modal.setAppElement("#root");
 
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    // subtitle.style.color = "#f00";
-  }
-
   function closeModal() {
     dispatch(toggleModal());
+    dispatch(resetState());
   }
-
-  console.log(step, "step");
 
   const renderStep = () => {
     switch (step) {
@@ -35,9 +31,8 @@ const CreatePostModal = () => {
         return <StepOne />;
       case 2:
       case 3:
+      case 4:
         return <StepTwo />;
-      // case 3:
-      //   return <StepThree />;
       default:
         return <StepOne />;
     }
@@ -67,13 +62,18 @@ const CreatePostModal = () => {
   return (
     <Modal
       isOpen={isOpen}
-      onAfterOpen={afterOpenModal}
       onRequestClose={closeModal}
       style={customStyles}
       contentLabel="Create post modal"
     >
-      <NavBar step={step} />
-      {renderStep()}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <NavBar step={step} />
+          {renderStep()}
+        </>
+      )}
     </Modal>
   );
 };

@@ -22,10 +22,9 @@ import {
   addModalData,
   fetchCommentsByPostId,
   toggleModal,
-  updateModalLikes,
 } from "../../../Redux/postModalSlice";
 import ReadMore from "../ReadMore";
-import { updateLikes, updatePostLikes } from "../../../Redux/feedSlice";
+import { updatePostLikes } from "../../../Redux/feedSlice";
 import { likePost, postComment } from "../../../Api";
 import { IReplyData } from "../../../Containers/ViewPostModal";
 import EmojiSelector from "../EmojiSelector";
@@ -122,8 +121,6 @@ const PostFooter = ({
   const handleEmojiSelector = () => {
     setShowEmojiSelector((prev) => !prev);
   };
-
-  console.log(document.getElementById("preview"));
 
   return (
     <CardFooter>

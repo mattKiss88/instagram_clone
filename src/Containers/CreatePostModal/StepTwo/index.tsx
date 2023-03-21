@@ -1,27 +1,47 @@
 import React, { useEffect, useState } from "react";
-import { currentStep, newImage } from "../../../Redux/createPostModalSlice";
-import { useAppSelector } from "../../../Redux/hooks";
 import {
+  addFinalImage,
+  addFinalImageUrl,
+  currentStep,
+  finalImage,
+  finalImageUrl,
+  newImage,
+  resetImage,
+  setStep,
+  updateCaption,
+  updateFilter,
+} from "../../../Redux/createPostModalSlice";
+import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
+import {
+  Caption,
+  CaptionCtn,
   FilterCtn,
   FilterImg,
   FilterImgCtn,
   ImageCtn,
   InnerCtn,
+  StaticImage,
   StepTwoCtn,
+  UserDetailsCtn,
   Wrapper,
 } from "./styles";
 import AvatarEditor from "react-avatar-editor";
 import { filters } from "./filterData";
 import filterImg from "../../../Assets/filterImg.jpeg";
+import defaultPP from "../../../Assets/defaultPP.png";
+import { dataURLtoFile } from "../ToDataUri";
 
 const StepTwo = () => {
   const newImg = useAppSelector(newImage);
   const step = useAppSelector(currentStep);
   const editor = React.createRef<AvatarEditor>();
   const [active, setActive] = useState<string>("");
+  const userAccount = useAppSelector((state) => state.userAccount);
+  const dispatch = useAppDispatch();
+  console.log(userAccount, "userAccount");
 
   const [state, setState] = useState<any>({
-    image: newImg,
+    image: newImg || defaultPP,
     allowZoomOut: true,
     position: { x: 0.5, y: 0 },
     scale: 1,
@@ -41,22 +61,39 @@ const StepTwo = () => {
     setState({ ...state, position });
   };
 
-  const handleScale = (e: any) => {
-    const scale = parseFloat(e.target.value);
-    setState({ ...state, scale: scale });
-  };
-
   const handleFilterClick = (e: any, filter: string) => {
-    const filterStyle = e.target.className.split(" ")[2];
-    const yoo = e.target.className;
-    console.log(yoo, "filter");
+    dispatch(updateFilter(filter));
     setActive(filter);
     setState({ ...state, className: `filter-${filter}` });
-
-    //   const element: any = document.querySelector(`.${filterStyle}`);
-    //   const style = getComputedStyle(element);
-    //   console.log(style, "style");
   };
+
+  const handleCaption = (e: any) => {
+    dispatch(updateCaption(e.target.value));
+  };
+
+  const handleSave = () => {
+    const canvasimg = editor?.current?.getImage()?.toDataURL();
+    dispatch(addFinalImageUrl(canvasimg!));
+    console.log(canvasimg, "999");
+    const file = dataURLtoFile(canvasimg!, "test.png");
+    dispatch(addFinalImage(file));
+
+    return canvasimg;
+  };
+
+  useEffect(() => {
+    console.log("step 3", newImg);
+
+    if (step === 3 && newImg instanceof File) {
+      setState({ ...state, image: handleSave() });
+    }
+  }, [step]);
+
+  useEffect(() => {
+    if (newImg instanceof File === false && step !== 1) {
+      dispatch(setStep(1));
+    }
+  }, [step]);
 
   return (
     <StepTwoCtn>
@@ -77,22 +114,31 @@ const StepTwo = () => {
         />
       </ImageCtn>
       <FilterCtn active={step === 3 || step === 4}>
-        <InnerCtn>
-          {filters.map((filter: string) => {
-            console.log(filter, "filterz");
-            return (
-              <Wrapper
-                active={active === filter}
-                onClick={(e) => handleFilterClick(e, filter)}
-              >
-                <FilterImgCtn className={`filter-${filter}`}>
-                  <FilterImg src={filterImg} />
-                </FilterImgCtn>
-                <p>{filter}</p>
-              </Wrapper>
-            );
-          })}
-        </InnerCtn>
+        {step === 3 ? (
+          <InnerCtn>
+            {filters.map((filter: string) => {
+              return (
+                <Wrapper
+                  active={active === filter}
+                  onClick={(e) => handleFilterClick(e, filter)}
+                >
+                  <FilterImgCtn className={`filter-${filter}`}>
+                    <FilterImg src={filterImg} />
+                  </FilterImgCtn>
+                  <p>{filter}</p>
+                </Wrapper>
+              );
+            })}
+          </InnerCtn>
+        ) : (
+          <CaptionCtn>
+            <UserDetailsCtn>
+              <img src={userAccount.avatar || defaultPP} alt="profile" />
+              <p>{userAccount.username}</p>
+            </UserDetailsCtn>
+            <Caption placeholder="Add a caption..." onChange={handleCaption} />
+          </CaptionCtn>
+        )}
       </FilterCtn>
     </StepTwoCtn>
   );

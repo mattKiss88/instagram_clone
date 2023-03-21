@@ -1,4 +1,3 @@
-import React from "react";
 import { useDispatch } from "react-redux";
 import { addModalData, toggleModal } from "../../../Redux/postModalSlice";
 import {
@@ -55,8 +54,6 @@ const ViewAccount = ({
   const onProfileClick = () => {
     navigate(`/profile/${user.id}`);
   };
-
-  console.log(post, "POST");
 
   return (
     <Container

@@ -1,19 +1,12 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ImageContainer, Img1, Section } from "./styles";
-import logo from "../../Assets/instagram-text-icon.png";
-import { Link } from "react-router-dom";
 import ss1 from "../../Assets/screenshot1.png";
 import ss2 from "../../Assets/screenshot2.png";
 import ss3 from "../../Assets/screenshot3.png";
-import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
-import { loginUser } from "../../Redux/userAccountSlice";
 import Form from "./form";
 
 const Login = () => {
   const [activeImg, setActiveImg] = useState(1);
-  const accountUser = useAppSelector((state) => state.userAccount);
-
 
   useEffect(() => {
     const interval = setInterval(() => {

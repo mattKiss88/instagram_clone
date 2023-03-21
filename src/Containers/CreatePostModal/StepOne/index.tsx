@@ -20,7 +20,7 @@ const StepOne = () => {
   };
 
   useEffect(() => {
-    newImg && dispatch(setStep(2));
+    newImg instanceof File && dispatch(setStep(2));
   }, [newImg]);
 
   return (

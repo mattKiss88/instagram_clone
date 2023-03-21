@@ -1,7 +1,7 @@
 import { HeartIcon } from "@heroicons/react/outline";
 import { ChatIcon } from "@heroicons/react/outline";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
+import { useAppDispatch } from "../../Redux/hooks";
 import { addModalData, toggleModal } from "../../Redux/postModalSlice";
 import { CommentContainer, DataCtn, Img, Wrapper } from "./styles";
 interface props {
@@ -10,7 +10,6 @@ interface props {
 const Post = ({ post }: props) => {
   const [hovered, setHovered] = useState(false);
   const dispatch = useAppDispatch();
-  // const posts = useAppSelector((state) => state.userPosts.posts);
 
   const openModal = () => {
     dispatch(addModalData(post));

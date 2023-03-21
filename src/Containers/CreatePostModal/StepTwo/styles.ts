@@ -71,3 +71,48 @@ export const InnerCtn = styled.div`
   justify-content: space-between;
   padding: 1.5rem;
 `;
+
+export const CaptionCtn = styled.div`
+  padding: 1.5rem;
+`;
+export const UserDetailsCtn = styled.div`
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+
+  p {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-left: 1rem;
+  }
+`;
+
+export const Caption = styled.textarea`
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 1.4rem;
+  margin-top: 1rem;
+  font-family: "Roboto", sans-serif;
+  resize: none;
+  height: 400px;
+
+  :focus-visible {
+    outline-offset: 0px;
+  }
+
+  ::placeholder {
+    font-weight: 500;
+    opacity: 0.8;
+  }
+`;
+
+export const StaticImage = styled.img`
+  width: 523px;
+  height: 523px;
+`;

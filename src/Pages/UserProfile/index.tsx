@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 import Loader from "../../Components/loader";
 const Profile = lazy(() => import("../../Components/Profile/profile"));
 
