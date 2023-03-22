@@ -40,8 +40,9 @@ const Profile = ({ ownAccount }: Props) => {
   const handlePosts = async () => {
     let res = await getUserPosts(user.id);
     dispatch(getPosts(res));
-    console.log(res, "rest");
   };
+
+  console.log(user, "user");
   return (
     <>
       <Navbar />
@@ -56,7 +57,7 @@ const Profile = ({ ownAccount }: Props) => {
             </TopRow>
             <MiddleRow>
               <Posts>
-                <span>{user.posts}</span> Posts
+                <span>{posts.length}</span> Posts
               </Posts>
               <Followers>
                 <span>{user.followers}</span> Followers

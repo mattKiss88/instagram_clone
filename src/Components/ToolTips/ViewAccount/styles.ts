@@ -11,7 +11,7 @@ export const Container = styled.div<props>`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   //   padding: 15px;
   position: absolute;
-  z-index: 100;
+  z-index: 1000000000;
   top: 35px;
   left: 50px;
   border: 1px solid #dbdbdb;

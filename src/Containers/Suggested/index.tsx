@@ -22,8 +22,6 @@ const Suggested: React.FC = () => {
     shallowEqual
   );
 
-  console.log(recommendedUsers, "user101");
-
   const goToAccount = () => {
     navigate("/profile");
   };

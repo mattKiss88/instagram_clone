@@ -21,6 +21,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import Tabs from "./tabs";
 import Loader from "../loader";
+import { followRecommendedUsers } from "../../Redux/feedSlice";
 
 interface Props {
   ownAccount: boolean;
@@ -38,7 +39,13 @@ const Profile = ({ ownAccount }: Props) => {
     followers: 0,
     following: 0,
     fullName: "",
+    id: 0,
+    isFollowing: false,
   });
+
+  const [buttonName, setButtonName] = useState<"Follow" | "Following">(
+    "Follow"
+  );
 
   useEffect(() => {
     axios
@@ -47,15 +54,30 @@ const Profile = ({ ownAccount }: Props) => {
         console.log(res);
         setUser(res.data.user);
         setIsLoading(false);
+        setButtonName(res.data.user.isFollowing ? "Following" : "Follow");
       })
       .catch((err) => {
         console.log(err);
       });
   }, [id]);
 
+  console.log(user, "user");
+
+  const dispatch = useAppDispatch();
+
   if (isLoading) {
     return <Loader />;
   }
+
+  const handleFollow = () => {
+    if (buttonName === "Follow") {
+      setButtonName("Following");
+    } else {
+      setButtonName("Follow");
+    }
+
+    dispatch(followRecommendedUsers(user.id) as any);
+  };
 
   return (
     <>
@@ -66,7 +88,16 @@ const Profile = ({ ownAccount }: Props) => {
           <ProfileDetails>
             <TopRow>
               <Username>{user.username}</Username>
-              <EditButton>Follow</EditButton>
+              <EditButton
+                onClick={handleFollow}
+                style={{
+                  backgroundColor:
+                    buttonName === "Follow" ? "#0095f6" : "initial",
+                  color: buttonName === "Follow" ? "white" : "initial",
+                }}
+              >
+                {buttonName}
+              </EditButton>
             </TopRow>
             <MiddleRow>
               <Posts>

@@ -16,6 +16,8 @@ const Post = ({ post }: props) => {
     dispatch(toggleModal());
   };
 
+  console.log(post, "post11");
+
   return (
     <Wrapper
       onMouseEnter={() => setHovered(true)}
