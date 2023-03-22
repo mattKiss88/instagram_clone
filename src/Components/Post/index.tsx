@@ -26,6 +26,7 @@ const Post = ({ post }: props) => {
     >
       <Img
         src={process.env.REACT_APP_S3_URL + post?.images?.[0]?.mediaFileId}
+        className={`filter-${post?.images[0]?.filter}`}
       />
       {hovered && (
         <CommentContainer>

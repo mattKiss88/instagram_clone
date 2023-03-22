@@ -13,7 +13,7 @@ import Comment from "../../Components/Comment";
 import { ProfilePic } from "../../Components/Reusable/misc";
 import { Caption } from "../../Components/Reusable/PostFooter/styles";
 import { XIcon } from "@heroicons/react/outline";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useIsClickOutside } from "../../Hooks/useClickOutside";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import {
@@ -27,6 +27,7 @@ import { updatePostLikes } from "../../Redux/feedSlice";
 import { likePost } from "../../Api";
 import { HeartIcon } from "@heroicons/react/outline";
 import { Facebook } from "react-content-loader";
+import Loader from "../../Components/loader";
 
 export interface IReplyData {
   commentRepliedToId: number;
@@ -49,9 +50,12 @@ const ViewPostModal = () => {
   const [liked, setLiked] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [reply, setReply] = useState<IReplyData | null>(null);
+  const [imgHeight, setImgHeight] = useState<number | null | undefined>(null);
 
   const dispatch = useAppDispatch();
   const MyFacebookLoader = () => <Facebook />;
+
+  const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     if (isModalOpen && (isClickOutside || isEscapeEvent)) {
@@ -85,14 +89,22 @@ const ViewPostModal = () => {
     );
   }, []);
 
+  useEffect(() => {
+    setImgHeight(imgRef.current?.clientHeight);
+  }, [imgRef.current]);
+
+  // if (!imgHeight) return <Loader />;
+
   return (
-    <Container>
+    <Container style={{ opacity: imgHeight ? "1" : "0" }}>
       <XIcon className="x" />
-      <Modal ref={ref}>
+      <Modal ref={ref} height={imgHeight}>
         <ImageContainer onDoubleClick={onDoubleClick}>
           <HeartIcon className={liked && "liked"} />
           <Image
             src={`${process.env.REACT_APP_S3_URL + images[0].mediaFileId}`}
+            className={`filter-${images[0].filter}`}
+            ref={imgRef}
           />
         </ImageContainer>
         <SideBar>
@@ -102,7 +114,7 @@ const ViewPostModal = () => {
             postId={post?.id}
             userId={user.id}
           />
-          <CommentsWrapper>
+          <CommentsWrapper height={imgHeight}>
             <CaptionContainer>
               <ProfilePic
                 src={`${process.env.REACT_APP_S3_URL + user.avatar}`}

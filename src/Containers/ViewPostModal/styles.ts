@@ -1,9 +1,14 @@
 import styled from "styled-components";
 import { likeAnimation } from "../../Components/FeedCard/styles";
 
-export const Modal = styled.div`
+interface IProps {
+  height: any;
+}
+
+export const Modal = styled.div<IProps>`
   position: relative;
   height: 90vh;
+  ${(props) => props.height && `height: ${props.height}px;`}
   max-width: 1100px;
   width: fit-content;
   background: #ffffff;
@@ -58,8 +63,9 @@ export const ImageContainer = styled.div`
 `;
 
 export const Image = styled.img`
-  width: auto;
-  height: 100%;
+  width: 100%;
+  height: auto;
+  max-height: 90vh;
   pointer-events: none;
 
   -khtml-user-select: none;
@@ -86,8 +92,9 @@ export const SideBar = styled.div`
   }
 `;
 
-export const CommentsWrapper = styled.div`
+export const CommentsWrapper = styled.div<IProps>`
   height: calc(90vh - 187px);
+  ${(props) => props.height && `height: calc(${props.height}px - 187px);`}
   overflow-y: scroll;
   ::-webkit-scrollbar {
     display: none; /* for Chrome, Safari, and Opera */
