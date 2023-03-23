@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import navData from "./NavData";
+import navData from "../Navbar/NavData";
 import {
   Right,
   IconContainer,
@@ -17,7 +17,7 @@ import { useAppDispatch } from "../../Redux/hooks";
 import { toggleModal } from "../../Redux/createPostModalSlice";
 import axios from "axios";
 
-const Navbar = () => {
+const SideBar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState("");
   const ref: any = useRef(null);
@@ -73,4 +73,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default SideBar;

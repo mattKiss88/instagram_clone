@@ -28,6 +28,7 @@ import { updatePostLikes } from "../../../Redux/feedSlice";
 import { likePost, postComment } from "../../../Api";
 import { IReplyData } from "../../../Containers/ViewPostModal";
 import EmojiSelector from "../EmojiSelector";
+import { usePopperTooltip } from "react-popper-tooltip";
 interface props {
   likes: any;
   fullName: string;
@@ -122,6 +123,26 @@ const PostFooter = ({
     setShowEmojiSelector((prev) => !prev);
   };
 
+  const addEmoji = (e: any) => {
+    let emoji = e.native;
+
+    console.log(e, "emoji");
+    setComment((prev) => prev + emoji);
+  };
+
+  const closeEmoji = () => {
+    !visible && setShowEmojiSelector(false);
+  };
+
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    usePopperTooltip({
+      delayHide: 100,
+      delayShow: 100,
+      interactive: true,
+      placement: "auto",
+    });
+
+  console.log("comment", typeof comment);
   return (
     <CardFooter>
       <IconContainer>
@@ -169,8 +190,19 @@ const PostFooter = ({
           <EmojiHappyIcon
             style={{ width: "24px", cursor: "pointer" }}
             onClick={handleEmojiSelector}
+            ref={setTriggerRef}
           />
-          {showEmojiSelector && <EmojiSelector />}
+          {showEmojiSelector && (
+            <div
+              ref={setTooltipRef}
+              {...getTooltipProps({ className: "tooltip-container" })}
+            >
+              <EmojiSelector
+                onEmojiSelect={addEmoji}
+                onClickOutside={closeEmoji}
+              />
+            </div>
+          )}
           <Input
             rows={1}
             placeholder="Add a comment..."
