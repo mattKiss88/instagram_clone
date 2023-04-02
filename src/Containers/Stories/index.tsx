@@ -1,11 +1,11 @@
 import React from "react";
 import { StoriesContainer, StoriesWrapper } from "./styles";
-import { seedData } from "../Feed/data";
+import { ISeedData, seedData } from "../Feed/data";
 
-const Stories = () => {
+const Stories: React.FC = () => {
   return (
     <StoriesWrapper>
-      {seedData.map((item: any) => (
+      {seedData.map((item: ISeedData) => (
         <StoriesContainer>
           <img src={item.avatar} alt="avatar" />
           <p>{item.fullName}</p>

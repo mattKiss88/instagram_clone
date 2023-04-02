@@ -62,8 +62,8 @@ export const Wrapper = styled.div`
 export const Search = styled.input`
   background: #efefef;
   border: none;
-  font-size: 16px;
-  padding: 8px;
+  font-size: 18px;
+  padding: 10px;
   max-width: 240px;
   width: 100%;
   border-radius: 6px;
@@ -72,7 +72,7 @@ export const Search = styled.input`
 export const SearchContainer = styled.div`
   background: #efefef;
   display: flex;
-  border-radius: 6px;
+  border-radius: 8px;
   width: 100%;
 
   svg {

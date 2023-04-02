@@ -1,81 +1,72 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-export const Section = styled.section`
-  height: 60px;
-  width: 100%;
-  border-bottom: 1px solid #e6e6e6;
+interface ISectionProps {
+  collapse: boolean;
+}
+
+export const Section = styled.section<ISectionProps>`
+  padding: 15px 12px;
+  height: calc(100vh);
+  width: 234px;
+  border-right: 1px solid #e6e6e6;
   position: fixed;
-  background: #ffffff;
-  z-index: 1;
+  left: 0;
+  z-index: 10;
+
+  ${({ collapse }) =>
+    collapse &&
+    css`
+      width: 70px;
+      transition: 0.5s;
+    `}
 `;
 export const Logo = styled.img`
-  width: 103px;
-  padding: 10px 12px;
-  box-sizing: initial;
-  margin-top: 7px;
-  cursor: pointer;
-
-  @media (max-width: 910px) {
-    margin-right: 20px;
-  }
+  width: 123px;
+  height: 69px;
+  padding: 25px 12px 16px;
+  margin-bottom: 10px;
+  // margin-top: 30px;
 `;
 
-export const IconContainer = styled.div`
-  padding: 9px 11px;
+interface IProps {
+  bold?: boolean;
+}
+
+export const IconContainer = styled.div<IProps>`
+  padding: 9px;
+  margin: 11px 0px;
   display: flex;
   align-items: center;
+  cursor: pointer;
+  
+
   svg {
-    cursor: pointer;
-    height: 25px;
-    width: 25px;
-  }
-`;
+    height: 30px;
+    width: 30px;
+    min-width: 30px;
+    max-width: 30px;
+    margin-right: 2rem;
 
-export const Right = styled.div`
-  display: flex;
-`;
-export const Center = styled.div`
-  width: 100%;
-  max-width: 268px;
-  margin-left: 160px;
-
-  @media (max-width: 910px) {
-    width: 33%;
-    margin-left: auto;
-    margin-right: 20px;
   }
 
-  @media (max-width: 650px) {
-    display: none;
+  :hover {
+    background-color: #ededed;
+    border-radius: 20px;
   }
+
+  p {
+    font-weight: 600;
+    font-size: 1.6rem;
+    ${({ bold }) => bold && "font-weight: 700;"}
 `;
+
+export const Top = styled.div`
+  overflow: hidden;
+`;
+export const Bottom = styled.div``;
 export const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  max-width: 1000px;
-  padding: 0 20px;
-  margin: 0 auto;
-  align-items: center;
-  height: 100%;
-`;
-
-export const Search = styled.input`
-  background: #efefef;
-  border: none;
-  font-size: 16px;
-  padding: 8px;
-  max-width: 240px;
-  width: 100%;
-  border-radius: 6px;
-`;
-
-export const SearchContainer = styled.div`
-  background: #efefef;
-  display: flex;
-  border-radius: 6px;
-  width: 100%;
-
-  svg {
-    margin-left: 10px;
-  }
+  height: calc(100vh - 120px);
 `;

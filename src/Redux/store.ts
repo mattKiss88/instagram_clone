@@ -7,6 +7,7 @@ import modalReducer from "./postModalSlice";
 import userPostReducer from "./userPostsSlice";
 import userAccountReducer from "./userAccountSlice";
 import feedReducer from "./feedSlice";
+import searchUserReducer from "./searchUsersSlice";
 
 const reducer = combineReducers({
   postModal: modalReducer,
@@ -14,6 +15,7 @@ const reducer = combineReducers({
   userAccount: userAccountReducer,
   feed: feedReducer,
   createPost,
+  searchUsers: searchUserReducer,
 });
 const persistConfig = {
   key: "root",

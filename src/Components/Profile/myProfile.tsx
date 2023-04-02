@@ -4,12 +4,14 @@ import Navbar from "../Navbar";
 import Post from "../Post";
 import {
   Avatar,
+  AvatarContainer,
   BottomContainer,
   Container,
   EditButton,
   Followers,
   Following,
   FullName,
+  Input,
   MiddleRow,
   Posts,
   ProfileDetails,
@@ -21,14 +23,17 @@ import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import Tabs from "./tabs";
 import { getUserPosts } from "../../Api";
 import { getPosts } from "../../Redux/userPostsSlice";
+import { patchProfileImage } from "../../Redux/userAccountSlice";
+import { IImages, IPost, IPostData } from "../FeedCard/types";
+import { JsxElement } from "typescript";
 
-interface Props {
+interface IProfile {
   ownAccount: boolean;
   userId?: number;
 }
 
-const Profile = ({ ownAccount }: Props) => {
-  const [active, setActive] = useState("posts");
+const Profile: React.FC<IProfile> = ({ ownAccount }) => {
+  const [active, setActive] = useState<string>("posts");
   const posts = useAppSelector((state) => state.userPosts.posts);
   const user = useAppSelector((state) => state.userAccount);
   const dispatch = useAppDispatch();
@@ -42,13 +47,44 @@ const Profile = ({ ownAccount }: Props) => {
     dispatch(getPosts(res));
   };
 
-  console.log(user, "user");
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const file: File = e.target.files![0];
+    dispatch(patchProfileImage(file) as any);
+  };
+
+  interface X {
+    post: {
+      caption: string;
+      commentCount: number;
+      createdAt: string;
+      id: number;
+      likeCount: number;
+      updatedAt: string;
+      userId: number;
+    };
+    images: {
+      createdAt: string;
+      filter: null | string;
+      filterId: null | number;
+      id: number;
+      mediaFileId: string;
+      position: number;
+      postId: number;
+      updatedAt: string;
+    }[];
+  }
+
   return (
     <>
-      <Navbar />
       <Section>
         <Container>
-          <Avatar src={`${process.env.REACT_APP_S3_URL + user.avatar}`} />
+          <AvatarContainer>
+            <Avatar
+              src={`${process.env.REACT_APP_S3_URL + user.avatar}`}
+              id="avatar"
+            />
+            <Input type="file" onChange={handleUpload} />
+          </AvatarContainer>
           <ProfileDetails>
             <TopRow>
               <Username>{user.username}</Username>
@@ -71,8 +107,10 @@ const Profile = ({ ownAccount }: Props) => {
         </Container>
         <Tabs ownAccount={ownAccount} active={active} setActive={setActive} />
         <BottomContainer>
-          {posts.map((post, x) => {
-            return <Post post={{ ...post, user: { ...user, posts } }} />;
+          {posts.map((post: any, x: number) => {
+            return (
+              <Post key={x} post={{ ...post, user: { ...user, posts } }} />
+            );
           })}
         </BottomContainer>
       </Section>

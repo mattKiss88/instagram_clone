@@ -3,19 +3,43 @@ import { RootState } from "./store";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { useAppDispatch } from "./hooks";
+import { IComment, IUser } from "../Components/Comment/types";
+import { IImages, IPost } from "../Components/FeedCard/types";
 
 interface InitialState {
   isOpen: boolean;
-  user: any;
-  post: any;
-  images: any[];
-  comments: any[];
+  user: IUser;
+  post: IPost;
+  images: IImages[];
+  comments: IComment[];
 }
 
 const initialState: InitialState = {
   isOpen: false,
-  user: {},
-  post: {},
+  user: {
+    id: 0,
+    username: "",
+    avatar: "",
+    bio: "",
+    createdAt: "",
+    updatedAt: "",
+    followers: 0,
+    following: 0,
+    posts: [],
+    dob: null,
+    fullName: "",
+    email: "",
+  },
+  post: {
+    id: 0,
+    userId: 0,
+    caption: "",
+    createdAt: "",
+    updatedAt: "",
+    likeCount: 0,
+    likes: false,
+    commentCount: 0,
+  },
   images: [],
   comments: [],
 };
@@ -38,6 +62,7 @@ export const fetchCommentsByPostId = createAsyncThunk(
 export const likeComment = createAsyncThunk(
   "comments/postLikeStatus",
   async ({ commentId, commentType }: likeCommentPayload, { dispatch }) => {
+    console.log(commentId, "commentId");
     const response = await axios.post(
       `${process.env.REACT_APP_API_URL}/comment/post/like`,
       {
@@ -81,7 +106,7 @@ export const modalSlice = createSlice({
       };
     },
     updateCommentLikes: (state, action: PayloadAction<number>) => {
-      let updateCommentLikes = state.comments.map((c: any) => {
+      let updateCommentLikes = state.comments.map((c: IComment) => {
         if (c.id === action.payload) {
           return {
             ...c,
@@ -98,8 +123,8 @@ export const modalSlice = createSlice({
       state.comments = [...updateCommentLikes];
     },
     updateSubCommentLikes: (state, action: PayloadAction<number>) => {
-      let updateCommentLikes = state.comments.map((c: any) => {
-        let updateSubComments = c.subComments.map((sub: any) => {
+      let updateCommentLikes = state.comments.map((c: IComment) => {
+        let updateSubComments = c.subComments.map((sub: IComment) => {
           if (sub.id === action.payload) {
             return {
               ...sub,

@@ -31,16 +31,30 @@ import filterImg from "../../../Assets/filterImg.jpeg";
 import defaultPP from "../../../Assets/defaultPP.png";
 import { dataURLtoFile } from "../ToDataUri";
 
-const StepTwo = () => {
+interface IImageProps {
+  image: string | File;
+  allowZoomOut: boolean;
+  position: { x: number; y: number };
+  scale: number;
+  rotate: number;
+  borderRadius: number;
+  preview: any;
+  width: number;
+  height: number;
+  crossOrigin: string;
+  style: any;
+  className: string;
+}
+
+const StepTwo: React.FC = () => {
   const newImg = useAppSelector(newImage);
   const step = useAppSelector(currentStep);
   const editor = React.createRef<AvatarEditor>();
   const [active, setActive] = useState<string>("");
   const userAccount = useAppSelector((state) => state.userAccount);
   const dispatch = useAppDispatch();
-  console.log(userAccount, "userAccount");
 
-  const [state, setState] = useState<any>({
+  const [imageProperties, setImageProperties] = useState<IImageProps>({
     image: newImg || defaultPP,
     allowZoomOut: true,
     position: { x: 0.5, y: 0 },
@@ -58,34 +72,34 @@ const StepTwo = () => {
   });
 
   const handlePositionChange = async (position: any) => {
-    setState({ ...state, position });
+    setImageProperties({ ...imageProperties, position });
   };
 
-  const handleFilterClick = (e: any, filter: string) => {
+  const handleFilterClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    filter: string
+  ): void => {
     dispatch(updateFilter(filter));
     setActive(filter);
-    setState({ ...state, className: `filter-${filter}` });
+    setImageProperties({ ...imageProperties, className: `filter-${filter}` });
   };
 
-  const handleCaption = (e: any) => {
+  const handleCaption = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     dispatch(updateCaption(e.target.value));
   };
 
-  const handleSave = () => {
+  const handleSave = (): string => {
     const canvasimg = editor?.current?.getImage()?.toDataURL();
     dispatch(addFinalImageUrl(canvasimg!));
-    console.log(canvasimg, "999");
     const file = dataURLtoFile(canvasimg!, "test.png");
     dispatch(addFinalImage(file));
 
-    return canvasimg;
+    return canvasimg || "";
   };
 
   useEffect(() => {
-    console.log("step 3", newImg);
-
     if (step === 3 && newImg instanceof File) {
-      setState({ ...state, image: handleSave() });
+      setImageProperties({ ...imageProperties, image: handleSave() });
     }
   }, [step]);
 
@@ -99,18 +113,20 @@ const StepTwo = () => {
     <StepTwoCtn>
       <ImageCtn>
         <AvatarEditor
-          scale={parseFloat(state.scale)}
-          width={state.width}
-          height={state.height}
-          position={state.position}
+          scale={imageProperties.scale}
+          width={imageProperties.width}
+          height={imageProperties.height}
+          position={imageProperties.position}
           onPositionChange={handlePositionChange}
-          rotate={parseFloat(state.rotate)}
-          borderRadius={state.width / (100 / state.borderRadius)}
+          rotate={imageProperties.rotate}
+          borderRadius={
+            imageProperties.width / (100 / imageProperties.borderRadius)
+          }
           border={[0, 0, 0, 0]}
-          image={state.image}
+          image={imageProperties.image}
           ref={editor}
-          crossOrigin={state.crossOrigin}
-          className={state.className}
+          crossOrigin={imageProperties.crossOrigin}
+          className={imageProperties.className}
         />
       </ImageCtn>
       <FilterCtn active={step === 3 || step === 4}>

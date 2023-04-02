@@ -1,76 +1,75 @@
 import { useState, useRef, useEffect } from "react";
 import navData from "../Navbar/NavData";
 import {
-  Right,
+  Bottom,
+  // Right,
   IconContainer,
   Logo,
   Section,
-  Center,
+  Top,
+  // Center,
   Wrapper,
-  Search,
-  SearchContainer,
+  // Search,
+  // SearchContainer,
 } from "./styles";
-import logo from "../../Assets/instagram-text-icon.png";
-import { SearchIcon } from "@heroicons/react/outline";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../Redux/hooks";
 import { toggleModal } from "../../Redux/createPostModalSlice";
 import axios from "axios";
+import { MenuIcon } from "@heroicons/react/outline";
+import { useLocation } from "react-router-dom";
+import Search from "../Search";
 
-const SideBar = () => {
-  const [showSearch, setShowSearch] = useState(false);
-  const [search, setSearch] = useState("");
-  const ref: any = useRef(null);
+const Navbar: React.FC = () => {
+  const [showSearch, setShowSearch] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   const handleLinkClick = (name: string, pathName: string) => {
-    if (name === "Create") {
-      return dispatch(toggleModal());
+    switch (name) {
+      case "Home":
+        return navigate("/");
+      case "Search":
+        return setShowSearch(true);
+      case "Activity":
+        return navigate("/activity");
+      case "Profile":
+        return navigate("/profile");
+      case "Create":
+        return dispatch(toggleModal());
+      default:
+        return navigate("/");
     }
-
-    navigate(pathName);
-  };
-
-  const onSearchChange = (e: any) => {
-    setSearch(e.target.value);
-
-    console.log("search", search);
-
-    if (search.length > 2) {
-      axios.get(`http://localhost:3001/user?search=${search}`).then((res) => {
-        console.log(res.data);
-      });
-    }
+    // location.pathname !== pathName && navigate(pathName);
   };
 
   return (
-    <Section>
+    <Section collapse={showSearch}>
+      {/* <Logo alt="Instagram" src={logo} onClick={() => navigate("/")} /> */}
       <Wrapper>
-        <Logo alt="Instagram" src={logo} onClick={() => navigate("/")} />
-        <Center>
-          <SearchContainer>
-            {!showSearch && <SearchIcon style={{ width: "20px" }} />}
-            <Search
-              placeholder="Search"
-              onClick={() => setShowSearch(true)}
-              onChange={onSearchChange}
-            />
-          </SearchContainer>
-        </Center>
-        <Right>
-          {navData.map((item) => (
+        <Top>
+          {navData.map((item, i) => (
             <IconContainer
               key={item.name}
               onClick={() => handleLinkClick(item.name, item.pathName)}
+              bold={location.pathname === item.pathName}
             >
               <>{item.icon}</>
+              <p>{item.name}</p>
             </IconContainer>
           ))}
-        </Right>
+        </Top>
+        <Bottom>
+          <IconContainer>
+            <MenuIcon />,
+          </IconContainer>
+        </Bottom>
       </Wrapper>
+      {showSearch && <Search setShowSearch={setShowSearch} />}
     </Section>
   );
 };
 
-export default SideBar;
+export default Navbar;

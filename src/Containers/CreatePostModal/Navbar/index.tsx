@@ -9,6 +9,8 @@ import {
   setLoading,
 } from "../../../Redux/createPostModalSlice";
 import { Notify } from "notiflix";
+import { JsxElement } from "typescript";
+import { StyledComponent, StyledComponentBase } from "styled-components";
 
 interface Props {
   step: number;
@@ -17,12 +19,12 @@ interface Props {
 const NavBar: React.FC<Props> = ({ step }) => {
   const dispatch = useAppDispatch();
 
-  const handleBackClick = () => {
+  const handleBackClick = (): void => {
     dispatch(setStep(step - 1));
     step === 2 && dispatch(resetImage());
   };
 
-  const handleNextClick = () => {
+  const handleNextClick = (): void => {
     dispatch(setStep(step + 1));
   };
 

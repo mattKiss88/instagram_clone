@@ -10,14 +10,19 @@ import {
   fetchRecommendedUsers,
 } from "../../Redux/feedSlice";
 import useWindowSize from "../../Hooks/useWindowSize";
+import Navbar from "../../Components/SideBar";
+import { IPostData } from "../../Components/FeedCard/types";
 
-const Feed = () => {
+const Feed: React.FC = () => {
   const dispatch = useAppDispatch();
   let feed = useAppSelector(feedState);
-  const { width }: any = useWindowSize();
-  const id = useAppSelector((state) => state.userAccount.id);
+  const { width }: { width: number | undefined } = useWindowSize();
+  const id: number = useAppSelector((state) => state.userAccount.id);
+
   const state = useAppSelector((state) => state);
+
   console.log(state, "state");
+
   useEffect(() => {
     dispatch(fetchFeedByUserId(id) as any);
     dispatch(fetchRecommendedUsers() as any);
@@ -25,23 +30,25 @@ const Feed = () => {
 
   return (
     <Section>
+      {/* <Navbar /> */}
       <LeftContainer>
         <Stories />
-        {feed?.map((item: any) => (
+        {feed?.map((item: IPostData) => (
           <FeedCard
             fullName={item.user.username}
             likes={item.post.likeCount}
             avatar={`${process.env.REACT_APP_S3_URL + item.user.avatar}`}
             content={item.post.caption}
             image={`${
-              process.env.REACT_APP_S3_URL + item?.images?.[0]?.mediaFileId
+              (process.env.REACT_APP_S3_URL as string) +
+              item?.images?.[0]?.mediaFileId
             }`}
             postId={item.post?.id}
-            filter={item?.images?.[0]?.filter}
+            filter={item?.images?.[0]?.filter || ""}
           />
         ))}
       </LeftContainer>
-      {width > 1000 && (
+      {(width as number) > 1000 && (
         <RightContainer>
           <Suggested />
         </RightContainer>

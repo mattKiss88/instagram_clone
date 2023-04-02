@@ -6,7 +6,7 @@ import ss3 from "../../Assets/screenshot3.png";
 import Form from "./form";
 
 const Login = () => {
-  const [activeImg, setActiveImg] = useState(1);
+  const [activeImg, setActiveImg] = useState<1 | 2 | 3>(1);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -21,7 +21,7 @@ const Login = () => {
     return () => clearInterval(interval);
   }, [activeImg]);
 
-  const orderImages = (img: number) => {
+  const orderImages = (img: number): number => {
     if (img === activeImg) {
       return 1;
     } else if (img === activeImg - 1 || (img === 3 && activeImg === 1)) {

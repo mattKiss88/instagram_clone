@@ -7,22 +7,32 @@ import ViewAccount from "../../ToolTips/ViewAccount";
 import { CardHeader, LeftContainer, ProfilePic, AccountName } from "./styles";
 import { useNavigate } from "react-router-dom";
 import { toggleModal } from "../../../Redux/postModalSlice";
+import { IPostData } from "../../FeedCard/types";
 
-interface props {
+interface IPostHeader {
   avatar: string;
   fullName: string;
   postId: number;
   userId: number;
 }
-const PostHeader = ({ avatar, fullName, postId, userId }: props) => {
+const PostHeader: React.FC<IPostHeader> = ({
+  avatar,
+  fullName,
+  postId,
+  userId,
+}) => {
   const [hoveredOnName, setHoveredOnName] = React.useState<boolean>(false);
   const [hoveredOnToolTip, setHoveredOnToolTip] =
     React.useState<boolean>(false);
 
   const feedState = useAppSelector(feed, shallowEqual);
-  const post = feedState.find((item: any) => item.post.id === postId);
+  const post: IPostData = feedState.find(
+    (item: any) => item.post.id === postId
+  );
 
-  const modalIsOpen = useAppSelector((state) => state.postModal.isOpen);
+  const modalIsOpen: boolean = useAppSelector(
+    (state) => state.postModal.isOpen
+  );
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -55,8 +65,7 @@ const PostHeader = ({ avatar, fullName, postId, userId }: props) => {
     }
   };
 
-  const handleProfileClick = () => {
-    console.log("profile clicked");
+  const handleProfileClick = (): void => {
     if (modalIsOpen) {
       dispatch(toggleModal());
     }

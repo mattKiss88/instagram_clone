@@ -27,7 +27,7 @@ import { updatePostLikes } from "../../Redux/feedSlice";
 import { likePost } from "../../Api";
 import { HeartIcon } from "@heroicons/react/outline";
 import { Facebook } from "react-content-loader";
-import Loader from "../../Components/loader";
+import { IComment } from "../../Components/Comment/types";
 
 export interface IReplyData {
   commentRepliedToId: number;
@@ -35,14 +35,14 @@ export interface IReplyData {
   username: string;
 }
 
-const ViewPostModal = () => {
+const ViewPostModal: React.FC = () => {
   // hooks
   const { ref, isClickOutside, setisClickOutside } = useIsClickOutside(false);
   const { isEscapeEvent, setIsEscapeEvent } = useEscape();
 
   // redux
-  const { id } = useAppSelector((state) => state.userAccount);
-  const isModalOpen = useAppSelector(isOpen);
+  const id: number = useAppSelector((state) => state.userAccount.id);
+  const isModalOpen: boolean = useAppSelector(isOpen);
   const modalData = useAppSelector((state) => state.postModal);
   const { comments, user, post, images } = modalData;
 
@@ -66,7 +66,7 @@ const ViewPostModal = () => {
     }
   }, [isClickOutside, isModalOpen, isEscapeEvent]);
 
-  const onDoubleClick = () => {
+  const onDoubleClick = (): void => {
     setLiked(true);
     dispatch(updatePostLikes(post?.id) as any);
 
@@ -92,8 +92,6 @@ const ViewPostModal = () => {
   useEffect(() => {
     setImgHeight(imgRef.current?.clientHeight);
   }, [imgRef.current]);
-
-  // if (!imgHeight) return <Loader />;
 
   return (
     <Container style={{ opacity: imgHeight ? "1" : "0" }}>
@@ -124,13 +122,13 @@ const ViewPostModal = () => {
                 {post?.caption}
               </Caption>
             </CaptionContainer>
-            {comments?.map((c: any) =>
+            {comments?.map((c: IComment) =>
               loading ? (
                 MyFacebookLoader()
               ) : (
                 <>
                   <Comment comment={c} type="new" setReply={setReply}>
-                    {c?.subComments.map((sub: any) => (
+                    {c?.subComments.map((sub: IComment) => (
                       <Comment comment={sub} type="sub" setReply={setReply} />
                     ))}
                   </Comment>

@@ -29,7 +29,8 @@ import { likePost, postComment } from "../../../Api";
 import { IReplyData } from "../../../Containers/ViewPostModal";
 import EmojiSelector from "../EmojiSelector";
 import { usePopperTooltip } from "react-popper-tooltip";
-interface props {
+import { IPostData } from "../../FeedCard/types";
+interface IPostFooter {
   likes: any;
   fullName: string;
   content?: string;
@@ -40,7 +41,7 @@ interface props {
   setReply?: (reply: IReplyData | null) => void;
 }
 
-const PostFooter = ({
+const PostFooter: React.FC<IPostFooter> = ({
   likes,
   fullName,
   content,
@@ -49,7 +50,7 @@ const PostFooter = ({
   location,
   replyData,
   setReply,
-}: props) => {
+}) => {
   const dispatch = useAppDispatch();
   const [liked, setLiked] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
@@ -59,10 +60,10 @@ const PostFooter = ({
   const [submittedComments, setSubmittedComments] = useState<string[]>([]);
   const [showEmojiSelector, setShowEmojiSelector] = useState<boolean>(false);
   const { username, id } = useAppSelector((state) => state.userAccount);
-  const feed = useAppSelector((state) => state.feed.posts);
+  const feed: IPostData[] = useAppSelector((state) => state.feed.posts);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
     if (e.key === "Enter") {
       e.preventDefault();
       onSubmit();
@@ -83,7 +84,7 @@ const PostFooter = ({
       dispatch(fetchCommentsByPostId(postData?.post?.id) as any);
   };
 
-  const openModal = () => {
+  const openModal = (): void => {
     dispatch(addModalData(postData));
     dispatch(toggleModal());
   };
@@ -105,7 +106,7 @@ const PostFooter = ({
     setComment(e.target.value);
   };
 
-  const exitReplyHandler = () => {
+  const exitReplyHandler = (): void => {
     setCommentRepliedToId(null);
     setComment("");
     setReply && setReply(null);
@@ -126,7 +127,6 @@ const PostFooter = ({
   const addEmoji = (e: any) => {
     let emoji = e.native;
 
-    console.log(e, "emoji");
     setComment((prev) => prev + emoji);
   };
 
@@ -142,7 +142,6 @@ const PostFooter = ({
       placement: "auto",
     });
 
-  console.log("comment", typeof comment);
   return (
     <CardFooter>
       <IconContainer>

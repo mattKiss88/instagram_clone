@@ -3,10 +3,12 @@ import { RootState } from "./store";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import modalSlice, { updateModalLikes } from "./postModalSlice";
+import { IPostData } from "../Components/FeedCard/types";
+import { IUser } from "../Components/Comment/types";
 
 interface InitialState {
-  posts: any[];
-  recommendedUsers: any[];
+  posts: IPostData[];
+  recommendedUsers: IUser[];
 }
 
 const initialState: InitialState = {
@@ -92,11 +94,9 @@ export const feedSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchFeedByUserId.fulfilled, (state, action) => {
-      // Add user to the state array
       state.posts = action.payload;
     });
     builder.addCase(fetchRecommendedUsers.fulfilled, (state, action) => {
-      // Add user to the state array
       state.recommendedUsers = action.payload;
     });
   },

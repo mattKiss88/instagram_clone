@@ -21,14 +21,21 @@ import {
   Username,
 } from "./styles";
 import { useNavigate } from "react-router-dom";
+import { IUser } from "../../Comment/types";
+import { IImages, IPost, IPostData } from "../../FeedCard/types";
 
-interface Props {
-  post: any;
+interface IViewAccountProps {
+  post: { user: IUser };
 }
 
-const ViewAccount = ({ post }: Props) => {
-  const stats = [
-    { key: "posts", number: post?.user?.posts?.length },
+interface IStats {
+  key: string;
+  number: number;
+}
+
+const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
+  const stats: IStats[] = [
+    { key: "posts", number: post?.user?.posts?.length || 0 },
     { key: "followers", number: post?.user?.followers },
     { key: "following", number: post?.user?.following },
   ];
@@ -37,14 +44,12 @@ const ViewAccount = ({ post }: Props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const openModal = (postData: any) => {
+  const openModal = (postData: IPostData): void => {
     dispatch(addModalData(postData));
     dispatch(toggleModal());
   };
 
-  console.log(user, "user101");
-
-  const onProfileClick = () => {
+  const onProfileClick = (): void => {
     navigate(`/profile/${user.id}`);
   };
 
@@ -64,7 +69,7 @@ const ViewAccount = ({ post }: Props) => {
         </Right>
       </Header>
       <StatsContainer>
-        {stats.map((stat: any) => (
+        {stats.map((stat: IStats) => (
           <Stats>
             <Number>{stat?.number}</Number>
             <Stat>{stat?.key}</Stat>
@@ -72,15 +77,18 @@ const ViewAccount = ({ post }: Props) => {
         ))}
       </StatsContainer>
       <Posts>
-        {post.user.posts.slice(0, 3).map((post: any) => (
-          <PostWrapper onClick={() => openModal({ ...post, user })}>
-            <Image
-              src={`${
-                process.env.REACT_APP_S3_URL + post?.images?.[0]?.mediaFileId
-              }`}
-            />
-          </PostWrapper>
-        ))}
+        {user?.posts
+          ?.slice(0, 3)
+          .map((post: { images: IImages[]; post: IPost }) => (
+            <PostWrapper onClick={() => openModal({ ...post, user })}>
+              <Image
+                src={`${
+                  (process.env.REACT_APP_S3_URL as string) +
+                  post?.images?.[0]?.mediaFileId
+                }`}
+              />
+            </PostWrapper>
+          ))}
       </Posts>
       <ButtonContainer>
         <Button>Message</Button>

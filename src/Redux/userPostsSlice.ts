@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./store";
-import axios from "axios";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { IImages } from "../Components/FeedCard/types";
 
 interface Post {
   post: {
@@ -13,7 +13,7 @@ interface Post {
     updatedAt: string;
   };
 
-  images: any[];
+  images: IImages[];
 }
 
 interface InitialState {

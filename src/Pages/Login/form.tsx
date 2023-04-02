@@ -15,8 +15,13 @@ import { Link } from "react-router-dom";
 import { Notify } from "notiflix";
 import { useNavigate } from "react-router-dom";
 
-function Form() {
-  const [userDetails, setUserDetails] = useState({
+interface IForm {
+  email: string;
+  password: string;
+}
+
+const Form: React.FC = () => {
+  const [userDetails, setUserDetails] = useState<IForm>({
     email: "",
     password: "",
   });
@@ -65,6 +70,6 @@ function Form() {
       </Bottom>
     </FormContainer>
   );
-}
+};
 
 export default Form;

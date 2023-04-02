@@ -3,20 +3,19 @@ import { ChatIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 import { useAppDispatch } from "../../Redux/hooks";
 import { addModalData, toggleModal } from "../../Redux/postModalSlice";
+import { IPostData } from "../FeedCard/types";
 import { CommentContainer, DataCtn, Img, Wrapper } from "./styles";
-interface props {
-  post: any;
+interface IPost {
+  post: IPostData;
 }
-const Post = ({ post }: props) => {
-  const [hovered, setHovered] = useState(false);
+const Post: React.FC<IPost> = ({ post }) => {
+  const [hovered, setHovered] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const openModal = () => {
     dispatch(addModalData(post));
     dispatch(toggleModal());
   };
-
-  console.log(post, "post11");
 
   return (
     <Wrapper
@@ -25,7 +24,10 @@ const Post = ({ post }: props) => {
       onClick={openModal}
     >
       <Img
-        src={process.env.REACT_APP_S3_URL + post?.images?.[0]?.mediaFileId}
+        src={
+          (process.env.REACT_APP_S3_URL as string) +
+          post?.images?.[0]?.mediaFileId
+        }
         className={`filter-${post?.images[0]?.filter}`}
       />
       {hovered && (
@@ -36,7 +38,7 @@ const Post = ({ post }: props) => {
           </DataCtn>
           <DataCtn>
             <ChatIcon />
-            <p>{post.post.commentCount}</p>
+            <p>{post?.post?.commentCount}</p>
           </DataCtn>
         </CommentContainer>
       )}

@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 
 interface ReadMoreProps {
-  children: any;
+  children: any[];
 }
 
 const ReadMore: React.FC<ReadMoreProps> = ({ children }) => {
   const text = children[1];
 
-  const [isReadMore, setIsReadMore] = useState(true);
-  const toggleReadMore = () => {
+  const [isReadMore, setIsReadMore] = useState<boolean>(true);
+  const toggleReadMore = (): void => {
     setIsReadMore(!isReadMore);
   };
   return (

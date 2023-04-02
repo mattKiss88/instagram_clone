@@ -21,7 +21,7 @@ import {
 } from "./styles";
 import { useNavigate } from "react-router-dom";
 
-interface Props {
+interface IViewAccountProps {
   post: any;
   unhovered: (value: string) => void;
   hovered: (value: string) => void;
@@ -29,13 +29,13 @@ interface Props {
   hoveredOnName: boolean;
 }
 
-const ViewAccount = ({
+const ViewAccount: React.FC<IViewAccountProps> = ({
   post,
   unhovered,
   hovered,
   hoveredOnToolTip,
   hoveredOnName,
-}: Props) => {
+}) => {
   const stats = [
     { key: "posts", number: post?.user?.posts?.length },
     { key: "followers", number: post?.user?.followers },

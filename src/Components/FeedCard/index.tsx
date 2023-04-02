@@ -8,8 +8,9 @@ import { feed as feedState, updatePostLikes } from "../../Redux/feedSlice";
 import { shallowEqual } from "react-redux";
 import { likePost } from "../../Api";
 import { Facebook } from "react-content-loader";
+import { IPostData } from "./types";
 
-interface props {
+interface IFeedCardProps {
   fullName: string;
   likes: number;
   avatar: string;
@@ -18,7 +19,7 @@ interface props {
   postId: number;
   filter?: string;
 }
-const FeedCard: React.FC<props> = ({
+const FeedCard: React.FC<IFeedCardProps> = ({
   fullName,
   likes,
   avatar,
@@ -28,20 +29,20 @@ const FeedCard: React.FC<props> = ({
   filter,
 }) => {
   const [liked, setLiked] = useState<boolean>(false);
-  const [post, setPost] = useState<any>();
+  const [post, setPost] = useState<IPostData>();
   const [loading, setLoading] = useState<boolean>(true);
   let feed = useAppSelector(feedState, shallowEqual);
   const dispatch = useAppDispatch();
-  const { id } = useAppSelector((state) => state.userAccount);
+  const id: number = useAppSelector((state) => state.userAccount.id);
 
-  const onDoubleClick = () => {
+  const onDoubleClick = (): void | null => {
     setLiked(true);
-    if (post.post.likes) return null;
+    if (post?.post.likes) return null;
     dispatch(updatePostLikes(postId) as any);
     handleLike();
   };
 
-  const handleLike = () => {
+  const handleLike = (): void => {
     setLiked(!liked);
     Promise.resolve(likePost(postId, id));
   };
@@ -55,47 +56,42 @@ const FeedCard: React.FC<props> = ({
   }, [liked]);
 
   useEffect(() => {
-    setPost(feed.find((item: any) => item.post.id === postId));
+    setPost(feed.find((item: IPostData) => item.post.id === postId));
   }, [feed]);
 
   const MyFacebookLoader = () => <Facebook />;
 
-  const onLoad = () => {
-    console.log("loaded");
+  function handleImageLoad(): void {
     setLoading(false);
-  };
-
-  let loadImg = () => {
-    let img = new Image();
-    img.src = image;
-    img.onload = onLoad;
-  };
-
-  if (loading) {
-    loadImg();
-    return <MyFacebookLoader />;
   }
 
   return (
-    <FeedWrapper>
-      <PostHeader
-        avatar={avatar}
-        fullName={fullName}
-        postId={postId}
-        userId={post?.user?.id}
-      />
-      <ImageContainer onDoubleClick={onDoubleClick}>
-        <HeartIcon className={liked && "liked"} />
-        <Img src={image} className={`filter-${filter}`} />
-      </ImageContainer>
-      <PostFooter
-        likes={likes}
-        content={content}
-        fullName={fullName}
-        showCaption={true}
-        postData={post}
-      />
-    </FeedWrapper>
+    <>
+      {loading && MyFacebookLoader}{" "}
+      <FeedWrapper style={{ display: !loading ? "block" : "none" }}>
+        <PostHeader
+          avatar={avatar}
+          fullName={fullName}
+          postId={postId}
+          userId={post?.user?.id || 0}
+        />
+        <ImageContainer onDoubleClick={onDoubleClick}>
+          <HeartIcon className={liked && "liked"} />
+          <Img
+            src={image}
+            className={`filter-${filter}`}
+            onLoad={handleImageLoad}
+          />
+        </ImageContainer>
+        <PostFooter
+          likes={likes}
+          content={content}
+          fullName={fullName}
+          showCaption={true}
+          postData={post}
+        />
+      </FeedWrapper>
+    </>
   );
 };
 

@@ -10,12 +10,12 @@ import {
   setStep,
 } from "../../../Redux/createPostModalSlice";
 
-const fileTypes = ["JPG", "PNG", "GIF"];
+const fileTypes: string[] = ["JPG", "PNG", "GIF"];
 
-const StepOne = () => {
-  const newImg = useAppSelector(newImage);
+const StepOne: React.FC = () => {
+  const newImg: File | null = useAppSelector(newImage);
   const dispatch = useAppDispatch();
-  const handleChange = (file: File | null) => {
+  const handleChange = (file: File | null): void => {
     file && dispatch(addImage(file));
   };
 

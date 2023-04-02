@@ -100,9 +100,7 @@ const btnStyle = styled.div<IButtonProps>`
   ${(props) =>
     props.active &&
     `border-top: 1px solid black;
-  opacity: 1;
-
- 
+     opacity: 1;
   
   `}
 `;
@@ -131,3 +129,19 @@ export const ButtonContainer = styled.div`
 `;
 
 export const PostsContainer = styled.div``;
+
+export const Input = styled.input`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: none;
+  outline: none;
+  // background: none;
+  opacity: 0;
+  cursor: pointer;
+`;
+export const AvatarContainer = styled.div`
+  position: relative;
+`;

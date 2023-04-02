@@ -1,7 +1,7 @@
 import React from "react";
 import { DropAreaCtn } from "./styles";
 
-const DropArea = () => {
+const DropArea: React.FC = () => {
   return <DropAreaCtn></DropAreaCtn>;
 };
 

@@ -8,8 +8,14 @@ import { signUpUser } from "../../Redux/userAccountSlice";
 import { Notify } from "notiflix";
 import { useNavigate } from "react-router-dom";
 
-const SignUp = () => {
-  const [signUpDetails, setSignUpDetails] = useState({
+interface IForm {
+  email: string;
+  fullName: string;
+  username: string;
+  password: string;
+}
+const SignUp: React.FC = () => {
+  const [signUpDetails, setSignUpDetails] = useState<IForm>({
     email: "",
     fullName: "",
     username: "",

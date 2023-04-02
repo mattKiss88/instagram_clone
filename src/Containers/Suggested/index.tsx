@@ -14,6 +14,8 @@ import { useAppSelector } from "../../Redux/hooks";
 import { shallowEqual } from "react-redux";
 import User from "./user";
 import { useNavigate } from "react-router-dom";
+import { IUser } from "../../Components/Comment/types";
+
 const Suggested: React.FC = () => {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.userAccount, shallowEqual);
@@ -22,7 +24,7 @@ const Suggested: React.FC = () => {
     shallowEqual
   );
 
-  const goToAccount = () => {
+  const goToAccount = (): void => {
     navigate("/profile");
   };
 
@@ -43,7 +45,7 @@ const Suggested: React.FC = () => {
         <SuggestedText>Suggested For You</SuggestedText>
         <SeeAll>See All</SeeAll>
       </SuggestedContainer>
-      {recommendedUsers?.map((user: any, i: number) => (
+      {recommendedUsers?.map((user: IUser, i: number) => (
         <User key={i} user={user} />
       ))}
     </SuggestedWrapper>

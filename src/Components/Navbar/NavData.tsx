@@ -6,14 +6,15 @@ import {
   PaperAirplaneIcon,
   HomeIcon,
 } from "@heroicons/react/outline";
-const navData: { name: string; icon: any; pathName: string }[] = [
+import { ReactElement } from "react";
+const navData: { name: string; icon: ReactElement; pathName: string }[] = [
   {
     name: "Home",
     icon: <HomeIcon />,
     pathName: "/",
   },
   {
-    name: "Explore",
+    name: "Search",
     icon: <SearchIcon />,
     pathName: "/explore",
   },
@@ -33,7 +34,7 @@ const navData: { name: string; icon: any; pathName: string }[] = [
     pathName: "/",
   },
   {
-    name: "profile",
+    name: "Profile",
     icon: <UserCircleIcon />,
     pathName: "/profile",
   },

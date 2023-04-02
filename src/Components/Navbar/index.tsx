@@ -17,10 +17,9 @@ import { useAppDispatch } from "../../Redux/hooks";
 import { toggleModal } from "../../Redux/createPostModalSlice";
 import axios from "axios";
 
-const Navbar = () => {
-  const [showSearch, setShowSearch] = useState(false);
-  const [search, setSearch] = useState("");
-  const ref: any = useRef(null);
+const Navbar: React.FC = () => {
+  const [showSearch, setShowSearch] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -32,10 +31,8 @@ const Navbar = () => {
     navigate(pathName);
   };
 
-  const onSearchChange = (e: any) => {
+  const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-
-    console.log("search", search);
 
     if (search.length > 2) {
       axios.get(`http://localhost:3001/user?search=${search}`).then((res) => {

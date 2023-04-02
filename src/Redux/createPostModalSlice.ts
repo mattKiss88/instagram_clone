@@ -33,7 +33,6 @@ export const createNewPost = createAsyncThunk(
   "createPost/postNewPost",
   async (_, { getState, dispatch }) => {
     const { createPost } = getState() as RootState;
-    console.log(createPost, "8888");
     const formData = new FormData();
     formData.append("image", createPost.finalImage || "");
     formData.append("filter", createPost.filter);
@@ -48,8 +47,6 @@ export const createNewPost = createAsyncThunk(
         },
       }
     );
-
-    console.log(response);
 
     // if the response is successful, reset the state
     if (response.status === 201) {

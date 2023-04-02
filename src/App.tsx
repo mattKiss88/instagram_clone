@@ -17,6 +17,8 @@ import SignUp from "./Pages/SignUp";
 import UserProfile from "./Pages/UserProfile";
 import { isModalOpen } from "./Redux/createPostModalSlice";
 import CreatePostModal from "./Containers/CreatePostModal";
+import { Wrapper } from "./styles";
+import Navbar from "./Components/SideBar";
 
 function App() {
   const isPostModalOpen = useAppSelector(isOpen);
@@ -36,13 +38,16 @@ function App() {
   return (
     <div>
       {/* <Router> */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<MyProfile />} />
-        <Route path="/profile/:id" element={<UserProfile />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-      </Routes>
+      <Wrapper>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<MyProfile />} />
+          <Route path="/profile/:id" element={<UserProfile />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </Wrapper>
       {/* </Router> */}
       <Suspense fallback={<Loader />}>
         {isPostModalOpen && <ViewPostModal />}

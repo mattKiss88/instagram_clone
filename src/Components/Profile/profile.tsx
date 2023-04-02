@@ -23,15 +23,16 @@ import Tabs from "./tabs";
 import Loader from "../loader";
 import { followRecommendedUsers } from "../../Redux/feedSlice";
 
-interface Props {
+interface IProfile {
   ownAccount: boolean;
   userId?: number;
 }
 
-const Profile = ({ ownAccount }: Props) => {
-  const [active, setActive] = useState("posts");
+const Profile: React.FC<IProfile> = ({ ownAccount }) => {
+  const [active, setActive] = useState<string>("posts");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { id } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
   const [user, setUser] = useState({
     avatar: "",
     username: "",
@@ -61,10 +62,6 @@ const Profile = ({ ownAccount }: Props) => {
       });
   }, [id]);
 
-  console.log(user, "user");
-
-  const dispatch = useAppDispatch();
-
   if (isLoading) {
     return <Loader />;
   }
@@ -81,7 +78,6 @@ const Profile = ({ ownAccount }: Props) => {
 
   return (
     <>
-      <Navbar />
       <Section>
         <Container>
           <Avatar src={`${process.env.REACT_APP_S3_URL + user.avatar}`} />
@@ -116,7 +112,7 @@ const Profile = ({ ownAccount }: Props) => {
         <Tabs ownAccount={ownAccount} active={active} setActive={setActive} />
         <BottomContainer>
           {user.posts.map((post, x) => {
-            return <Post post={{ ...post, user: { ...user } }} />;
+            return <Post post={{ ...post, user: { ...user } } as any} />;
           })}
         </BottomContainer>
       </Section>

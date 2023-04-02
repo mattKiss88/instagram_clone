@@ -16,8 +16,9 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { useAppDispatch } from "../../Redux/hooks";
 import { likeComment } from "../../Redux/postModalSlice";
 import { usePopperTooltip } from "react-popper-tooltip";
-import ViewAccount from "../ToolTips/ViewAccount/indexCopy";
+import ViewAccount from "../ToolTips/ViewAccount/newTooltip";
 import { IReplyData } from "../../Containers/ViewPostModal";
+import { IComment } from "./types";
 
 dayjs.extend(relativeTime);
 
@@ -25,7 +26,7 @@ dayjs.extend(relativeTime);
 // dayjs.extend(relativeTime);
 
 interface CommentProps {
-  comment: any;
+  comment: IComment;
   children?: React.ReactNode;
   type: string;
   setReply: (reply: IReplyData | null) => void;
@@ -39,7 +40,7 @@ const Comment: React.FC<CommentProps> = ({
 }) => {
   const { createdAt, likeCount } = comment;
   const { avatar, username } = comment.user;
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const [showReplies, setShowReplies] = useState<boolean>(false);
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
@@ -63,7 +64,7 @@ const Comment: React.FC<CommentProps> = ({
     setShowReplies(!showReplies);
   };
 
-  const handleReplyEvent = () => {
+  const handleReplyEvent = (): void => {
     setReply({
       reply: `@${username} `,
       commentRepliedToId: comment.commentRepliedToId || comment.id,

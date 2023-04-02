@@ -7,7 +7,16 @@ import five from "../../Assets/5.jpg";
 import six from "../../Assets/6.jpg";
 import seven from "../../Assets/7.jpg";
 
-const seedData: any = [
+export interface ISeedData {
+  fullName: string;
+  email: string;
+  avatar: string;
+  content: string;
+  image: string;
+  likes: number;
+}
+
+const seedData: ISeedData[] = [
   {
     fullName: randFullName(),
     email: randEmail(),

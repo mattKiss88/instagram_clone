@@ -62,6 +62,7 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+
 export const signUpUser = createAsyncThunk(
   "userAccount/signUpUserStatus",
   async (user: SignUpDetails, thunkAPI) => {
@@ -77,7 +78,20 @@ export const signUpUser = createAsyncThunk(
       }
     );
 
-    console.log(response.data, "sign up response");
+    return response.data;
+  }
+);
+
+export const patchProfileImage = createAsyncThunk(
+  "userAccount/patchProfileImageStatus",
+  async (imgFile: File, thunkAPI) => {
+    const formData = new FormData();
+    formData.append("image", imgFile);
+
+    const response = await axios.patch(
+      `${process.env.REACT_APP_API_URL}/user/profile-picture`,
+      formData
+    );
 
     return response.data;
   }
@@ -104,6 +118,12 @@ export const userAccountSlice = createSlice({
         ...state,
         token: action.payload.token,
         ...action.payload.user,
+      };
+    });
+    builder.addCase(patchProfileImage.fulfilled, (state, action) => {
+      return {
+        ...state,
+        avatar: action.payload,
       };
     });
   },

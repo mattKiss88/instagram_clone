@@ -11,19 +11,20 @@ import defaultImg from "../../Assets/defaultPP.png";
 import { useAppDispatch } from "../../Redux/hooks";
 import { followRecommendedUsers } from "../../Redux/feedSlice";
 import { usePopperTooltip } from "react-popper-tooltip";
-import ViewAccount from "../../Components/ToolTips/ViewAccount/indexCopy";
+import ViewAccount from "../../Components/ToolTips/ViewAccount/newTooltip";
+import { IUser } from "../../Components/Comment/types";
 
-interface IProps {
-  user: any;
+interface IUserProps {
+  user: IUser;
 }
-const User = ({ user }: IProps) => {
+const User: React.FC<IUserProps> = ({ user }) => {
   const [buttonName, setButtonName] = useState<"Follow" | "Following">(
     "Follow"
   );
 
   const dispatch = useAppDispatch();
 
-  const onClickHandler = () => {
+  const onClickHandler = (): void => {
     if (buttonName === "Follow") {
       setButtonName("Following");
     } else {

@@ -11,21 +11,22 @@ import NavBar from "./Navbar";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import Loader from "../../Components/loader";
+import { ReactElement } from "react";
 
-const CreatePostModal = () => {
-  const isOpen = useAppSelector(isModalOpen);
-  const step = useAppSelector(currentStep);
+const CreatePostModal: React.FC = () => {
+  const isOpen: boolean = useAppSelector(isModalOpen);
+  const step: number = useAppSelector(currentStep);
+  const isLoading: boolean = useAppSelector(loading);
   const dispatch = useAppDispatch();
-  const isLoading = useAppSelector(loading);
 
   Modal.setAppElement("#root");
 
-  function closeModal() {
+  function closeModal(): void {
     dispatch(toggleModal());
     dispatch(resetState());
   }
 
-  const renderStep = () => {
+  const renderStep = (): ReactElement => {
     switch (step) {
       case 1:
         return <StepOne />;
