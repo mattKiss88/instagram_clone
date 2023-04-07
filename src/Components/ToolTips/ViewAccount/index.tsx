@@ -20,6 +20,7 @@ import {
   Username,
 } from "./styles";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../../Redux/hooks";
 
 interface IViewAccountProps {
   post: any;
@@ -42,6 +43,8 @@ const ViewAccount: React.FC<IViewAccountProps> = ({
     { key: "following", number: post?.user?.following },
   ];
 
+  const loggedInUserId = useAppSelector((state) => state.userAccount.id);
+
   const user = post?.user;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -52,6 +55,7 @@ const ViewAccount: React.FC<IViewAccountProps> = ({
   };
 
   const onProfileClick = () => {
+    if (user.id === loggedInUserId) return navigate(`/profile`);
     navigate(`/profile/${user.id}`);
   };
 

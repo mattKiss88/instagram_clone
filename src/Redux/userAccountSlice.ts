@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
+import { getUser } from "../Api";
 
 interface InitialState {
   id: number;
@@ -97,12 +98,31 @@ export const patchProfileImage = createAsyncThunk(
   }
 );
 
+export const getUserDetails = createAsyncThunk(
+  "userAccount/getUserDetailsStatus",
+  async (userId: number, thunkAPI) => {
+    try {
+      const res = await getUser(userId);
+
+      return res;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const userAccountSlice = createSlice({
   name: "userAccount",
   initialState,
   reducers: {
     getUserData: (state, action: PayloadAction<any>) => {
       return action.payload;
+    },
+    updateAvatar: (state, action: PayloadAction<File>) => {
+      return {
+        ...state,
+        avatar: action.payload,
+      };
     },
   },
   extraReducers: (builder) => {
@@ -111,6 +131,7 @@ export const userAccountSlice = createSlice({
         ...state,
         token: action.payload.accessToken,
         ...action.payload.user,
+        avatar: action.payload.user?.Profile_picture?.mediaFileId,
       };
     });
     builder.addCase(signUpUser.fulfilled, (state, action) => {
@@ -123,7 +144,13 @@ export const userAccountSlice = createSlice({
     builder.addCase(patchProfileImage.fulfilled, (state, action) => {
       return {
         ...state,
-        avatar: action.payload,
+        avatar: action?.payload?.avatar,
+      };
+    });
+    builder.addCase(getUserDetails.fulfilled, (state, action) => {
+      return {
+        ...state,
+        ...action.payload,
       };
     });
   },

@@ -94,58 +94,73 @@ const ViewPostModal: React.FC = () => {
   }, [imgRef.current]);
 
   return (
-    <Container style={{ opacity: imgHeight ? "1" : "0" }}>
-      <XIcon className="x" />
-      <Modal ref={ref} height={imgHeight}>
-        <ImageContainer onDoubleClick={onDoubleClick}>
-          <HeartIcon className={liked && "liked"} />
-          <Image
-            src={`${process.env.REACT_APP_S3_URL + images[0].mediaFileId}`}
-            className={`filter-${images[0].filter}`}
-            ref={imgRef}
-          />
-        </ImageContainer>
-        <SideBar>
-          <PostHeader
-            avatar={`${process.env.REACT_APP_S3_URL + user.avatar}`}
-            fullName={user.username}
-            postId={post?.id}
-            userId={user.id}
-          />
-          <CommentsWrapper height={imgHeight}>
-            <CaptionContainer>
-              <ProfilePic
-                src={`${process.env.REACT_APP_S3_URL + user.avatar}`}
+    <Container
+      style={{
+        opacity: imgHeight ? "1" : "0",
+        // display: isModalOpen ? "block" : "none",
+      }}
+    >
+      {isModalOpen && (
+        <>
+          <XIcon className="x" />
+          <Modal ref={ref} height={imgHeight}>
+            <ImageContainer onDoubleClick={onDoubleClick}>
+              <HeartIcon className={liked && "liked"} />
+              <Image
+                src={`${
+                  process.env.REACT_APP_S3_URL + images?.[0]?.mediaFileId
+                }`}
+                className={`filter-${images[0]?.filter}`}
+                ref={imgRef}
               />
-              <Caption>
-                <span className="username">{user.username} </span>{" "}
-                {post?.caption}
-              </Caption>
-            </CaptionContainer>
-            {comments?.map((c: IComment) =>
-              loading ? (
-                MyFacebookLoader()
-              ) : (
-                <>
-                  <Comment comment={c} type="new" setReply={setReply}>
-                    {c?.subComments.map((sub: IComment) => (
-                      <Comment comment={sub} type="sub" setReply={setReply} />
-                    ))}
-                  </Comment>
-                </>
-              )
-            )}
-          </CommentsWrapper>
-          <PostFooter
-            likes={post?.likeCount}
-            fullName={user?.fullName}
-            postData={{ user, post, images }}
-            location="modal"
-            replyData={reply}
-            setReply={setReply}
-          />
-        </SideBar>
-      </Modal>
+            </ImageContainer>
+            <SideBar>
+              <PostHeader
+                avatar={`${process.env.REACT_APP_S3_URL + user.avatar}`}
+                fullName={user.username}
+                postId={post?.id}
+                userId={user.id}
+              />
+              <CommentsWrapper height={imgHeight}>
+                <CaptionContainer>
+                  <ProfilePic
+                    src={`${process.env.REACT_APP_S3_URL + user.avatar}`}
+                  />
+                  <Caption>
+                    <span className="username">{user.username} </span>{" "}
+                    {post?.caption}
+                  </Caption>
+                </CaptionContainer>
+                {comments?.map((c: IComment) =>
+                  loading ? (
+                    MyFacebookLoader()
+                  ) : (
+                    <>
+                      <Comment comment={c} type="new" setReply={setReply}>
+                        {c?.subComments.map((sub: IComment) => (
+                          <Comment
+                            comment={sub}
+                            type="sub"
+                            setReply={setReply}
+                          />
+                        ))}
+                      </Comment>
+                    </>
+                  )
+                )}
+              </CommentsWrapper>
+              <PostFooter
+                likes={post?.likeCount}
+                fullName={user?.fullName}
+                postData={{ user, post, images }}
+                location="modal"
+                replyData={reply}
+                setReply={setReply}
+              />
+            </SideBar>
+          </Modal>
+        </>
+      )}
     </Container>
   );
 };

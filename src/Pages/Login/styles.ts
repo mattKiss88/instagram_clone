@@ -48,6 +48,11 @@ export const FormContainer = styled.div`
     margin: 40px auto;
     display: block;
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 400px;
+  }
 `;
 
 export const Input = styled.input`

@@ -1,6 +1,5 @@
 import { CogIcon } from "@heroicons/react/outline";
 import { useEffect, useState } from "react";
-import Navbar from "../Navbar";
 import Post from "../Post";
 import {
   Avatar,
@@ -23,9 +22,11 @@ import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import Tabs from "./tabs";
 import { getUserPosts } from "../../Api";
 import { getPosts } from "../../Redux/userPostsSlice";
-import { patchProfileImage } from "../../Redux/userAccountSlice";
-import { IImages, IPost, IPostData } from "../FeedCard/types";
-import { JsxElement } from "typescript";
+import {
+  getUserDetails,
+  patchProfileImage,
+} from "../../Redux/userAccountSlice";
+import useWindowSize from "../../Hooks/useWindowSize";
 
 interface IProfile {
   ownAccount: boolean;
@@ -37,6 +38,7 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
   const posts = useAppSelector((state) => state.userPosts.posts);
   const user = useAppSelector((state) => state.userAccount);
   const dispatch = useAppDispatch();
+  const size = useWindowSize();
 
   useEffect(() => {
     handlePosts();
@@ -45,6 +47,7 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
   const handlePosts = async () => {
     let res = await getUserPosts(user.id);
     dispatch(getPosts(res));
+    dispatch(getUserDetails(user.id) as any);
   };
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -91,6 +94,26 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
               <EditButton>Edit Profile</EditButton>
               <CogIcon style={{ width: "20px" }} />
             </TopRow>
+            {(size.width as number) > 980 && (
+              <>
+                <MiddleRow>
+                  <Posts>
+                    <span>{posts.length}</span> Posts
+                  </Posts>
+                  <Followers>
+                    <span>{user.followers}</span> Followers
+                  </Followers>
+                  <Following>
+                    <span>{user.following}</span> Following
+                  </Following>
+                </MiddleRow>
+                <FullName>{user.fullName}</FullName>
+              </>
+            )}
+          </ProfileDetails>
+        </Container>
+        {(size.width as number) < 980 && (
+          <>
             <MiddleRow>
               <Posts>
                 <span>{posts.length}</span> Posts
@@ -102,12 +125,11 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
                 <span>{user.following}</span> Following
               </Following>
             </MiddleRow>
-            <FullName>{user.fullName}</FullName>
-          </ProfileDetails>
-        </Container>
+          </>
+        )}
         <Tabs ownAccount={ownAccount} active={active} setActive={setActive} />
         <BottomContainer>
-          {posts.map((post: any, x: number) => {
+          {posts?.map((post: any, x: number) => {
             return (
               <Post key={x} post={{ ...post, user: { ...user, posts } }} />
             );

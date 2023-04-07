@@ -64,6 +64,7 @@ export const ImageContainer = styled.div`
     fill: #fff;
     stroke: white;
     opacity: 0;
+    z-index: 5;
   }
 
   .liked {

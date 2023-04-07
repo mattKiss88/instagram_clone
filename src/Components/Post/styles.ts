@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  max-width: 293px;
-  height: 293px;
+  // max-width: 293px;
+  // height: 293px;
   position: relative;
   aspect-ratio: 1/1;
   cursor: pointer;

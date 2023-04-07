@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { FeedWrapper, Image as Img, ImageContainer } from "./styles";
 import PostHeader from "../Reusable/PostHeader";
 import PostFooter from "../Reusable/PostFooter";
@@ -94,5 +94,9 @@ const FeedCard: React.FC<IFeedCardProps> = ({
     </>
   );
 };
+
+export const FeedCardMemo = memo(FeedCard, (prevProps, nextProps) => {
+  return prevProps === nextProps;
+});
 
 export default FeedCard;

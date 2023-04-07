@@ -22,13 +22,14 @@ import { useParams } from "react-router-dom";
 import Tabs from "./tabs";
 import Loader from "../loader";
 import { followRecommendedUsers } from "../../Redux/feedSlice";
-
+import useWindowSize from "../../Hooks/useWindowSize";
 interface IProfile {
   ownAccount: boolean;
   userId?: number;
 }
 
 const Profile: React.FC<IProfile> = ({ ownAccount }) => {
+  const size = useWindowSize();
   const [active, setActive] = useState<string>("posts");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { id } = useParams<{ id: string }>();
@@ -52,7 +53,6 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
     axios
       .get(`http://localhost:3001/user/${id}`)
       .then((res) => {
-        console.log(res);
         setUser(res.data.user);
         setIsLoading(false);
         setButtonName(res.data.user.isFollowing ? "Following" : "Follow");
@@ -95,24 +95,28 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
                 {buttonName}
               </EditButton>
             </TopRow>
-            <MiddleRow>
-              <Posts>
-                <span>{user.posts?.length}</span> Posts
-              </Posts>
-              <Followers>
-                <span>{user.followers}</span> Followers
-              </Followers>
-              <Following>
-                <span>{user.following}</span> Following
-              </Following>
-            </MiddleRow>
+            {(size.width as number) > 980 && (
+              <MiddleRow>
+                <Posts>
+                  <span>{user.posts?.length}</span> Posts
+                </Posts>
+                <Followers>
+                  <span>{user.followers}</span> Followers
+                </Followers>
+                <Following>
+                  <span>{user.following}</span> Following
+                </Following>
+              </MiddleRow>
+            )}
             <FullName>{user.fullName}</FullName>
           </ProfileDetails>
         </Container>
         <Tabs ownAccount={ownAccount} active={active} setActive={setActive} />
         <BottomContainer>
           {user.posts.map((post, x) => {
-            return <Post post={{ ...post, user: { ...user } } as any} />;
+            return (
+              <Post post={{ ...post, user: { ...user } } as any} key={x} />
+            );
           })}
         </BottomContainer>
       </Section>

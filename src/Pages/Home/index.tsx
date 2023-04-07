@@ -1,14 +1,15 @@
 import { Suspense, lazy } from "react";
 import Loader from "../../Components/loader";
+import { FeedMemo } from "../../Containers/Feed";
 
 const Home: React.FC = () => {
-  const Navbar = lazy(() => import("../../Components/Navbar"));
   const Feed = lazy(() => import("../../Containers/Feed"));
 
   return (
     <Suspense fallback={<Loader />}>
       <div>
-        <Feed />
+        {/* <Feed show={true} /> */}
+        <FeedMemo show={true} />
       </div>
     </Suspense>
   );

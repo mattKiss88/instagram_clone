@@ -4,9 +4,10 @@ import ss1 from "../../Assets/screenshot1.png";
 import ss2 from "../../Assets/screenshot2.png";
 import ss3 from "../../Assets/screenshot3.png";
 import Form from "./form";
-
+import useWindowSize from "../../Hooks/useWindowSize";
 const Login = () => {
   const [activeImg, setActiveImg] = useState<1 | 2 | 3>(1);
+  const { width } = useWindowSize();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -33,11 +34,14 @@ const Login = () => {
 
   return (
     <Section>
-      <ImageContainer>
-        <Img1 src={ss1} order={orderImages(1)} />
-        <Img1 src={ss2} order={orderImages(2)} />
-        <Img1 src={ss3} order={orderImages(3)} />
-      </ImageContainer>
+      {(width as number) > 860 && (
+        <ImageContainer>
+          <Img1 src={ss1} order={orderImages(1)} />
+          <Img1 src={ss2} order={orderImages(2)} />
+          <Img1 src={ss3} order={orderImages(3)} />
+        </ImageContainer>
+      )}
+
       <Form />
     </Section>
   );

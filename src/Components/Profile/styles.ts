@@ -1,30 +1,54 @@
 import styled from "styled-components";
 export const Section = styled.section`
-  max-width: 930px;
+  max-width: 970px;
   margin: 0 auto;
+  padding: 0 20px;
+
+  @media (max-width: 480px) {
+    padding: 0px;
+  }
 `;
 
 export const Container = styled.section`
   padding: 90px 0 40px;
   display: flex;
   border-bottom: 1px solid #dbdbdb;
+
+  @media (max-width: 600px) {
+    padding: 30px 0 30px;
+  }
 `;
 
 export const Avatar = styled.img`
   cursor: pointer;
-
+  object-fit: cover;
   border-radius: 50%;
   width: 150px;
   height: 150px;
   margin: 0px 70px;
+
+  @media (max-width: 600px) {
+    width: 90px;
+    height: 90px;
+    margin: 0px 25px;
+  }
 `;
 
 export const ProfileDetails = styled.div`
   margin-left: 20px;
+
+  @media (max-width: 980px) {
+    margin-left: 0px;
+  }
 `;
 
 export const Username = styled.h2`
   font-size: 28px;
+
+  @media (max-width: 600px) {
+    margin-right: auto;
+    font-size: 20px;
+  }
 `;
 
 export const Posts = styled.p`
@@ -50,6 +74,16 @@ export const EditButton = styled.button`
   font-size: 14px;
   font-weight: 600;
   height: 30px;
+
+  @media (max-width: 980px) {
+    margin-left: 0px;
+    margin-top: 10px;
+  }
+
+  @media (max-width: 600px) {
+    width: 200px;
+    background: #dbdbdb;
+  }
 `;
 
 export const TopRow = styled.div`
@@ -59,6 +93,20 @@ export const TopRow = styled.div`
 
   svg {
     margin-left: 14px;
+  }
+
+  @media (max-width: 980px) {
+    flex-direction: column;
+    align-items: center;
+
+    svg {
+      display: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    margin-top: 15px;
+    width: fit-content;
   }
 `;
 
@@ -74,6 +122,13 @@ export const MiddleRow = styled.div`
   p {
     font-weight: 500;
     font-size: 16px;
+  }
+
+  @media (max-width: 980px) {
+    justify-content: center;
+    border-bottom: 1px solid #dbdbdb;
+    padding-bottom: 20px;
+    margin: 20px 0px 0px;
   }
 `;
 
@@ -103,6 +158,15 @@ const btnStyle = styled.div<IButtonProps>`
      opacity: 1;
   
   `}
+
+  @media (max-width: 980px) {
+    ${(props) =>
+      props.active &&
+      `  border-top: 1px solid transparent;
+      opacity: 1;
+    
+    `}
+  }
 `;
 
 interface IButtonProps {
@@ -118,6 +182,14 @@ export const BottomContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 24px;
+
+  @media (max-width: 800px) {
+    gap: 12px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 8px;
+  }
 `;
 
 export const ButtonContainer = styled.div`

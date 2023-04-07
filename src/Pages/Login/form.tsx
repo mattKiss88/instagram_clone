@@ -60,8 +60,8 @@ const Form: React.FC = () => {
           onChange={handleChange}
           name="password"
         />
-        <LoginBtn>Log in</LoginBtn>
-        <ForgotPassword>Forgotten your password?</ForgotPassword>
+        <LoginBtn type="submit">Log in</LoginBtn>
+        <ForgotPassword type="button">Forgotten your password?</ForgotPassword>
       </Top>
       <Bottom>
         <NoAccount>

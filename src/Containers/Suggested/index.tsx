@@ -32,7 +32,7 @@ const Suggested: React.FC = () => {
     <SuggestedWrapper>
       <UserWrapper>
         <Avatar
-          src={`${process.env.REACT_APP_S3_URL + user?.profilePic}`}
+          src={`${process.env.REACT_APP_S3_URL + user?.avatar}`}
           onClick={goToAccount}
         />
         <UsernameContainer onClick={goToAccount}>

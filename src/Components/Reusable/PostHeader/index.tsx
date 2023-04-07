@@ -24,6 +24,7 @@ const PostHeader: React.FC<IPostHeader> = ({
   const [hoveredOnName, setHoveredOnName] = React.useState<boolean>(false);
   const [hoveredOnToolTip, setHoveredOnToolTip] =
     React.useState<boolean>(false);
+  const loggedInUserId = useAppSelector((state) => state.userAccount.id);
 
   const feedState = useAppSelector(feed, shallowEqual);
   const post: IPostData = feedState.find(
@@ -69,6 +70,9 @@ const PostHeader: React.FC<IPostHeader> = ({
     if (modalIsOpen) {
       dispatch(toggleModal());
     }
+
+    if (userId === loggedInUserId) return navigate(`/profile`);
+
     navigate(`/profile/${userId}`);
   };
 

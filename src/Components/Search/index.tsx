@@ -46,8 +46,11 @@ const Search: React.FC<SearchProps> = ({ setShowSearch }) => {
     }
   }, [isClickOutside]);
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
-    const id = (e.target as any).id;
+  const handleClick = (
+    e: React.MouseEvent<HTMLDivElement>,
+    id: number
+  ): void => {
+    // const id = (e.target as any).id;
     setShowSearch(false);
     navigate(`/profile/${id}`);
   };
@@ -77,7 +80,11 @@ const Search: React.FC<SearchProps> = ({ setShowSearch }) => {
         <h3>Results</h3>
         {searchResults.map((user: any, i) => {
           return (
-            <UserItem onClick={handleClick} id={user.id} key={i}>
+            <UserItem
+              onClick={(e) => handleClick(e, user.id)}
+              id={user.id}
+              key={i}
+            >
               <Avatar
                 src={
                   process.env.REACT_APP_S3_URL +

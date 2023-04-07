@@ -23,6 +23,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { IUser } from "../../Comment/types";
 import { IImages, IPost, IPostData } from "../../FeedCard/types";
+import { useAppSelector } from "../../../Redux/hooks";
 
 interface IViewAccountProps {
   post: { user: IUser };
@@ -34,6 +35,8 @@ interface IStats {
 }
 
 const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
+  const loggedInUserId = useAppSelector((state) => state.userAccount.id);
+
   const stats: IStats[] = [
     { key: "posts", number: post?.user?.posts?.length || 0 },
     { key: "followers", number: post?.user?.followers },
@@ -50,6 +53,8 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
   };
 
   const onProfileClick = (): void => {
+    if (user.id === loggedInUserId) return navigate(`/profile`);
+
     navigate(`/profile/${user.id}`);
   };
 

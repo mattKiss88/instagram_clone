@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import navData from "../Navbar/NavData";
+import navData from "../../Navbar/NavData";
 import {
   Bottom,
   // Right,
@@ -11,34 +11,35 @@ import {
   Wrapper,
   // Search,
   // SearchContainer,
-} from "./styles";
+} from "../styles";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../Redux/hooks";
-import { toggleModal } from "../../Redux/createPostModalSlice";
+import { useAppDispatch } from "../../../Redux/hooks";
+import { toggleModal } from "../../../Redux/createPostModalSlice";
 import axios from "axios";
 import { MenuIcon } from "@heroicons/react/outline";
 import { useLocation } from "react-router-dom";
-import Search from "../Search";
+import Search from "../../Search";
 import { ArrowRightIcon } from "@heroicons/react/outline";
 import { LogoutIcon } from "@heroicons/react/outline";
-import { persistor } from "../../Redux/store";
+import { persistor } from "../../../Redux/store";
+import { Nav } from "./styles";
 
 // arrow right on rectangle icon from heroicons react outline:
 //
 
-const Navbar: React.FC = () => {
+const NavbarMb: React.FC = () => {
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const location = useLocation();
 
-  const handleLinkClick = (name: string, pathName: string) => {
+  const handleLinkClick = (name: string) => {
     switch (name) {
       case "Home":
         return navigate("/");
       case "Search":
-        return setShowSearch(true);
+        return navigate("/search");
       case "Activity":
         return navigate("/activity");
       case "Profile":
@@ -60,30 +61,16 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <Section collapse={showSearch}>
-      {/* <Logo alt="Instagram" src={logo} onClick={() => navigate("/")} /> */}
-      <Wrapper>
-        <Top>
-          {navData.map((item, i) => (
-            <IconContainer
-              key={item.name}
-              onClick={() => handleLinkClick(item.name, item.pathName)}
-              bold={location.pathname === item.pathName}
-            >
-              <>{item.icon}</>
-              <p>{item.name}</p>
-            </IconContainer>
-          ))}
-        </Top>
-        <Bottom>
-          <IconContainer>
-            <LogoutIcon onClick={logOut} />
-          </IconContainer>
-        </Bottom>
-      </Wrapper>
-      {showSearch && <Search setShowSearch={setShowSearch} />}
-    </Section>
+    <Nav>
+      <div>
+        {navData.map((item, i) => (
+          <div key={i} onClick={() => handleLinkClick(item.name)}>
+            {item.icon}
+          </div>
+        ))}
+      </div>
+    </Nav>
   );
 };
 
-export default Navbar;
+export default NavbarMb;
