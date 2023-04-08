@@ -753,3 +753,9 @@ button {
   content: "";
   mix-blend-mode: multiply;
 }
+
+.emoji-tooltip-container {
+  z-index: 1;
+  width: 300px;
+  height: 450px;
+}

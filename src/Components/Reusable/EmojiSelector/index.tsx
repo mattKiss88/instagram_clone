@@ -18,10 +18,10 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
         onEmojiSelect={onEmojiSelect}
         showPreview={false}
         showSkinTones={false}
-        // emojiTooltip={true}
         theme={"light"}
         previewPosition={"none"}
         onClickOutside={onClickOutside}
+        maxFrequentRows={1}
       />
     </Container>
   );

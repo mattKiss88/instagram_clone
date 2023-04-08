@@ -96,19 +96,21 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
               </EditButton>
             </TopRow>
             {(size.width as number) > 980 && (
-              <MiddleRow>
-                <Posts>
-                  <span>{user.posts?.length}</span> Posts
-                </Posts>
-                <Followers>
-                  <span>{user.followers}</span> Followers
-                </Followers>
-                <Following>
-                  <span>{user.following}</span> Following
-                </Following>
-              </MiddleRow>
+              <>
+                <MiddleRow>
+                  <Posts>
+                    <span>{user.posts?.length}</span> Posts
+                  </Posts>
+                  <Followers>
+                    <span>{user.followers}</span> Followers
+                  </Followers>
+                  <Following>
+                    <span>{user.following}</span> Following
+                  </Following>
+                </MiddleRow>
+                <FullName>{user.fullName}</FullName>
+              </>
             )}
-            <FullName>{user.fullName}</FullName>
           </ProfileDetails>
         </Container>
         <Tabs ownAccount={ownAccount} active={active} setActive={setActive} />

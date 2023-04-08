@@ -139,8 +139,22 @@ const PostFooter: React.FC<IPostFooter> = ({
       delayHide: 100,
       delayShow: 100,
       interactive: true,
-      placement: "auto",
+      // placement: "top",
     });
+
+  React.useEffect(() => {
+    const handleKeyDown = ({ key }: any) => {
+      if (key === "Escape") {
+        setShowEmojiSelector(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <CardFooter>
@@ -194,7 +208,7 @@ const PostFooter: React.FC<IPostFooter> = ({
           {showEmojiSelector && (
             <div
               ref={setTooltipRef}
-              {...getTooltipProps({ className: "tooltip-container" })}
+              {...getTooltipProps({ className: "emoji-tooltip-container" })}
             >
               <EmojiSelector
                 onEmojiSelect={addEmoji}
