@@ -13,8 +13,9 @@ import {
   // SearchContainer,
 } from "../styles";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../Redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
 import { toggleModal } from "../../../Redux/createPostModalSlice";
+import { toggleModal as toggleViewPostModal } from "../../../Redux/postModalSlice";
 import axios from "axios";
 import { MenuIcon } from "@heroicons/react/outline";
 import { useLocation } from "react-router-dom";
@@ -33,8 +34,21 @@ const NavbarMb: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const location = useLocation();
+  const isPostModalOpen = useAppSelector((state) => state.postModal.isOpen);
+  const isCreatePostModalOpen = useAppSelector(
+    (state) => state.createPost.active
+  );
 
   const handleLinkClick = (name: string) => {
+    if (isCreatePostModalOpen) {
+      dispatch(toggleModal());
+    }
+
+    if (isPostModalOpen) {
+      dispatch(toggleViewPostModal());
+    }
+    console.log("hereeeee");
+
     switch (name) {
       case "Home":
         return navigate("/");

@@ -22,6 +22,7 @@ import Navbar from "./Components/SideBar";
 import useWindowSize from "./Hooks/useWindowSize";
 import NavbarMb from "./Components/SideBar/mobile/mobile";
 import ViewPostModalMobile from "./Containers/ViewPostModal/mobile";
+import TopNavMobile from "./Components/SideBar/mobile/top";
 function App() {
   const isPostModalOpen = useAppSelector(isOpen);
   const isCreatePostModalOpen = useAppSelector(isModalOpen);
@@ -63,6 +64,10 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
       </Routes>
       <Wrapper>
+        {token &&
+          (size.width as number) < 700 &&
+          !isPostModalOpen &&
+          !isCreatePostModalOpen && <TopNavMobile />}
         {token && ((size.width as number) < 700 ? <NavbarMb /> : <Navbar />)}
         <Routes>
           <Route path="/" element={<Home />} />

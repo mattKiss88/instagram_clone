@@ -26,15 +26,15 @@ export const Nav = styled.nav`
 export const TopNav = styled.nav`
   background: #fff;
   height: 50px;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 10000;
   left: 0;
+  border-bottom: 1px solid #dbdbdb;
 
-  svg {
-    width: 25px;
-    height: 25px;
+  img {
+    width: 110px;
   }
 `;

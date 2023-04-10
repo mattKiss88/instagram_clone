@@ -11,13 +11,17 @@ import NavBar from "./Navbar";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import Loader from "../../Components/loader";
-import { ReactElement } from "react";
+import { ReactElement, useEffect, useState } from "react";
+import useWindowSize from "../../Hooks/useWindowSize";
 
 const CreatePostModal: React.FC = () => {
   const isOpen: boolean = useAppSelector(isModalOpen);
   const step: number = useAppSelector(currentStep);
   const isLoading: boolean = useAppSelector(loading);
   const dispatch = useAppDispatch();
+  const size = useWindowSize();
+  const [width, setWidth] = useState<string>("523px");
+  const [height, setHeight] = useState<string>("567px");
 
   Modal.setAppElement("#root");
 
@@ -47,11 +51,13 @@ const CreatePostModal: React.FC = () => {
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
-      width: step === 3 || step === 4 ? "849px" : "523px",
-      height: "567px",
-      borderRadius: "15px",
+      width: width,
+      minWidth: (size.width as number) > 500 ? "500px" : "100%",
+      height: height,
+      borderRadius: (size.width as number) < 500 ? "0px" : "15px",
       padding: "0",
-      transition: "all 0.5s ease-in-out",
+      transition:
+        (size.width as number) > 700 ? "all 0.5s ease-in-out" : "none",
     },
 
     overlay: {
@@ -59,6 +65,25 @@ const CreatePostModal: React.FC = () => {
       zIndex: 1000,
     },
   };
+
+  useEffect(() => {
+    if (step === 3 || step === 4) {
+      setWidth("849px");
+    }
+
+    if ((size.width as number) < 860) {
+      setWidth("70vw");
+
+      if (step === 3) {
+        setHeight("722px");
+      }
+    }
+
+    if ((size.width as number) < 500) {
+      setWidth("100vw");
+      setHeight(String(size.height) + "px");
+    }
+  }, [step, size.width]);
 
   return (
     <Modal

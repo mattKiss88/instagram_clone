@@ -70,5 +70,9 @@ export const UploadBtn = styled.input`
     top: 0;
     line-height: 1;
     cursor: pointer;
+
+    @media (max-width: 800px) {
+      content: "Select Image";
+    }
   }
 `;

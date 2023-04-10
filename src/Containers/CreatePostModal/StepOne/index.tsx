@@ -9,7 +9,7 @@ import {
   newImage,
   setStep,
 } from "../../../Redux/createPostModalSlice";
-
+const width = window.innerWidth;
 const fileTypes: string[] = ["JPG", "PNG", "GIF"];
 
 const StepOne: React.FC = () => {
@@ -26,7 +26,7 @@ const StepOne: React.FC = () => {
   return (
     <StepOneCtn>
       <img src={media} />
-      <P>Drag photos and videos here</P>
+      {width > 800 ? <P>Drag photos and videos here</P> : <P></P>}
       <UploadBtn
         type="file"
         accept="image/*"

@@ -4,7 +4,7 @@ export const Navbar = styled.nav`
   height: 39px;
   border-bottom: 1px solid #dbdbdb;
   background-color: #fff;
-
+  position: relative;
   .step1 {
     padding-top: 7px;
   }

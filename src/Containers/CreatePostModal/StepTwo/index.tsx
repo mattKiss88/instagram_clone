@@ -3,10 +3,7 @@ import {
   addFinalImage,
   addFinalImageUrl,
   currentStep,
-  finalImage,
-  finalImageUrl,
   newImage,
-  resetImage,
   setStep,
   updateCaption,
   updateFilter,
@@ -20,7 +17,6 @@ import {
   FilterImgCtn,
   ImageCtn,
   InnerCtn,
-  StaticImage,
   StepTwoCtn,
   UserDetailsCtn,
   Wrapper,
@@ -30,6 +26,7 @@ import { filters } from "./filterData";
 import filterImg from "../../../Assets/filterImg.jpeg";
 import defaultPP from "../../../Assets/defaultPP.png";
 import { dataURLtoFile } from "../ToDataUri";
+import useWindowSize from "../../../Hooks/useWindowSize";
 
 interface IImageProps {
   image: string | File;
@@ -53,6 +50,8 @@ const StepTwo: React.FC = () => {
   const [active, setActive] = useState<string>("");
   const userAccount = useAppSelector((state) => state.userAccount);
   const dispatch = useAppDispatch();
+  const size = useWindowSize();
+  const width = window.innerWidth;
 
   const [imageProperties, setImageProperties] = useState<IImageProps>({
     image: newImg || defaultPP,
@@ -101,16 +100,23 @@ const StepTwo: React.FC = () => {
     if (step === 3 && newImg instanceof File) {
       setImageProperties({ ...imageProperties, image: handleSave() });
     }
-  }, [step]);
 
-  useEffect(() => {
     if (newImg instanceof File === false && step !== 1) {
       dispatch(setStep(1));
     }
   }, [step]);
 
+  useEffect(() => {
+    if (width < 860) {
+      // get element by id, then get width of element and set width of image to that width
+      let w: any = document.getElementById("ctn")?.clientWidth;
+
+      setImageProperties({ ...imageProperties, width: w, height: w });
+    }
+  }, []);
+
   return (
-    <StepTwoCtn>
+    <StepTwoCtn id="ctn">
       <ImageCtn>
         <AvatarEditor
           scale={imageProperties.scale}

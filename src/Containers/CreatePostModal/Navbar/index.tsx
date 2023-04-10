@@ -9,16 +9,15 @@ import {
   setLoading,
 } from "../../../Redux/createPostModalSlice";
 import { Notify } from "notiflix";
-import { JsxElement } from "typescript";
-import { StyledComponent, StyledComponentBase } from "styled-components";
-
+import useWindowSize from "../../../Hooks/useWindowSize";
+import { ArrowLeftIcon } from "@heroicons/react/outline";
 interface Props {
   step: number;
 }
 
 const NavBar: React.FC<Props> = ({ step }) => {
   const dispatch = useAppDispatch();
-
+  const size = useWindowSize();
   const handleBackClick = (): void => {
     dispatch(setStep(step - 1));
     step === 2 && dispatch(resetImage());
@@ -41,7 +40,21 @@ const NavBar: React.FC<Props> = ({ step }) => {
   const renderNav = () => {
     switch (step) {
       case 1:
-        return <StepName className="step1">Create new post</StepName>;
+        return (
+          <>
+            {(size.width as number) < 500 && (
+              <ArrowLeftIcon
+                style={{
+                  width: "25px",
+                  position: "absolute",
+                  left: "20px",
+                  top: "7px",
+                }}
+              />
+            )}
+            <StepName className="step1">Create new post</StepName>;
+          </>
+        );
       case 2:
         return (
           <StepTwoNav>

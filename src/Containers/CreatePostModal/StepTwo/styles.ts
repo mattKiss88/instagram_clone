@@ -1,7 +1,11 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const StepTwoCtn = styled.div`
   display: flex;
+
+  @media (max-width: 860px) {
+    flex-direction: column;
+  }
 `;
 
 export const ImageCtn = styled.div`
@@ -20,8 +24,15 @@ export const FilterCtn = styled.div<FilterProps>`
   transition: all 0.5s ease-in-out;
   ${({ active }) =>
     active &&
-    `width: 323px;
-  height: 100%;`}
+    css`
+      width: 323px;
+      height: 100%;
+
+      @media (max-width: 860px) {
+        width: 100%;
+        overflow: scroll;
+      }
+    `}
 `;
 
 export const FilterImg = styled.img`
@@ -70,6 +81,18 @@ export const InnerCtn = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 1.5rem;
+
+  @media (max-width: 860px) {
+    width: 1200px;
+    overflow: scroll;
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 `;
 
 export const CaptionCtn = styled.div`
