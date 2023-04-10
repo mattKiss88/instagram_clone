@@ -21,6 +21,7 @@ import { Wrapper } from "./styles";
 import Navbar from "./Components/SideBar";
 import useWindowSize from "./Hooks/useWindowSize";
 import NavbarMb from "./Components/SideBar/mobile/mobile";
+import ViewPostModalMobile from "./Containers/ViewPostModal/mobile";
 function App() {
   const isPostModalOpen = useAppSelector(isOpen);
   const isCreatePostModalOpen = useAppSelector(isModalOpen);
@@ -72,9 +73,13 @@ function App() {
       {/* </Router> */}
       <Suspense fallback={<Loader />}>
         {isPostModalOpen && (
-          // <Modal>
-          <ViewPostModal />
-          // </Modal>
+          <>
+            {(size.width as number) < 600 ? (
+              <ViewPostModalMobile />
+            ) : (
+              <ViewPostModal />
+            )}
+          </>
         )}
         {isCreatePostModalOpen && <CreatePostModal />}
       </Suspense>

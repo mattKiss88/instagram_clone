@@ -28,6 +28,8 @@ import { likePost } from "../../Api";
 import { HeartIcon } from "@heroicons/react/outline";
 import { Facebook } from "react-content-loader";
 import { IComment } from "../../Components/Comment/types";
+import Loader from "../../Components/loader";
+import useWindowSize from "../../Hooks/useWindowSize";
 
 export interface IReplyData {
   commentRepliedToId: number;
@@ -39,6 +41,7 @@ const ViewPostModal: React.FC = () => {
   // hooks
   const { ref, isClickOutside, setisClickOutside } = useIsClickOutside(false);
   const { isEscapeEvent, setIsEscapeEvent } = useEscape();
+  const { width } = useWindowSize();
 
   // redux
   const id: number = useAppSelector((state) => state.userAccount.id);
@@ -94,33 +97,35 @@ const ViewPostModal: React.FC = () => {
   }, [imgRef.current]);
 
   return (
-    <Container
-      style={{
-        opacity: imgHeight ? "1" : "0",
-        // display: isModalOpen ? "block" : "none",
-      }}
-    >
-      {isModalOpen && (
+    <>
+      <Container>
         <>
           <XIcon className="x" />
           <Modal ref={ref} height={imgHeight}>
-            <ImageContainer onDoubleClick={onDoubleClick}>
-              <HeartIcon className={liked && "liked"} />
-              <Image
-                src={`${
-                  process.env.REACT_APP_S3_URL + images?.[0]?.mediaFileId
-                }`}
-                className={`filter-${images[0]?.filter}`}
-                ref={imgRef}
-              />
-            </ImageContainer>
-            <SideBar>
-              <PostHeader
-                avatar={`${process.env.REACT_APP_S3_URL + user.avatar}`}
-                fullName={user.username}
-                postId={post?.id}
-                userId={user.id}
-              />
+            {!imgHeight && (width as number) > 600 ? <Loader /> : null}
+            {(width as number) > 600 && (
+              <ImageContainer onDoubleClick={onDoubleClick}>
+                <HeartIcon className={liked && "liked"} />
+                <Image
+                  src={`${
+                    process.env.REACT_APP_S3_URL + images?.[0]?.mediaFileId
+                  }`}
+                  className={`filter-${images[0]?.filter}`}
+                  ref={imgRef}
+                  onLoad={() => setImgHeight(imgRef.current?.clientHeight)}
+                />
+              </ImageContainer>
+            )}
+
+            <SideBar height={imgHeight as number}>
+              {(width as number) > 600 && (
+                <PostHeader
+                  avatar={`${process.env.REACT_APP_S3_URL + user.avatar}`}
+                  fullName={user.username}
+                  postId={post?.id}
+                  userId={user.id}
+                />
+              )}
               <CommentsWrapper height={imgHeight}>
                 <CaptionContainer>
                   <ProfilePic
@@ -160,8 +165,8 @@ const ViewPostModal: React.FC = () => {
             </SideBar>
           </Modal>
         </>
-      )}
-    </Container>
+      </Container>
+    </>
   );
 };
 

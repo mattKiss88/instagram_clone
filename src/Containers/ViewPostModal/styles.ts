@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { likeAnimation } from "../../Components/FeedCard/styles";
 
 interface IProps {
@@ -17,6 +17,30 @@ export const Modal = styled.div<IProps>`
   transform: translateY(-50%);
   display: flex;
   border-radius: 0 10px 10px 0;
+  max-width: 95vw;
+
+  ${(props) =>
+    !props.height &&
+    css`
+      @media (min-width: 600px) {
+        ::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: #fff;
+          z-index: 10;
+        }
+      } ;
+    `}
+
+  @media (max-width: 600px) {
+    height: 100vh;
+    width: 100vw;
+    max-width: 100vw;
+  } ;
 `;
 
 export const Container = styled.div`
@@ -75,7 +99,11 @@ export const Image = styled.img`
   user-select: none;
 `;
 
-export const SideBar = styled.div`
+interface sideBarProps {
+  height: number;
+}
+
+export const SideBar = styled.div<sideBarProps>`
   max-width: 500px;
   background: white;
   height: 100%;
@@ -90,6 +118,17 @@ export const SideBar = styled.div`
       margin-left: 16px;
     }
   }
+
+  ${({ height }) => `height: ${height}px;
+  max-height: ${height}px;`}
+
+  @media (max-width: 600px) {
+    > div:first-child {
+      > div p {
+        margin-left: 0px;
+      }
+    }
+  }
 `;
 
 export const CommentsWrapper = styled.div<IProps>`
@@ -100,6 +139,11 @@ export const CommentsWrapper = styled.div<IProps>`
     display: none; /* for Chrome, Safari, and Opera */
   }
   padding: 16px;
+
+  @media (max-width: 600px) {
+    padding: 115px 16px 40px !important;
+    ${(props) => props.height && `height: calc(${props.height}px);`}
+  }
 `;
 
 export const CaptionContainer = styled.div`
@@ -112,5 +156,81 @@ export const CaptionContainer = styled.div`
 
   img {
     margin-right: 4px;
+  }
+`;
+
+export const NavbarMobile = styled.nav`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: #fff;
+  z-index: 100;
+`;
+
+export const TopMobile = styled.div`
+  width: 100%;
+  height: 50px;
+
+  svg {
+    width: 26px;
+    position: absolute;
+    top: 25px;
+    left: 15px;
+    transform: translateY(-50%);
+  }
+  p {
+    text-align: center;
+    padding-top: 15px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+`;
+
+export const BottomMobile = styled.div`
+  display: flex;
+  background: #e8e8e8;
+  padding: 7px 20px;
+  align-items: center;
+`;
+
+export const InputMobile = styled.input`
+  border: none;
+  width: calc(100% - 30px);
+`;
+
+export const InputCtnMobile = styled.div`
+  display: flex;
+  border: 1px solid #dbdbdb;
+  border-radius: 20px;
+  padding: 5px 10px;
+  width: 100%;
+  height: 40px;
+  align-items: center;
+  background: #fff;
+  margin-left: 20px;
+`;
+
+export const ReplyPopUpMobile = styled.div`
+  color: #262626;
+  font-weight: 400;
+  bottom: -35px;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  // text-align: center;
+  display: block !important;
+  padding: 8px 20px;
+  font-size: 12px;
+  background: #e8e8e8;
+  border-top: 1px solid #dbdbdb;
+
+  span {
+    font-weight: 700;
+    color: black;
+    float: right;
+    padding: 0 4px;
+    cursor: pointer;
   }
 `;

@@ -25,6 +25,7 @@ export const Spinner = styled.span`
     border: 3px solid grey;
     border-color: grey transparent grey transparent;
     animation: ${rotate} 1.2s linear infinite;
-    top: 50%;
+    top: 47%;
+    z-index: 100;
   }
 `;
