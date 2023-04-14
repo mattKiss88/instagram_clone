@@ -36,6 +36,9 @@ interface IStats {
 
 const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
   const loggedInUserId = useAppSelector((state) => state.userAccount.id);
+  const loggedInUserFriends = useAppSelector(
+    (state) => state.userAccount.friends
+  );
 
   const stats: IStats[] = [
     { key: "posts", number: post?.user?.posts?.length || 0 },
@@ -96,8 +99,14 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
           ))}
       </Posts>
       <ButtonContainer>
-        <Button>Message</Button>
-        <Button>Following</Button>
+        {loggedInUserFriends.includes(post?.user?.id) ? (
+          <>
+            <Button>Message</Button>
+            <Button>Following</Button>
+          </>
+        ) : (
+          <Button>Follow</Button>
+        )}
       </ButtonContainer>
     </Container>
   );

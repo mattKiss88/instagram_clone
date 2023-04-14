@@ -3,15 +3,14 @@ import Loader from "../../Components/loader";
 import { FeedMemo } from "../../Containers/Feed";
 
 const Home: React.FC = () => {
-  const Feed = lazy(() => import("../../Containers/Feed"));
+  // const Feed = lazy(() => import("../../Containers/Feed"));
 
   return (
-    <Suspense fallback={<Loader />}>
-      <div>
-        {/* <Feed show={true} /> */}
-        <FeedMemo show={true} />
-      </div>
-    </Suspense>
+    // <Suspense fallback={<Loader />}>
+    <div>
+      <FeedMemo show={true} />
+    </div>
+    // </Suspense>
   );
 };
 

@@ -7,7 +7,8 @@ import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { feed as feedState, updatePostLikes } from "../../Redux/feedSlice";
 import { shallowEqual } from "react-redux";
 import { likePost } from "../../Api";
-import { Facebook } from "react-content-loader";
+import { Instagram } from "react-content-loader";
+
 import { IPostData } from "./types";
 
 interface IFeedCardProps {
@@ -18,6 +19,7 @@ interface IFeedCardProps {
   image: string;
   postId: number;
   filter?: string;
+  // onImageLoad: () => void;
 }
 const FeedCard: React.FC<IFeedCardProps> = ({
   fullName,
@@ -27,6 +29,7 @@ const FeedCard: React.FC<IFeedCardProps> = ({
   image,
   postId,
   filter,
+  // onImageLoad,
 }) => {
   const [liked, setLiked] = useState<boolean>(false);
   const [post, setPost] = useState<IPostData>();
@@ -59,16 +62,18 @@ const FeedCard: React.FC<IFeedCardProps> = ({
     setPost(feed.find((item: IPostData) => item.post.id === postId));
   }, [feed]);
 
-  const MyFacebookLoader = () => <Facebook />;
+  // function handleImageLoad(): void {
+  //   setLoading(false);
+  // }
 
-  function handleImageLoad(): void {
+  const handleImageLoad = () => {
     setLoading(false);
-  }
+  };
 
   return (
     <>
-      {loading && MyFacebookLoader}{" "}
-      <FeedWrapper style={{ display: !loading ? "block" : "none" }}>
+      {loading && <Instagram />}
+      <FeedWrapper style={{ display: loading ? "none" : "block" }}>
         <PostHeader
           avatar={avatar}
           fullName={fullName}

@@ -14,6 +14,7 @@ interface InitialState {
   following: number;
   posts: number;
   token: string | null;
+  friends: number[];
 }
 
 interface LoginDetails {
@@ -37,6 +38,7 @@ const initialState: InitialState = {
   following: 0,
   posts: 0,
   token: null,
+  friends: [],
 };
 
 export const loginUser = createAsyncThunk(
@@ -132,6 +134,7 @@ export const userAccountSlice = createSlice({
         token: action.payload.accessToken,
         ...action.payload.user,
         avatar: action.payload.user?.Profile_picture?.mediaFileId,
+        friends: action.payload?.followingUsers,
       };
     });
     builder.addCase(signUpUser.fulfilled, (state, action) => {
@@ -151,6 +154,7 @@ export const userAccountSlice = createSlice({
       return {
         ...state,
         ...action.payload,
+        // friends: action.payload?.followingUsers,
       };
     });
   },

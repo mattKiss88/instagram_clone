@@ -9,6 +9,8 @@ export const StoriesContainer = styled.div`
   cursor: pointer;
   img {
     width: 60px;
+    height: 60px;
+    object-fit: cover;
     border-radius: 50%;
   }
 

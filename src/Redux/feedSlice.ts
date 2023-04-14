@@ -9,21 +9,46 @@ import { IUser } from "../Components/Comment/types";
 interface InitialState {
   posts: IPostData[];
   recommendedUsers: IUser[];
+  page: number;
+  isFetching: boolean;
+  hasMore: boolean;
 }
 
 const initialState: InitialState = {
   posts: [],
   recommendedUsers: [],
+  page: 1,
+  isFetching: false,
+  hasMore: true,
 };
 
 export const fetchFeedByUserId = createAsyncThunk(
   "feed/fetchByIdStatus",
-  async (userId: number, { getState }) => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_API_URL}/post/feed/${userId}`
-    );
+  async (userId: number, { getState, dispatch }) => {
+    const state = getState() as RootState;
+    const { rehydrated } = state._persist;
+    const { posts, page, isFetching, hasMore } = state.feed;
 
-    return response.data.feed;
+    console.log("rehydrated", rehydrated, isFetching, hasMore);
+
+    if (isFetching || !hasMore) {
+      console.log("returning");
+      return;
+    }
+
+    dispatch(fetchPostRequest());
+
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/post/feed/${userId}?page=${page}&limit=5`
+      );
+
+      const hasMore = response.data.feed.length > 0;
+
+      dispatch(fetchPostSuccess({ feed: response.data.feed, hasMore }));
+    } catch (error) {
+      dispatch(fetchPostFailure());
+    }
   }
 );
 
@@ -91,18 +116,46 @@ export const feedSlice = createSlice({
         posts: [...updatePostLike],
       };
     },
+
+    fetchPostRequest: (state) => {
+      return {
+        ...state,
+        isFetching: true,
+      };
+    },
+    fetchPostSuccess: (state, action: PayloadAction<any>) => {
+      return {
+        ...state,
+        isFetching: false,
+        posts: [...state.posts, ...action.payload.feed],
+        page: state.page + 1,
+        hasMore: action.payload.hasMore,
+      };
+    },
+    fetchPostFailure: (state, action: PayloadAction<void>) => {
+      return {
+        ...state,
+        isFetching: false,
+      };
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchFeedByUserId.fulfilled, (state, action) => {
-      state.posts = action.payload;
-    });
+    // builder.addCase(fetchFeedByUserId.fulfilled, (state, action) => {
+    //   state.posts = [...state.posts, ...action.payload];
+    // });
     builder.addCase(fetchRecommendedUsers.fulfilled, (state, action) => {
       state.recommendedUsers = action.payload;
     });
   },
 });
 
-export const { getUserData, updateLikes } = feedSlice.actions;
+export const {
+  getUserData,
+  updateLikes,
+  fetchPostRequest,
+  fetchPostSuccess,
+  fetchPostFailure,
+} = feedSlice.actions;
 
 export const feed = (state: RootState) => state.feed.posts;
 

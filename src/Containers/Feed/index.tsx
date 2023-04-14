@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import FeedCard, { FeedCardMemo } from "../../Components/FeedCard";
 import { RightContainer, Section, LeftContainer } from "./styles";
 import Suggested from "../Suggested";
@@ -13,53 +13,62 @@ import useWindowSize from "../../Hooks/useWindowSize";
 import Navbar from "../../Components/SideBar";
 import { IPostData } from "../../Components/FeedCard/types";
 import { shallowEqual } from "react-redux";
+import Loader from "../../Components/loader";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Feed: React.FC<any> = () => {
   const dispatch = useAppDispatch();
   let feed = useAppSelector(feedState, shallowEqual);
+  let hasMore = useAppSelector((state) => state.feed.hasMore);
   const { width }: { width: number | undefined } = useWindowSize();
   const id: number = useAppSelector((state) => state.userAccount.id);
+  const [loading, setLoading] = useState(true);
+  const [loadedImagesCount, setLoadedImagesCount] = useState(0);
 
   // const state = useAppSelector((state) => state);
 
   // console.log(state, "state");
 
   useEffect(() => {
-    dispatch(fetchFeedByUserId(id) as any);
+    dispatch(fetchFeedByUserId(id) as any).then(() => setLoading(false));
     dispatch(fetchRecommendedUsers() as any);
-  }, [id]);
+  }, []);
+
+  // console.log(loading ? "loading" : "loaded", loadedImagesCount);
+
+  // useEffect(() => {
+  //   console.log("useEffect", feed);
+  // }, [feed.hasMore]);
 
   return (
     <Section>
       <LeftContainer>
-        <Stories />
-        {feed?.map((item: IPostData) => (
-          // <FeedCard
-          //   fullName={item.user.username}
-          //   likes={item.post.likeCount}
-          //   avatar={`${process.env.REACT_APP_S3_URL + item.user.avatar}`}
-          //   content={item.post.caption}
-          //   image={`${
-          //     (process.env.REACT_APP_S3_URL as string) +
-          //     item?.images?.[0]?.mediaFileId
-          //   }`}
-          //   postId={item.post?.id}
-          //   filter={item?.images?.[0]?.filter || ""}
-          // />
-
-          <FeedCardMemo
-            fullName={item.user.username}
-            likes={item.post.likeCount}
-            avatar={`${process.env.REACT_APP_S3_URL + item.user.avatar}`}
-            content={item.post.caption}
-            image={`${
-              (process.env.REACT_APP_S3_URL as string) +
-              item?.images?.[0]?.mediaFileId
-            }`}
-            postId={item.post?.id}
-            filter={item?.images?.[0]?.filter || ""}
-          />
-        ))}
+        {/* {loading && <Loader />} */}
+        <Stories feed={feed} />
+        <div>
+          <InfiniteScroll
+            dataLength={feed.length}
+            next={() => dispatch(fetchFeedByUserId(id) as any)}
+            hasMore={hasMore}
+            loader={<Loader />}
+            endMessage={<p>No more posts</p>}
+          >
+            {feed?.map((item: IPostData) => (
+              <FeedCardMemo
+                fullName={item.user.username}
+                likes={item.post.likeCount}
+                avatar={`${process.env.REACT_APP_S3_URL + item.user.avatar}`}
+                content={item.post.caption}
+                image={`${
+                  (process.env.REACT_APP_S3_URL as string) +
+                  item?.images?.[0]?.mediaFileId
+                }`}
+                postId={item.post?.id}
+                filter={item?.images?.[0]?.filter || ""}
+              />
+            ))}
+          </InfiniteScroll>
+        </div>
       </LeftContainer>
       {(width as number) > 1000 && (
         <RightContainer>

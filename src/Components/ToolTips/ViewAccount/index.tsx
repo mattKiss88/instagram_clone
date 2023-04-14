@@ -44,6 +44,9 @@ const ViewAccount: React.FC<IViewAccountProps> = ({
   ];
 
   const loggedInUserId = useAppSelector((state) => state.userAccount.id);
+  const loggedInUserFriends = useAppSelector(
+    (state) => state.userAccount.friends
+  );
 
   const user = post?.user;
   const dispatch = useDispatch();
@@ -98,8 +101,14 @@ const ViewAccount: React.FC<IViewAccountProps> = ({
         ))}
       </Posts>
       <ButtonContainer>
-        <Button>Message</Button>
-        <Button>Following</Button>
+        {loggedInUserFriends.includes(post?.user?.id) ? (
+          <>
+            <Button>Message</Button>
+            <Button>Following</Button>
+          </>
+        ) : (
+          <Button>Follow</Button>
+        )}
       </ButtonContainer>
     </Container>
   );
