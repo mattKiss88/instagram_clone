@@ -29,3 +29,23 @@ export const Spinner = styled.span`
     z-index: 100;
   }
 `;
+
+export const ImgSpinner = styled.span`
+  display: block;
+
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 36%;
+    left: 42%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid white;
+    border-color: white transparent white transparent;
+    animation: ${rotate} 1.2s linear infinite;
+    z-index: 100;
+  }
+`;

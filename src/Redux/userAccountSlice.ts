@@ -15,6 +15,7 @@ interface InitialState {
   posts: number;
   token: string | null;
   friends: number[];
+  imgLoading: boolean;
 }
 
 interface LoginDetails {
@@ -39,6 +40,7 @@ const initialState: InitialState = {
   posts: 0,
   token: null,
   friends: [],
+  imgLoading: false,
 };
 
 export const loginUser = createAsyncThunk(
@@ -87,14 +89,18 @@ export const signUpUser = createAsyncThunk(
 
 export const patchProfileImage = createAsyncThunk(
   "userAccount/patchProfileImageStatus",
-  async (imgFile: File, thunkAPI) => {
+  async (imgFile: File, { dispatch }) => {
     const formData = new FormData();
     formData.append("image", imgFile);
+
+    dispatch(setImgLoading(true));
 
     const response = await axios.patch(
       `${process.env.REACT_APP_API_URL}/user/profile-picture`,
       formData
     );
+
+    dispatch(setImgLoading(false));
 
     return response.data;
   }
@@ -140,6 +146,12 @@ export const userAccountSlice = createSlice({
         friends: state.friends.filter((friend) => friend !== action.payload),
       };
     },
+    setImgLoading: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        imgLoading: action.payload,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.fulfilled, (state, action) => {
@@ -174,7 +186,7 @@ export const userAccountSlice = createSlice({
   },
 });
 
-export const { getUserData, followUser, unfollowUser } =
+export const { getUserData, followUser, unfollowUser, setImgLoading } =
   userAccountSlice.actions;
 
 export const user = (state: RootState) => state.userAccount;

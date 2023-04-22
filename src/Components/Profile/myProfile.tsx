@@ -27,6 +27,10 @@ import {
   patchProfileImage,
 } from "../../Redux/userAccountSlice";
 import useWindowSize from "../../Hooks/useWindowSize";
+import { Notify } from "notiflix";
+import { ImgSpinner, Spinner } from "../loader/styles";
+
+// notiflix
 
 interface IProfile {
   ownAccount: boolean;
@@ -39,6 +43,7 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
   const user = useAppSelector((state) => state.userAccount);
   const dispatch = useAppDispatch();
   const size = useWindowSize();
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     handlePosts(user.id);
@@ -50,9 +55,15 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
     dispatch(getUserDetails(userId) as any);
   };
 
-  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file: File = e.target.files![0];
-    dispatch(patchProfileImage(file) as any);
+
+    try {
+      dispatch(patchProfileImage(file) as any);
+    } catch (error) {
+      console.log(error);
+      Notify.failure("Something went wrong");
+    }
   };
 
   interface X {
@@ -82,10 +93,12 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
       <Section>
         <Container>
           <AvatarContainer>
+            {user.imgLoading && <ImgSpinner />}
             <Avatar
               src={`${process.env.REACT_APP_S3_URL + user.avatar}`}
               id="avatar"
             />
+
             <Input type="file" onChange={handleUpload} />
           </AvatarContainer>
           <ProfileDetails>
