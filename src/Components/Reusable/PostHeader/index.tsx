@@ -1,29 +1,30 @@
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import React from "react";
+// import ViewAccount from "../../ToolTips/ViewAccount";
 import { shallowEqual } from "react-redux";
 import { feed } from "../../../Redux/feedSlice";
 import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
-import ViewAccount from "../../ToolTips/ViewAccount";
 import { CardHeader, LeftContainer, ProfilePic, AccountName } from "./styles";
 import { useNavigate } from "react-router-dom";
 import { toggleModal } from "../../../Redux/postModalSlice";
 import { IPostData } from "../../FeedCard/types";
-import {
-  setPostSettingsModal,
-  togglePostSettingsModal,
-} from "../../../Redux/postSettingsSlice";
+import { setPostSettingsModal } from "../../../Redux/postSettingsSlice";
+import { usePopperTooltip } from "react-popper-tooltip";
+import ViewAccount from "../../ToolTips/ViewAccount/newTooltip";
 
 interface IPostHeader {
   avatar: string;
   fullName: string;
   postId: number;
   userId: number;
+  postData?: IPostData;
 }
 const PostHeader: React.FC<IPostHeader> = ({
   avatar,
   fullName,
   postId,
   userId,
+  postData,
 }) => {
   const [hoveredOnName, setHoveredOnName] = React.useState<boolean>(false);
   const [hoveredOnToolTip, setHoveredOnToolTip] =
@@ -92,27 +93,32 @@ const PostHeader: React.FC<IPostHeader> = ({
         isOpen: true,
         postId,
         userId,
+        postData,
       })
     );
   };
 
+  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    usePopperTooltip({
+      placement: "bottom",
+      delayHide: 100,
+      delayShow: 100,
+      interactive: true,
+    });
+
   return (
     <CardHeader>
-      <ViewAccount
-        post={post}
-        hovered={hovered}
-        unhovered={unhovered}
-        hoveredOnName={hoveredOnName}
-        hoveredOnToolTip={hoveredOnToolTip}
-      />
+      {visible && (
+        <div
+          ref={setTooltipRef}
+          {...getTooltipProps({ className: "user-tooltip-container" })}
+        >
+          <ViewAccount post={post} />
+        </div>
+      )}
       <LeftContainer onClick={handleProfileClick}>
         <ProfilePic src={avatar} />
-        <AccountName
-          onMouseEnter={() => hovered("accountName")}
-          onMouseLeave={() => unhovered("accountName")}
-        >
-          {fullName}
-        </AccountName>
+        <AccountName ref={setTriggerRef}>{fullName}</AccountName>
       </LeftContainer>
       <DotsHorizontalIcon
         style={{ width: "24px", cursor: "pointer" }}

@@ -79,6 +79,7 @@ const FeedCard: React.FC<IFeedCardProps> = ({
           fullName={fullName}
           postId={postId}
           userId={post?.user?.id || 0}
+          postData={post}
         />
         <ImageContainer onDoubleClick={onDoubleClick}>
           <HeartIcon className={liked && "liked"} />

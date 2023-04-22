@@ -759,3 +759,9 @@ button {
   width: 300px;
   height: 450px;
 }
+
+.user-tooltip-container {
+  z-index: 6;
+  width: 380px;
+  height: 340px;
+}

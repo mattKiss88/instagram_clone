@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   addModalData,
@@ -28,6 +28,12 @@ import { useNavigate } from "react-router-dom";
 import { IUser } from "../../Comment/types";
 import { IImages, IPost, IPostData } from "../../FeedCard/types";
 import { useAppSelector } from "../../../Redux/hooks";
+import { followRecommendedUsers } from "../../../Redux/feedSlice";
+import {
+  setPostSettingsModal,
+  togglePostSettingsModal,
+} from "../../../Redux/postSettingsSlice";
+import { setUnfollowModal } from "../../../Redux/unfollowModalSlice";
 
 interface IViewAccountProps {
   post: { user: IUser };
@@ -39,6 +45,9 @@ interface IStats {
 }
 
 const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
+  const [buttonName, setButtonName] = useState<"Follow" | "Following">(
+    "Follow"
+  );
   const loggedInUserId = useAppSelector((state) => state.userAccount.id);
   const loggedInUserFriends = useAppSelector(
     (state) => state.userAccount.friends
@@ -63,8 +72,6 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
     if (user.id === loggedInUserId) return navigate(`/profile`);
 
     navigate(`/profile/${user.id}`);
-
-    // dispatch(toggleModal());
   };
 
   const onProfileClick = (): void => {
@@ -72,6 +79,21 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
     if (user.id === loggedInUserId) return navigate(`/profile`);
 
     navigate(`/profile/${user.id}`);
+  };
+
+  const onFollowClick = () => {
+    dispatch(followRecommendedUsers(user.id) as any);
+  };
+  const onUnfollowClick = () => {
+    console.log("unfollow click");
+    dispatch(
+      setUnfollowModal({
+        isOpen: true,
+        userId: user.id,
+        username: user.username,
+        avatar: user.avatar,
+      })
+    );
   };
 
   return (
@@ -112,13 +134,13 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
           ))}
       </Posts>
       <ButtonContainer>
-        {loggedInUserFriends.includes(post?.user?.id) ? (
+        {loggedInUserFriends?.includes(post?.user?.id) ? (
           <>
             <Button>Message</Button>
-            <Button>Following</Button>
+            <Button onClick={onUnfollowClick}>Following</Button>
           </>
         ) : (
-          <Button>Follow</Button>
+          <Button onClick={onFollowClick}>Follow</Button>
         )}
       </ButtonContainer>
     </Container>

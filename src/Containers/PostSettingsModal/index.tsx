@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import useWindowSize from "../../Hooks/useWindowSize";
 import { followRecommendedUsers } from "../../Redux/feedSlice";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
+import { addModalData, toggleModal } from "../../Redux/postModalSlice";
 import {
   deletePost,
   isPostSettingsModalOpen,
@@ -17,9 +18,8 @@ const PostSettingsModal = () => {
     (state) => state.postModal.isOpen
   );
 
-  const { isLoggedInUser, isFollowing, userId, postId } = useAppSelector(
-    (state) => state.postSettings
-  );
+  const { isLoggedInUser, isFollowing, userId, postId, postData } =
+    useAppSelector((state) => state.postSettings);
   const dispatch = useAppDispatch();
   const size = useWindowSize();
 
@@ -51,12 +51,17 @@ const PostSettingsModal = () => {
   };
 
   const handleFollow = () => {
-    console.log("follow");
     dispatch(followRecommendedUsers(userId as number) as any);
+    closeModal();
   };
   const handleDelete = () => {
-    console.log("delete");
     dispatch(deletePost({ userId, postId } as any) as any);
+    closeModal();
+  };
+
+  const handleOpenViewPostModal = () => {
+    dispatch(addModalData(postData));
+    dispatch(toggleModal());
     closeModal();
   };
 
@@ -83,7 +88,7 @@ const PostSettingsModal = () => {
     }
 
     if (!isPostModalOpen) {
-      btnArr.push(<Btn>View Post</Btn>);
+      btnArr.push(<Btn onClick={handleOpenViewPostModal}>View Post</Btn>);
     }
 
     return btnArr;

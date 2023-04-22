@@ -25,10 +25,13 @@ import ViewPostModalMobile from "./Containers/ViewPostModal/mobile";
 import TopNavMobile from "./Components/SideBar/mobile/top";
 import PostSettingsModal from "./Containers/PostSettingsModal";
 import { isPostSettingsModalOpen } from "./Redux/postSettingsSlice";
+import { isUnfollowModalOpen } from "./Redux/unfollowModalSlice";
+import UnfollowModal from "./Containers/UnfollowModal";
 function App() {
   const isPostModalOpen: boolean = useAppSelector(isOpen);
   const isCreatePostModalOpen: boolean = useAppSelector(isModalOpen);
   const isPostSettingsOpen: boolean = useAppSelector(isPostSettingsModalOpen);
+  const isUnFollowModalOpen: boolean = useAppSelector(isUnfollowModalOpen);
 
   const ViewPostModal = lazy(() => import("./Containers/ViewPostModal"));
   const token = useAppSelector((state) => state.userAccount.token);
@@ -92,6 +95,7 @@ function App() {
         )}
         {isCreatePostModalOpen && <CreatePostModal />}
         {isPostSettingsOpen && <PostSettingsModal />}
+        {isUnFollowModalOpen && <UnfollowModal />}
       </Suspense>
     </div>
   );

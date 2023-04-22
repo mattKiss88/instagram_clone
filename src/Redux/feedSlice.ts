@@ -5,6 +5,7 @@ import axios from "axios";
 import modalSlice, { updateModalLikes } from "./postModalSlice";
 import { IPostData } from "../Components/FeedCard/types";
 import { IUser } from "../Components/Comment/types";
+import { followUser, unfollowUser } from "./userAccountSlice";
 
 interface InitialState {
   posts: IPostData[];
@@ -65,13 +66,21 @@ export const fetchRecommendedUsers = createAsyncThunk(
 
 export const followRecommendedUsers = createAsyncThunk(
   "feed/followRecommendedUsers",
-  async (followingUserId: number, { getState }) => {
+  async (followingUserId: number, { getState, dispatch }) => {
     const response = await axios.post(
       `${process.env.REACT_APP_API_URL}/user/follow`,
       {
         userId: followingUserId,
       }
     );
+
+    if (response?.data?.msg === "You are now following this user") {
+      dispatch(followUser(followingUserId));
+    }
+
+    if (response?.data?.msg === "You have unfollowed this user") {
+      dispatch(unfollowUser(followingUserId));
+    }
 
     return response.data;
   }
@@ -127,7 +136,10 @@ export const feedSlice = createSlice({
       return {
         ...state,
         isFetching: false,
-        posts: [...state.posts, ...action.payload.feed],
+        posts: [...state.posts, ...action.payload.feed].filter(
+          (post, index, self) =>
+            index === self.findIndex((t) => t.post.id === post.post.id)
+        ),
         page: state.page + 1,
         hasMore: action.payload.hasMore,
       };

@@ -6,6 +6,7 @@ import { getUserPosts } from "../Api";
 import { getUserDetails } from "./userAccountSlice";
 import { getPosts } from "./userPostsSlice";
 import { removePost as removePostFromFeed } from "./feedSlice";
+import { IPostData } from "../Components/FeedCard/types";
 
 interface InitialState {
   isLoggedInUser: boolean;
@@ -13,6 +14,7 @@ interface InitialState {
   isOpen: boolean;
   postId?: number;
   userId?: number;
+  postData?: IPostData | null;
 }
 
 const initialState: InitialState = {
@@ -21,6 +23,7 @@ const initialState: InitialState = {
   isOpen: false,
   postId: 0,
   userId: 0,
+  postData: null,
 };
 
 export const deletePost = createAsyncThunk(

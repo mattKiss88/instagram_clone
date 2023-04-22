@@ -104,9 +104,11 @@ export const getUserDetails = createAsyncThunk(
   "userAccount/getUserDetailsStatus",
   async (userId: number, thunkAPI) => {
     try {
-      const res = await getUser(userId);
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/user/${userId}`
+      );
 
-      return res;
+      return res.data;
     } catch (err) {
       console.log(err);
     }
@@ -124,6 +126,18 @@ export const userAccountSlice = createSlice({
       return {
         ...state,
         avatar: action.payload,
+      };
+    },
+    followUser: (state, action: PayloadAction<number>) => {
+      return {
+        ...state,
+        friends: [...state.friends, action.payload],
+      };
+    },
+    unfollowUser: (state, action: PayloadAction<number>) => {
+      return {
+        ...state,
+        friends: state.friends.filter((friend) => friend !== action.payload),
       };
     },
   },
@@ -153,14 +167,15 @@ export const userAccountSlice = createSlice({
     builder.addCase(getUserDetails.fulfilled, (state, action) => {
       return {
         ...state,
-        ...action.payload,
-        // friends: action.payload?.followingUsers,
+        ...action.payload.user,
+        friends: action.payload?.followingUsers,
       };
     });
   },
 });
 
-export const { getUserData } = userAccountSlice.actions;
+export const { getUserData, followUser, unfollowUser } =
+  userAccountSlice.actions;
 
 export const user = (state: RootState) => state.userAccount;
 

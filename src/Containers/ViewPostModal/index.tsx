@@ -30,6 +30,7 @@ import { Facebook } from "react-content-loader";
 import { IComment } from "../../Components/Comment/types";
 import Loader from "../../Components/loader";
 import useWindowSize from "../../Hooks/useWindowSize";
+import { isPostSettingsModalOpen } from "../../Redux/postSettingsSlice";
 
 export interface IReplyData {
   commentRepliedToId: number;
@@ -46,6 +47,7 @@ const ViewPostModal: React.FC = () => {
   // redux
   const id: number = useAppSelector((state) => state.userAccount.id);
   const isModalOpen: boolean = useAppSelector(isOpen);
+  const isSettingsOpen = useAppSelector(isPostSettingsModalOpen);
   const modalData = useAppSelector((state) => state.postModal);
   const { comments, user, post, images } = modalData;
 
@@ -61,13 +63,13 @@ const ViewPostModal: React.FC = () => {
   const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    if (isModalOpen && (isClickOutside || isEscapeEvent)) {
+    if (isModalOpen && (isClickOutside || isEscapeEvent) && !isSettingsOpen) {
       setisClickOutside(false);
       dispatch(toggleModal());
       setIsEscapeEvent(false);
       dispatch(resetModal());
     }
-  }, [isClickOutside, isModalOpen, isEscapeEvent]);
+  }, [isClickOutside, isModalOpen, isEscapeEvent, isSettingsOpen]);
 
   const onDoubleClick = (): void => {
     setLiked(true);

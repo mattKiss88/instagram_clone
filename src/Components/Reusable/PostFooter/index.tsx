@@ -32,7 +32,7 @@ import { usePopperTooltip } from "react-popper-tooltip";
 import { IPostData } from "../../FeedCard/types";
 import { useNavigate } from "react-router-dom";
 interface IPostFooter {
-  likes: any;
+  likes: number;
   fullName: string;
   content?: string;
   showCaption?: boolean;

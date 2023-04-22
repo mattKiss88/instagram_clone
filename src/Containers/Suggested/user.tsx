@@ -32,7 +32,6 @@ const User: React.FC<IUserProps> = ({ user }) => {
     } else {
       setButtonName("Follow");
     }
-
     dispatch(followRecommendedUsers(user.id) as any);
   };
 
@@ -58,6 +57,7 @@ const User: React.FC<IUserProps> = ({ user }) => {
             : defaultImg
         }`}
         ref={setTriggerRef}
+        onClick={handleUsernameClick}
       />
       <UsernameContainer>
         <Username onClick={handleUsernameClick}>{user.username}</Username>

@@ -1,22 +1,17 @@
 import styled from "styled-components";
-interface props {
-  show?: boolean;
-}
 
-export const Container = styled.div<props>`
+export const Container = styled.div`
   width: 380px;
   height: 340px;
   background-color: #fff;
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  //   padding: 15px;
   position: absolute;
   z-index: 1000000000;
   top: 35px;
   left: 50px;
   border: 1px solid #dbdbdb;
-
-  display: ${(props) => (props.show ? "block" : "none")};
+  display: block;
 `;
 
 export const Header = styled.div`
