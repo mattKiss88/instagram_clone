@@ -29,10 +29,6 @@ import { IUser } from "../../Comment/types";
 import { IImages, IPost, IPostData } from "../../FeedCard/types";
 import { useAppSelector } from "../../../Redux/hooks";
 import { followRecommendedUsers } from "../../../Redux/feedSlice";
-import {
-  setPostSettingsModal,
-  togglePostSettingsModal,
-} from "../../../Redux/postSettingsSlice";
 import { setUnfollowModal } from "../../../Redux/unfollowModalSlice";
 
 interface IViewAccountProps {
@@ -140,7 +136,9 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
             <Button onClick={onUnfollowClick}>Following</Button>
           </>
         ) : (
-          <Button onClick={onFollowClick}>Follow</Button>
+          <Button onClick={onFollowClick} follow={true}>
+            Follow
+          </Button>
         )}
       </ButtonContainer>
     </Container>

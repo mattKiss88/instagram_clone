@@ -76,8 +76,8 @@ const Navbar: React.FC = () => {
           ))}
         </Top>
         <Bottom>
-          <IconContainer>
-            <LogoutIcon onClick={logOut} />
+          <IconContainer onClick={logOut}>
+            <LogoutIcon />
           </IconContainer>
         </Bottom>
       </Wrapper>

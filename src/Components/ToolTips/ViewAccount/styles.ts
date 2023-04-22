@@ -102,7 +102,11 @@ export const Image = styled.img`
   object-fit: cover;
 `;
 
-export const Button = styled.button`
+interface IButton {
+  follow?: boolean;
+}
+
+export const Button = styled.button<IButton>`
   background-color: transparent;
   border: 1px solid #dbdbdb;
   border-radius: 5px;
@@ -111,6 +115,26 @@ export const Button = styled.button`
   font-size: 14px;
   color: #262626;
   margin: 0 5px;
+
+  :hover {
+    cursor: pointer;
+    background-color: #dbdbdb;
+  }
+
+  ${(props) =>
+    props.follow &&
+    `
+  
+  background-color: #0095f6;
+  color: #fff;
+  border: 1px solid #0095f6;
+  width: 90%;
+
+  :hover {
+    background-color: #0581f5;
+    color: #fff;
+    border: 1px solid #0581f5;
+    }`}
 `;
 
 export const ButtonContainer = styled.div`
