@@ -98,6 +98,8 @@ const ViewPostModal: React.FC = () => {
     setImgHeight(imgRef.current?.clientHeight);
   }, [imgRef.current]);
 
+  console.log(modalData, "modal data");
+
   return (
     <>
       <Container>

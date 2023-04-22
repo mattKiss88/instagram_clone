@@ -29,6 +29,7 @@ import {
 import useWindowSize from "../../Hooks/useWindowSize";
 import { Notify } from "notiflix";
 import { ImgSpinner, Spinner } from "../loader/styles";
+import { isOpen } from "../../Redux/postModalSlice";
 
 // notiflix
 
@@ -41,13 +42,14 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
   const [active, setActive] = useState<string>("posts");
   const posts = useAppSelector((state) => state.userPosts.posts);
   const user = useAppSelector((state) => state.userAccount);
+  const isPostModalOpen = useAppSelector(isOpen);
   const dispatch = useAppDispatch();
   const size = useWindowSize();
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     handlePosts(user.id);
-  }, []);
+  }, [isPostModalOpen]);
 
   const handlePosts = async (userId: number) => {
     let res = await getUserPosts(userId);
@@ -65,28 +67,6 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
       Notify.failure("Something went wrong");
     }
   };
-
-  interface X {
-    post: {
-      caption: string;
-      commentCount: number;
-      createdAt: string;
-      id: number;
-      likeCount: number;
-      updatedAt: string;
-      userId: number;
-    };
-    images: {
-      createdAt: string;
-      filter: null | string;
-      filterId: null | number;
-      id: number;
-      mediaFileId: string;
-      position: number;
-      postId: number;
-      updatedAt: string;
-    }[];
-  }
 
   return (
     <>

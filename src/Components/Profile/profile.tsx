@@ -16,13 +16,14 @@ import {
   TopRow,
   Username,
 } from "./styles";
-import { useAppDispatch } from "../../Redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Tabs from "./tabs";
 import Loader from "../loader";
 import { followRecommendedUsers } from "../../Redux/feedSlice";
 import useWindowSize from "../../Hooks/useWindowSize";
+import { isOpen } from "../../Redux/postModalSlice";
 interface IProfile {
   ownAccount: boolean;
   userId?: number;
@@ -31,6 +32,7 @@ interface IProfile {
 const Profile: React.FC<IProfile> = ({ ownAccount }) => {
   const size = useWindowSize();
   const [active, setActive] = useState<string>("posts");
+  const isPostModalOpen = useAppSelector(isOpen);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
@@ -60,7 +62,7 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [id]);
+  }, [id, isPostModalOpen]);
 
   if (isLoading) {
     return <Loader />;
