@@ -155,7 +155,10 @@ const StepTwo: React.FC = () => {
         ) : (
           <CaptionCtn>
             <UserDetailsCtn>
-              <img src={userAccount.avatar || defaultPP} alt="profile" />
+              <img
+                src={process.env.REACT_APP_S3_URL + userAccount.avatar}
+                alt="profile"
+              />
               <p>{userAccount.username}</p>
             </UserDetailsCtn>
             <Caption placeholder="Add a caption..." onChange={handleCaption} />

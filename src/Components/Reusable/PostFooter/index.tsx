@@ -30,6 +30,7 @@ import { IReplyData } from "../../../Containers/ViewPostModal";
 import EmojiSelector from "../EmojiSelector";
 import { usePopperTooltip } from "react-popper-tooltip";
 import { IPostData } from "../../FeedCard/types";
+import { useNavigate } from "react-router-dom";
 interface IPostFooter {
   likes: any;
   fullName: string;
@@ -62,6 +63,8 @@ const PostFooter: React.FC<IPostFooter> = ({
   const { username, id } = useAppSelector((state) => state.userAccount);
   const feed: IPostData[] = useAppSelector((state) => state.feed.posts);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const loggedInUserId = useAppSelector((state) => state.userAccount.id);
+  const navigate = useNavigate();
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
     if (e.key === "Enter") {
@@ -156,6 +159,12 @@ const PostFooter: React.FC<IPostFooter> = ({
     };
   }, []);
 
+  const handleUsernameClick = () => {
+    console.log("username clicked");
+    if (loggedInUserId === postData?.user?.id) return navigate("/profile");
+    navigate(`/profile/${postData?.user?.id}`);
+  };
+
   return (
     <CardFooter>
       <IconContainer>
@@ -173,7 +182,13 @@ const PostFooter: React.FC<IPostFooter> = ({
       {showCaption && (
         <Caption>
           <ReadMore>
-            <span className="username">{fullName}</span>
+            <span
+              className="username"
+              onClick={handleUsernameClick}
+              style={{ cursor: "pointer" }}
+            >
+              {fullName}
+            </span>
             {content}
           </ReadMore>
         </Caption>

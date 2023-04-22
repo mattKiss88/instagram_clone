@@ -41,13 +41,13 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
   const size = useWindowSize();
 
   useEffect(() => {
-    handlePosts();
+    handlePosts(user.id);
   }, []);
 
-  const handlePosts = async () => {
-    let res = await getUserPosts(user.id);
+  const handlePosts = async (userId: number) => {
+    let res = await getUserPosts(userId);
     dispatch(getPosts(res));
-    dispatch(getUserDetails(user.id) as any);
+    dispatch(getUserDetails(userId) as any);
   };
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>): void => {

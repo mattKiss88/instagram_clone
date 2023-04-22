@@ -90,7 +90,7 @@ const ViewAccount: React.FC<IViewAccountProps> = ({
         ))}
       </StatsContainer>
       <Posts>
-        {post?.user?.posts.slice(0, 3).map((post: any) => (
+        {post?.user?.posts?.slice(0, 3)?.map((post: any) => (
           <PostWrapper onClick={() => openModal({ ...post, user })}>
             <Image
               src={`${

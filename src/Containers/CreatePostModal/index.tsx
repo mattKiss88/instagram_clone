@@ -52,7 +52,7 @@ const CreatePostModal: React.FC = () => {
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
       width: width,
-      minWidth: (size.width as number) > 500 ? "500px" : "100%",
+      minWidth: (size.width as number) > 500 ? "500px" : "auto",
       height: height,
       borderRadius: (size.width as number) < 500 ? "0px" : "15px",
       padding: "0",

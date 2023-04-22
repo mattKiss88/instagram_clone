@@ -46,13 +46,17 @@ export const Header = styled.h1`
 
 export const SearchResultsCtn = styled.div`
   border-top: 1px solid #e6e6e6;
-  //   padding: 1.5rem;
   > h3 {
     font-size: 1.8rem;
     font-weight: 600;
     margin-top: 2rem;
     margin-bottom: 1rem;
   }
+`;
+
+export const ScrollCtn = styled.div`
+  height: calc(100vh - 28rem);
+  overflow-y: scroll;
 `;
 
 export const UserItem = styled.div`

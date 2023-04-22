@@ -1,6 +1,10 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addModalData, toggleModal } from "../../../Redux/postModalSlice";
+import {
+  addModalData,
+  isOpen,
+  toggleModal,
+} from "../../../Redux/postModalSlice";
 import {
   Avatar,
   Bio,
@@ -39,6 +43,7 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
   const loggedInUserFriends = useAppSelector(
     (state) => state.userAccount.friends
   );
+  const isModalOpen = useAppSelector(isOpen);
 
   const stats: IStats[] = [
     { key: "posts", number: post?.user?.posts?.length || 0 },
@@ -52,10 +57,18 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
 
   const openModal = (postData: IPostData): void => {
     dispatch(addModalData(postData));
-    dispatch(toggleModal());
+    navigate(`/profile/${postData.post.id}`);
+    if (!isModalOpen) dispatch(toggleModal());
+
+    if (user.id === loggedInUserId) return navigate(`/profile`);
+
+    navigate(`/profile/${user.id}`);
+
+    // dispatch(toggleModal());
   };
 
   const onProfileClick = (): void => {
+    if (isModalOpen) dispatch(toggleModal());
     if (user.id === loggedInUserId) return navigate(`/profile`);
 
     navigate(`/profile/${user.id}`);

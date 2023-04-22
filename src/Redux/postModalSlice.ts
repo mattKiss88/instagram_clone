@@ -59,6 +59,7 @@ export const fetchCommentsByPostId = createAsyncThunk(
     return response.data.comments;
   }
 );
+
 export const likeComment = createAsyncThunk(
   "comments/postLikeStatus",
   async ({ commentId, commentType }: likeCommentPayload, { dispatch }) => {
@@ -155,30 +156,6 @@ export const modalSlice = createSlice({
       // Add user to the state array
       state.comments = action.payload;
     });
-    // builder.addCase(likeComment.fulfilled, (state, action) => {
-    //   console.log(action.payload, "action.payload");
-    //   // Add user to the state array
-    //   let updateCommentLikes = state.comments.map((c: any) => {
-    //     let updateSubComments = c.subComments.map((sub: any) => {
-    //       if (sub.id === action.payload) {
-    //         return {
-    //           ...sub,
-    //           liked: !sub.liked,
-    //           totalLikes: !sub.liked ? sub.totalLikes + 1 : sub.totalLikes - 1,
-    //         };
-    //       }
-
-    //       return sub;
-    //     });
-
-    //     return {
-    //       ...c,
-    //       subComments: [...updateSubComments],
-    //     };
-    //   });
-
-    //   state.comments = [...updateCommentLikes];
-    // });
   },
 });
 

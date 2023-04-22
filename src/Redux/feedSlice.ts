@@ -138,6 +138,18 @@ export const feedSlice = createSlice({
         isFetching: false,
       };
     },
+    pushCreatedPost: (state, action: PayloadAction<any>) => {
+      return {
+        ...state,
+        posts: [...state.posts, action.payload],
+      };
+    },
+    removePost: (state, action: PayloadAction<number>) => {
+      return {
+        ...state,
+        posts: state.posts.filter((post) => post.post.id !== action.payload),
+      };
+    },
   },
   extraReducers: (builder) => {
     // builder.addCase(fetchFeedByUserId.fulfilled, (state, action) => {
@@ -155,6 +167,8 @@ export const {
   fetchPostRequest,
   fetchPostSuccess,
   fetchPostFailure,
+  pushCreatedPost,
+  removePost,
 } = feedSlice.actions;
 
 export const feed = (state: RootState) => state.feed.posts;

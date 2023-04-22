@@ -23,9 +23,13 @@ import useWindowSize from "./Hooks/useWindowSize";
 import NavbarMb from "./Components/SideBar/mobile/mobile";
 import ViewPostModalMobile from "./Containers/ViewPostModal/mobile";
 import TopNavMobile from "./Components/SideBar/mobile/top";
+import PostSettingsModal from "./Containers/PostSettingsModal";
+import { isPostSettingsModalOpen } from "./Redux/postSettingsSlice";
 function App() {
-  const isPostModalOpen = useAppSelector(isOpen);
-  const isCreatePostModalOpen = useAppSelector(isModalOpen);
+  const isPostModalOpen: boolean = useAppSelector(isOpen);
+  const isCreatePostModalOpen: boolean = useAppSelector(isModalOpen);
+  const isPostSettingsOpen: boolean = useAppSelector(isPostSettingsModalOpen);
+
   const ViewPostModal = lazy(() => import("./Containers/ViewPostModal"));
   const token = useAppSelector((state) => state.userAccount.token);
   const navigate = useNavigate();
@@ -87,6 +91,7 @@ function App() {
           </>
         )}
         {isCreatePostModalOpen && <CreatePostModal />}
+        {isPostSettingsOpen && <PostSettingsModal />}
       </Suspense>
     </div>
   );

@@ -4,6 +4,7 @@ import {
   Avatar,
   Header,
   RightSide,
+  ScrollCtn,
   SearchContainer,
   SearchResultsCtn,
   UserItem,
@@ -78,27 +79,29 @@ const Search: React.FC<SearchProps> = ({ setShowSearch }) => {
       </SearchBarCtn>
       <SearchResultsCtn>
         <h3>Results</h3>
-        {searchResults.map((user: any, i) => {
-          return (
-            <UserItem
-              onClick={(e) => handleClick(e, user.id)}
-              id={user.id}
-              key={i}
-            >
-              <Avatar
-                src={
-                  process.env.REACT_APP_S3_URL +
-                  user?.Profile_picture?.mediaFileId
-                }
-                alt="profile"
-              />
-              <RightSide>
-                <h4>{user.username}</h4>
-                <p>{user.fullName}</p>
-              </RightSide>
-            </UserItem>
-          );
-        })}
+        <ScrollCtn>
+          {searchResults.map((user: any, i) => {
+            return (
+              <UserItem
+                onClick={(e) => handleClick(e, user.id)}
+                id={user.id}
+                key={i}
+              >
+                <Avatar
+                  src={
+                    process.env.REACT_APP_S3_URL +
+                    user?.Profile_picture?.mediaFileId
+                  }
+                  alt="profile"
+                />
+                <RightSide>
+                  <h4>{user.username}</h4>
+                  <p>{user.fullName}</p>
+                </RightSide>
+              </UserItem>
+            );
+          })}
+        </ScrollCtn>
       </SearchResultsCtn>
     </SearchContainer>
   );

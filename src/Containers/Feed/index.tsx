@@ -25,9 +25,9 @@ const Feed: React.FC<any> = () => {
   const [loading, setLoading] = useState(true);
   const [loadedImagesCount, setLoadedImagesCount] = useState(0);
 
-  // const state = useAppSelector((state) => state);
+  const state = useAppSelector((state) => state.feed);
 
-  // console.log(state, "state");
+  console.log(state, "state");
 
   useEffect(() => {
     dispatch(fetchFeedByUserId(id) as any).then(() => setLoading(false));

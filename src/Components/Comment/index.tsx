@@ -13,12 +13,13 @@ import {
 } from "./styles";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { useAppDispatch } from "../../Redux/hooks";
-import { likeComment } from "../../Redux/postModalSlice";
+import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
+import { likeComment, toggleModal } from "../../Redux/postModalSlice";
 import { usePopperTooltip } from "react-popper-tooltip";
 import ViewAccount from "../ToolTips/ViewAccount/newTooltip";
 import { IReplyData } from "../../Containers/ViewPostModal";
 import { IComment } from "./types";
+import { useNavigate } from "react-router-dom";
 
 dayjs.extend(relativeTime);
 
@@ -38,6 +39,8 @@ const Comment: React.FC<CommentProps> = ({
   type,
   setReply,
 }) => {
+  const navigate = useNavigate();
+  const loggedInUserId = useAppSelector((state) => state.userAccount.id);
   const { createdAt, likeCount } = comment;
   const { avatar, username } = comment.user;
   const [liked, setLiked] = useState<boolean>(false);
@@ -72,12 +75,20 @@ const Comment: React.FC<CommentProps> = ({
     });
   };
 
+  const handleClick = (): void => {
+    console.log("username clicked");
+    dispatch(toggleModal());
+    if (comment.user.id === loggedInUserId) return navigate(`/profile`);
+    navigate(`/profile/${comment.user.id}`);
+  };
+
   return (
     <CommentContainer type={type}>
       <div>
         <ProfilePic
           src={`${process.env.REACT_APP_S3_URL + avatar}`}
           ref={setTriggerRef}
+          onClick={handleClick}
         />
         {visible && (
           <div
@@ -88,7 +99,7 @@ const Comment: React.FC<CommentProps> = ({
           </div>
         )}
         <Container onDoubleClick={handleLike}>
-          <AccountName>{username} </AccountName>
+          <AccountName onClick={handleClick}>{username} </AccountName>
           <CommentText>{comment?.comment}</CommentText>
           <ActionsContainer>
             <TimeStamp>{dayjs(createdAt).fromNow()}</TimeStamp>

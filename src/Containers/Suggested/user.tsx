@@ -13,11 +13,13 @@ import { followRecommendedUsers } from "../../Redux/feedSlice";
 import { usePopperTooltip } from "react-popper-tooltip";
 import ViewAccount from "../../Components/ToolTips/ViewAccount/newTooltip";
 import { IUser } from "../../Components/Comment/types";
+import { useNavigate } from "react-router-dom";
 
 interface IUserProps {
   user: IUser;
 }
 const User: React.FC<IUserProps> = ({ user }) => {
+  const navigate = useNavigate();
   const [buttonName, setButtonName] = useState<"Follow" | "Following">(
     "Follow"
   );
@@ -42,6 +44,11 @@ const User: React.FC<IUserProps> = ({ user }) => {
       interactive: true,
     });
 
+  const handleUsernameClick = (): void => {
+    console.log("username clicked");
+    navigate(`/profile/${user?.id}`);
+  };
+
   return (
     <SuggestedContainer>
       <ProfilePic
@@ -53,7 +60,7 @@ const User: React.FC<IUserProps> = ({ user }) => {
         ref={setTriggerRef}
       />
       <UsernameContainer>
-        <Username>{user.username}</Username>
+        <Username onClick={handleUsernameClick}>{user.username}</Username>
         {visible && (
           <div
             ref={setTooltipRef}
@@ -63,7 +70,7 @@ const User: React.FC<IUserProps> = ({ user }) => {
           </div>
         )}
 
-        <Name>{user.fullName}</Name>
+        <Name onClick={handleUsernameClick}>{user.fullName}</Name>
       </UsernameContainer>
       <Button onClick={onClickHandler}>{buttonName}</Button>
     </SuggestedContainer>

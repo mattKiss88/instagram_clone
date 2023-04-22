@@ -2,6 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "./store";
 import axios from "axios";
+import { pushCreatedPost } from "./feedSlice";
+import { getUserPosts } from "../Api";
+import { getPosts } from "./userPostsSlice";
+import { getUserDetails } from "./userAccountSlice";
 
 // Define a type for the slice state
 interface CounterState {
@@ -32,7 +36,7 @@ const initialState: CounterState = {
 export const createNewPost = createAsyncThunk(
   "createPost/postNewPost",
   async (_, { getState, dispatch }) => {
-    const { createPost } = getState() as RootState;
+    const { createPost, userAccount } = getState() as RootState;
     const formData = new FormData();
     formData.append("image", createPost.finalImage || "");
     formData.append("filter", createPost.filter);
@@ -51,6 +55,10 @@ export const createNewPost = createAsyncThunk(
     // if the response is successful, reset the state
     if (response.status === 201) {
       dispatch(resetState());
+      dispatch(pushCreatedPost(response.data));
+      let res = await getUserPosts(userAccount.id);
+      dispatch(getPosts(res));
+      dispatch(getUserDetails(userAccount.id) as any);
     }
 
     return response.status;

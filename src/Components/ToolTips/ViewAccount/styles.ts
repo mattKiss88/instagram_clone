@@ -39,10 +39,12 @@ export const Avatar = styled.img`
   height: 60px;
   border-radius: 50%;
   //   margin-right: 10px;
+  cursor: pointer;
 `;
 export const Username = styled.p`
   font-weight: 600;
   font-size: 14px;
+  cursor: pointer;
 `;
 
 export const Name = styled.p`

@@ -8,6 +8,10 @@ import { CardHeader, LeftContainer, ProfilePic, AccountName } from "./styles";
 import { useNavigate } from "react-router-dom";
 import { toggleModal } from "../../../Redux/postModalSlice";
 import { IPostData } from "../../FeedCard/types";
+import {
+  setPostSettingsModal,
+  togglePostSettingsModal,
+} from "../../../Redux/postSettingsSlice";
 
 interface IPostHeader {
   avatar: string;
@@ -25,6 +29,10 @@ const PostHeader: React.FC<IPostHeader> = ({
   const [hoveredOnToolTip, setHoveredOnToolTip] =
     React.useState<boolean>(false);
   const loggedInUserId = useAppSelector((state) => state.userAccount.id);
+  const followingUsers = useAppSelector((state) => state.userAccount.friends);
+  const isPostSettingsOpen = useAppSelector(
+    (state) => state.postSettings.isOpen
+  );
 
   const feedState = useAppSelector(feed, shallowEqual);
   const post: IPostData = feedState.find(
@@ -76,6 +84,18 @@ const PostHeader: React.FC<IPostHeader> = ({
     navigate(`/profile/${userId}`);
   };
 
+  const handleDotsClick = (): void => {
+    dispatch(
+      setPostSettingsModal({
+        isLoggedInUser: userId === loggedInUserId,
+        isFollowing: followingUsers.includes(userId),
+        isOpen: true,
+        postId,
+        userId,
+      })
+    );
+  };
+
   return (
     <CardHeader>
       <ViewAccount
@@ -94,7 +114,10 @@ const PostHeader: React.FC<IPostHeader> = ({
           {fullName}
         </AccountName>
       </LeftContainer>
-      <DotsHorizontalIcon style={{ width: "24px", cursor: "pointer" }} />
+      <DotsHorizontalIcon
+        style={{ width: "24px", cursor: "pointer" }}
+        onClick={handleDotsClick}
+      />
     </CardHeader>
   );
 };

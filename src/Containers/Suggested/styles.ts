@@ -26,6 +26,7 @@ export const UsernameContainer = styled.div`
 export const Username = styled.p`
   font-size: 14px;
   font-weight: 700;
+  cursor: pointer;
 `;
 export const Name = styled.p`
   font-size: 14px;

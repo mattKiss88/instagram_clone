@@ -14,7 +14,7 @@ const ReadMore: React.FC<ReadMoreProps> = ({ children }) => {
   return (
     <p className="text">
       {children[0]}
-      {isReadMore ? text.slice(0, 120) : text}
+      {isReadMore ? text?.slice(0, 120) : text}
       <span onClick={toggleReadMore} className="more">
         {text.length > 120 && (isReadMore ? "... more" : "")}
       </span>
