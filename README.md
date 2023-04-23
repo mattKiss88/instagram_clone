@@ -1,46 +1,80 @@
-# Getting Started with Create React App
+# Instagram Clone
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to the Instagram Clone project! This repository contains the source code for a fully functional, modern social media platform inspired by Instagram. The project is built using React for the frontend and Node, Express, Sequelize, and AWS S3 for the backend. The Instagram Clone allows users to share photos, follow other users, like and comment on posts, and much more.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- User authentication (register, login, and logout)
+- Upload photos with captions
+- Follow and unfollow other users
+- View profiles with user posts and follower/following information
+- Like and unlike posts
+- Comment on posts
+- Real-time notifications for likes, comments, and new followers
+- Responsive design for mobile and desktop devices
 
-### `npm start`
+## Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Frontend
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- React.js: A popular JavaScript library for building user interfaces
+- Redux: A predictable state container for JavaScript apps
+- React Router: A library for handling in-app navigation
+- Axios: Promise-based HTTP client for browser and Node.js
 
-### `npm test`
+### Backend
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js: A JavaScript runtime for server-side applications
+- Express: A minimal and flexible web application framework for Node.js
+- Sequelize: A promise-based ORM for Node.js and PostgreSQL
+- PostgreSQL: A powerful, enterprise-class open-source object-relational database system
+- AWS S3: A highly-scalable and reliable object storage service from Amazon Web Services
 
-### `npm run build`
+## Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To get started, follow these steps:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Clone the repository:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+$ git clone https://github.com/yourusername/instagram-clone.git
+$ cd instagram-clone
+```
 
-### `npm run eject`
+2. Install dependencies for the frontend and backend:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+$ cd frontend
+$ npm install
+$ cd ../backend
+$ npm install
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. Configure the environment variables for the backend:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
+$ cd backend
+$ cp .env.example .env
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Fill in the required values in the .env file, such as database credentials, AWS S3 configuration, and a JWT secret.
 
-## Learn More
+4. Create and set up the database:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+$ npx sequelize-cli db:create
+$ npx sequelize-cli db:migrate
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+5. Start the backend server:
+
+```
+$ npm start
+```
+
+6. Start the frontend development server:
+
+```
+$ cd ../frontend
+$ npm start
+```

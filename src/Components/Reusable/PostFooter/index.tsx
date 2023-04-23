@@ -32,7 +32,7 @@ import { usePopperTooltip } from "react-popper-tooltip";
 import { IPostData } from "../../FeedCard/types";
 import { useNavigate } from "react-router-dom";
 interface IPostFooter {
-  likes: number;
+  likes: any;
   fullName: string;
   content?: string;
   showCaption?: boolean;
@@ -158,6 +158,8 @@ const PostFooter: React.FC<IPostFooter> = ({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
+  console.log("username clicked", postData);
 
   const handleUsernameClick = () => {
     console.log("username clicked");

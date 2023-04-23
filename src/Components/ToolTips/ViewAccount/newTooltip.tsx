@@ -30,6 +30,7 @@ import { IImages, IPost, IPostData } from "../../FeedCard/types";
 import { useAppSelector } from "../../../Redux/hooks";
 import { followRecommendedUsers } from "../../../Redux/feedSlice";
 import { setUnfollowModal } from "../../../Redux/unfollowModalSlice";
+import { UserAddIcon } from "@heroicons/react/outline";
 
 interface IViewAccountProps {
   post: { user: IUser };
@@ -137,7 +138,7 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
           </>
         ) : (
           <Button onClick={onFollowClick} follow={true}>
-            Follow
+            <UserAddIcon color={"white"} /> Follow
           </Button>
         )}
       </ButtonContainer>
