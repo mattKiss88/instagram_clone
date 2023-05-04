@@ -1,11 +1,16 @@
-import React from "react";
-import Navbar from "../../Components/Navbar";
+import { Suspense, lazy } from "react";
+import Loader from "../../Components/loader";
+import { FeedMemo } from "../../Containers/Feed";
 
-const Home = () => {
+const Home: React.FC = () => {
+  // const Feed = lazy(() => import("../../Containers/Feed"));
+
   return (
+    // <Suspense fallback={<Loader />}>
     <div>
-      <Navbar />
+      <FeedMemo show={true} />
     </div>
+    // </Suspense>
   );
 };
 
