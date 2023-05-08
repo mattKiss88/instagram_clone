@@ -138,7 +138,7 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
           </>
         ) : (
           <Button onClick={onFollowClick} follow={true}>
-            <UserAddIcon color={"white"} /> Follow
+            Follow
           </Button>
         )}
       </ButtonContainer>

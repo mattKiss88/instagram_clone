@@ -60,8 +60,6 @@ export const getFriends = async () => {
   try {
     const response = await axios.get(`${API_URL}/user/friends?limit=8`);
 
-    console.log(response.data, "response.data bro");
-
     return response.data.followingUsers;
   } catch (error) {
     console.error(error);

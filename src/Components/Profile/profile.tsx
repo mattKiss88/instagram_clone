@@ -53,7 +53,7 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/${id}`)
+      .get(`${process.env.REACT_APP_API_URL}/user/${id}`)
       .then((res) => {
         setUser(res.data.user);
         setIsLoading(false);
