@@ -22,7 +22,7 @@ export interface IPost {
   createdAt: string;
   id: number;
   likeCount: number;
-  likes: boolean;
+  isLiked: boolean;
   updatedAt: string;
   userId: number;
   commentCount?: number;

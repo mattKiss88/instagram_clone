@@ -37,7 +37,7 @@ const initialState: InitialState = {
     createdAt: "",
     updatedAt: "",
     likeCount: 0,
-    likes: false,
+    isLiked: false,
     commentCount: 0,
   },
   images: [],
@@ -99,8 +99,8 @@ export const modalSlice = createSlice({
         ...state,
         post: {
           ...state.post,
-          likes: !state.post.likes,
-          likeCount: !state.post.likes
+          isLiked: !state.post.isLiked,
+          likeCount: !state.post.isLiked
             ? state.post.likeCount + 1
             : state.post.likeCount - 1,
         },

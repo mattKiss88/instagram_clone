@@ -109,8 +109,8 @@ export const feedSlice = createSlice({
             ...data,
             post: {
               ...data.post,
-              likes: !data.post.likes,
-              likeCount: !data.post.likes
+              isLiked: !data.post.isLiked,
+              likeCount: !data.post.isLiked
                 ? data.post.likeCount + 1
                 : data.post.likeCount - 1,
             },
