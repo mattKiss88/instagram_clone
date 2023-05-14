@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./Redux/hooks";
 import { isOpen } from "./Redux/postModalSlice";
-import { Suspense, useEffect, useState, lazy } from "react";
+import { Suspense, useEffect, useState, lazy, useLayoutEffect } from "react";
 import axios from "axios";
 import MyProfile from "./Pages/Profile";
 import Loader from "./Components/loader";
@@ -27,6 +27,7 @@ import PostSettingsModal from "./Containers/PostSettingsModal";
 import { isPostSettingsModalOpen } from "./Redux/postSettingsSlice";
 import { isUnfollowModalOpen } from "./Redux/unfollowModalSlice";
 import UnfollowModal from "./Containers/UnfollowModal";
+import { useLocation } from "react-router-dom";
 function App() {
   const isPostModalOpen: boolean = useAppSelector(isOpen);
   const isCreatePostModalOpen: boolean = useAppSelector(isModalOpen);
@@ -37,17 +38,30 @@ function App() {
   const token = useAppSelector((state) => state.userAccount.token);
   const navigate = useNavigate();
   const size = useWindowSize();
+  const [showNavbar, setShowNavbar] = useState<boolean>(false);
+  const location = useLocation();
+  const pathnames = ["/login", "/signup"];
 
   useEffect(() => {
-    if (!token && window.location.pathname !== "/signup") {
+    if (!token && !pathnames.includes(location.pathname)) {
       navigate("/login");
     }
-  }, []);
+  }, [location.pathname, token]);
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   interface ModalProps {
     children: React.ReactNode;
   }
+
+  console.log(token, "token");
+
+  useLayoutEffect(() => {
+    if (pathnames.includes(location.pathname)) {
+      setShowNavbar(false);
+    } else {
+      setShowNavbar(true);
+    }
+  }, [location.pathname]);
 
   // const Modal: React.FC<ModalProps> = ({ children }: any) => {
   //   const [modalContainer] = useState(() => document.createElement("div"));
@@ -75,7 +89,8 @@ function App() {
           (size.width as number) < 700 &&
           !isPostModalOpen &&
           !isCreatePostModalOpen && <TopNavMobile />}
-        {token && ((size.width as number) < 700 ? <NavbarMb /> : <Navbar />)}
+        {showNavbar &&
+          ((size.width as number) < 700 ? <NavbarMb /> : <Navbar />)}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<MyProfile />} />

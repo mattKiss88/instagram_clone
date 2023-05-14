@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { useAppDispatch } from "./hooks";
 import { IComment, IUser } from "../Components/Comment/types";
 import { IImages, IPost } from "../Components/FeedCard/types";
 

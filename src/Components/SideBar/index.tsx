@@ -52,11 +52,9 @@ const Navbar: React.FC = () => {
   };
 
   const logOut = (): void => {
-    persistor.pause();
-    persistor.flush().then(() => {
-      return persistor.purge();
+    persistor.purge().then(() => {
+      navigate("/login");
     });
-    navigate("/login");
   };
 
   return (
