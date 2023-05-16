@@ -182,13 +182,16 @@ export const BottomContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 24px;
+  padding-bottom: 24px;
 
   @media (max-width: 800px) {
     gap: 12px;
+    padding-bottom: 12px;
   }
 
   @media (max-width: 480px) {
     gap: 8px;
+    padding-bottom: 8px;
   }
 `;
 

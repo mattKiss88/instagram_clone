@@ -153,7 +153,7 @@ export const feedSlice = createSlice({
     pushCreatedPost: (state, action: PayloadAction<any>) => {
       return {
         ...state,
-        posts: [...state.posts, action.payload],
+        posts: [action.payload, ...state.posts],
       };
     },
     removePost: (state, action: PayloadAction<number>) => {

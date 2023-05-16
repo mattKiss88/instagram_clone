@@ -18,16 +18,16 @@ const navData: { name: string; icon: ReactElement; pathName: string }[] = [
     icon: <SearchIcon />,
     pathName: "/explore",
   },
-  {
-    name: "Message",
-    icon: <PaperAirplaneIcon />,
-    pathName: "/inbox",
-  },
-  {
-    name: "Notification",
-    icon: <HeartIcon />,
-    pathName: "/",
-  },
+  // {
+  //   name: "Message",
+  //   icon: <PaperAirplaneIcon />,
+  //   pathName: "/inbox",
+  // },
+  // {
+  //   name: "Notification",
+  //   icon: <HeartIcon />,
+  //   pathName: "/",
+  // },
   {
     name: "Create",
     icon: <PlusCircleIcon />,

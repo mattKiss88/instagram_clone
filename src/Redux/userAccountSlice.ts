@@ -190,5 +190,6 @@ export const { getUserData, followUser, unfollowUser, setImgLoading } =
   userAccountSlice.actions;
 
 export const user = (state: RootState) => state.userAccount;
+export const authToken = (state: RootState) => state.userAccount.token;
 
 export default userAccountSlice.reducer;

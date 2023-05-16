@@ -4,7 +4,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { store, persistor } from "./Redux/store";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 import Loader from "./Components/loader";
 const root = ReactDOM.createRoot(

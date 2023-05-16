@@ -28,6 +28,9 @@ import { isPostSettingsModalOpen } from "./Redux/postSettingsSlice";
 import { isUnfollowModalOpen } from "./Redux/unfollowModalSlice";
 import UnfollowModal from "./Containers/UnfollowModal";
 import { useLocation } from "react-router-dom";
+import ProtectedRoute from "./HOC/authRoute";
+import Layout from "./Containers/Layout";
+
 function App() {
   const isPostModalOpen: boolean = useAppSelector(isOpen);
   const isCreatePostModalOpen: boolean = useAppSelector(isModalOpen);
@@ -42,11 +45,6 @@ function App() {
   const location = useLocation();
   const pathnames = ["/login", "/signup"];
 
-  useEffect(() => {
-    if (!token && !pathnames.includes(location.pathname)) {
-      navigate("/login");
-    }
-  }, [location.pathname, token]);
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   interface ModalProps {
@@ -77,42 +75,42 @@ function App() {
   // };
 
   return (
-    <div>
-      {/* <Router> */}
-
+    <>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Home />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <MyProfile />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile/:id"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <UserProfile />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
       </Routes>
-      <Wrapper>
-        {token &&
-          (size.width as number) < 700 &&
-          !isPostModalOpen &&
-          !isCreatePostModalOpen && <TopNavMobile />}
-        {showNavbar &&
-          ((size.width as number) < 700 ? <NavbarMb /> : <Navbar />)}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<MyProfile />} />
-          <Route path="/profile/:id" element={<UserProfile />} />
-        </Routes>
-      </Wrapper>
-      {/* </Router> */}
-      <Suspense fallback={<Loader />}>
-        {isPostModalOpen && (
-          <>
-            {(size.width as number) < 600 ? (
-              <ViewPostModalMobile />
-            ) : (
-              <ViewPostModal />
-            )}
-          </>
-        )}
-        {isCreatePostModalOpen && <CreatePostModal />}
-        {isPostSettingsOpen && <PostSettingsModal />}
-        {isUnFollowModalOpen && <UnfollowModal />}
-      </Suspense>
-    </div>
+    </>
   );
 }
 

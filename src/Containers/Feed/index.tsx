@@ -10,7 +10,6 @@ import {
   fetchRecommendedUsers,
 } from "../../Redux/feedSlice";
 import useWindowSize from "../../Hooks/useWindowSize";
-import Navbar from "../../Components/SideBar";
 import { IPostData } from "../../Components/FeedCard/types";
 import { shallowEqual } from "react-redux";
 import Loader from "../../Components/loader";

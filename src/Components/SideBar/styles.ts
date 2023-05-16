@@ -17,15 +17,44 @@ export const Section = styled.section<ISectionProps>`
     collapse &&
     css`
       width: 70px;
-      transition: 0.5s;
     `}
+
+  transition: 0.5s;
 `;
-export const Logo = styled.img`
+interface IImageProps {
+  fadeOut: boolean;
+}
+export const Logo = styled.img<IImageProps>`
   width: 123px;
   height: 69px;
   padding: 25px 12px 16px;
   margin-bottom: 10px;
-  // margin-top: 30px;
+  opacity: 1;
+
+  ${({ fadeOut }) =>
+    fadeOut &&
+    css`
+      opacity: 0;
+    `}
+  transition: 0.6s;
+`;
+
+export const LogoMini = styled.img<IImageProps>`
+  width: 32px;
+  height: 32px;
+  margin-bottom: 10px;
+  margin-left: 8px;
+  transform: scale(0);
+  position: absolute;
+  top: 30px;
+  left: 10px;
+
+  ${({ fadeOut }) =>
+    fadeOut &&
+    css`
+      transform: scale(1);
+    `}
+  transition: 0.6s;
 `;
 
 interface IProps {
@@ -57,7 +86,7 @@ export const IconContainer = styled.div<IProps>`
   p {
     font-weight: 600;
     font-size: 1.6rem;
-    ${({ bold }) => bold && "font-weight: 700;"}
+    ${({ bold }) => bold && "font-weight: 800;"}
 `;
 
 export const Top = styled.div`

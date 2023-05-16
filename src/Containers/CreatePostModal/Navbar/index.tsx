@@ -52,7 +52,7 @@ const NavBar: React.FC<Props> = ({ step }) => {
                 }}
               />
             )}
-            <StepName className="step1">Create new post</StepName>;
+            <StepName className="step1">Create new post</StepName>
           </>
         );
       case 2:

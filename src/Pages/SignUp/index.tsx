@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Input, Subheader, Top } from "./styles";
 import logo from "../../Assets/instagram-text-icon.png";
-import { useAppDispatch } from "../../Redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { Bottom, LoginBtn as SignUpBtn, NoAccount as P } from "../Login/styles";
 import { Link } from "react-router-dom";
 import { signUpUser } from "../../Redux/userAccountSlice";
@@ -23,6 +23,8 @@ const SignUp: React.FC = () => {
   });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const state = useAppSelector((state) => state);
+  console.log(state);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
