@@ -76,7 +76,6 @@ const Comment: React.FC<CommentProps> = ({
   };
 
   const handleClick = (): void => {
-    console.log("username clicked");
     dispatch(toggleModal());
     if (comment.user.id === loggedInUserId) return navigate(`/profile`);
     navigate(`/profile/${comment.user.id}`);

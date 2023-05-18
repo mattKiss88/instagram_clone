@@ -13,7 +13,6 @@ import {
   SearchContainer as SearchBarCtn,
   Search as SearchBar,
 } from "../Navbar/styles";
-import { useIsClickOutside } from "../../Hooks/useClickOutside";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import {
   fetchUsers,
@@ -22,7 +21,6 @@ import {
 } from "../../Redux/searchUsersSlice";
 import { useNavigate } from "react-router-dom";
 import { useDebounce } from "../../Hooks/useDebounce";
-// import useIsClickOutside from "../../Hooks/useIsClickOutside";
 
 interface SearchProps {
   setShowSearch: React.Dispatch<React.SetStateAction<boolean | null>>;
@@ -33,7 +31,6 @@ const Search: React.FC<SearchProps> = ({ setShowSearch, showSearch }) => {
   const [showSearchIcon, setShowSearchIcon] = useState<boolean>(true);
   const [search, setSearch] = useState<string>("");
   const [open, setOpen] = useState<boolean>(true);
-  // const { ref, isClickOutside } = useIsClickOutside(false);
   const searchResults = useAppSelector(searchResult);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

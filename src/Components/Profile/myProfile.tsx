@@ -68,6 +68,8 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
     }
   };
 
+  console.log(posts, "posts");
+
   return (
     <>
       <Section>
@@ -122,11 +124,12 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
         )}
         <Tabs ownAccount={ownAccount} active={active} setActive={setActive} />
         <BottomContainer>
-          {posts?.map((post: any, x: number) => {
-            return (
-              <Post key={x} post={{ ...post, user: { ...user, posts } }} />
-            );
-          })}
+          {Array.isArray(posts) &&
+            posts?.map((post: any, x: number) => {
+              return (
+                <Post key={x} post={{ ...post, user: { ...user, posts } }} />
+              );
+            })}
         </BottomContainer>
       </Section>
     </>

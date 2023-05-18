@@ -2,31 +2,22 @@ import { useState, useRef, useEffect } from "react";
 import navData from "../Navbar/NavData";
 import {
   Bottom,
-  // Right,
   IconContainer,
   Logo,
   LogoMini,
   Section,
   Top,
-  // Center,
   Wrapper,
-  // Search,
-  // SearchContainer,
 } from "./styles";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import { isModalOpen, toggleModal } from "../../Redux/createPostModalSlice";
-import axios from "axios";
-import { MenuIcon } from "@heroicons/react/outline";
 import { useLocation } from "react-router-dom";
 import Search from "../Search";
-import { ArrowRightIcon } from "@heroicons/react/outline";
 import { LogoutIcon } from "@heroicons/react/outline";
 import { persistor, resetState } from "../../Redux/store";
 import logo from "../../Assets/instagram-text-icon.png";
 import logoMini from "../../Assets/insta-logo-mini.svg";
-// arrow right on rectangle icon from heroicons react outline:
-//
 
 const Navbar: React.FC = () => {
   const isCreatePostModalOpen: boolean = useAppSelector(isModalOpen);
@@ -55,7 +46,6 @@ const Navbar: React.FC = () => {
       default:
         return navigate("/");
     }
-    // location.pathname !== pathName && navigate(pathName);
   };
 
   const logOut = (): void => {
