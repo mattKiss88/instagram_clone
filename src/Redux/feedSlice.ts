@@ -30,10 +30,7 @@ export const fetchFeedByUserId = createAsyncThunk(
     const { rehydrated } = state._persist;
     const { posts, page, isFetching, hasMore } = state.feed;
 
-    console.log("rehydrated", rehydrated, isFetching, hasMore);
-
     if (isFetching || !hasMore) {
-      console.log("returning");
       return;
     }
 

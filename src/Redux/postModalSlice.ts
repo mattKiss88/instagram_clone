@@ -62,7 +62,6 @@ export const fetchCommentsByPostId = createAsyncThunk(
 export const likeComment = createAsyncThunk(
   "comments/postLikeStatus",
   async ({ commentId, commentType }: likeCommentPayload, { dispatch }) => {
-    console.log(commentId, "commentId");
     const response = await axios.post(
       `${process.env.REACT_APP_API_URL}/comment/post/like`,
       {

@@ -5,9 +5,11 @@ import ss2 from "../../Assets/screenshot2.png";
 import ss3 from "../../Assets/screenshot3.png";
 import Form from "./form";
 import useWindowSize from "../../Hooks/useWindowSize";
+import WelcomeModal from "../../Containers/WelcomeModal";
 const Login = () => {
   const [activeImg, setActiveImg] = useState<1 | 2 | 3>(1);
   const { width } = useWindowSize();
+  const showWelcomeModal = !!localStorage.getItem("welcomeModal");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -41,7 +43,7 @@ const Login = () => {
           <Img1 src={ss3} order={orderImages(3)} />
         </ImageContainer>
       )}
-
+      {!showWelcomeModal && <WelcomeModal />}
       <Form />
     </Section>
   );

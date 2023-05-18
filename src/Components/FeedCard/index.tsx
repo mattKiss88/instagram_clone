@@ -70,11 +70,6 @@ const FeedCard: React.FC<IFeedCardProps> = ({
     setLoading(false);
   };
 
-  if (post?.post?.id === 404) {
-    console.log(post, "post0101");
-    console.log(likes, "post0102");
-  }
-
   return (
     <>
       {loading && <Instagram />}

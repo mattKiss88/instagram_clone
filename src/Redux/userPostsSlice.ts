@@ -29,6 +29,7 @@ export const userPostSlice = createSlice({
   initialState,
   reducers: {
     getPosts: (state, action: PayloadAction<any>) => {
+      console.log("action.payload", action.payload);
       state.posts = action.payload;
     },
   },
