@@ -28,6 +28,7 @@ const PostSettingsModal = () => {
   function closeModal(): void {
     dispatch(togglePostSettingsModal());
     dispatch(resetPostSettingsModal());
+    // dispatch(toggleModal());
   }
 
   const customStyles = {
@@ -48,6 +49,7 @@ const PostSettingsModal = () => {
       backgroundColor: "rgba(0, 0, 0, 0.5)",
       zIndex: 1000,
     },
+    className: "ReactModal--content",
   };
 
   const handleFollow = () => {
@@ -57,6 +59,10 @@ const PostSettingsModal = () => {
   const handleDelete = () => {
     dispatch(deletePost({ userId, postId } as any) as any);
     closeModal();
+
+    if (isPostModalOpen) {
+      dispatch(toggleModal());
+    }
   };
 
   const handleOpenViewPostModal = () => {
@@ -69,26 +75,42 @@ const PostSettingsModal = () => {
     const btnArr: JSX.Element[] = [];
     if (isFollowing && !isLoggedInUser) {
       btnArr.push(
-        <Btn style={{ color: "red", fontWeight: "600" }} onClick={handleFollow}>
+        <Btn
+          style={{ color: "red", fontWeight: "600" }}
+          onClick={handleFollow}
+          className="ReactModal--btn"
+        >
           Unfollow
         </Btn>
       );
     }
 
     if (!isFollowing && !isLoggedInUser) {
-      btnArr.push(<Btn onClick={handleFollow}>Follow</Btn>);
+      btnArr.push(
+        <Btn onClick={handleFollow} className="ReactModal--btn">
+          Follow
+        </Btn>
+      );
     }
 
     if (isLoggedInUser) {
       btnArr.push(
-        <Btn style={{ color: "red", fontWeight: "600" }} onClick={handleDelete}>
+        <Btn
+          style={{ color: "red", fontWeight: "600" }}
+          onClick={handleDelete}
+          className="ReactModal--btn"
+        >
           Delete
         </Btn>
       );
     }
 
     if (!isPostModalOpen) {
-      btnArr.push(<Btn onClick={handleOpenViewPostModal}>View Post</Btn>);
+      btnArr.push(
+        <Btn onClick={handleOpenViewPostModal} className="ReactModal--btn">
+          View Post
+        </Btn>
+      );
     }
 
     return btnArr;
@@ -100,9 +122,12 @@ const PostSettingsModal = () => {
       onRequestClose={closeModal}
       style={customStyles}
       contentLabel="Create post modal"
+      id="post-settings-modal"
     >
       {renderButtons()}
-      <Btn onClick={closeModal}>Close</Btn>
+      <Btn onClick={closeModal} className="ReactModal--btn">
+        Close
+      </Btn>
     </Modal>
   );
 };
