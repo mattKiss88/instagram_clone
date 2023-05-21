@@ -10,7 +10,6 @@ import {
   fetchRecommendedUsers,
 } from "../../Redux/feedSlice";
 import useWindowSize from "../../Hooks/useWindowSize";
-import Navbar from "../../Components/SideBar";
 import { IPostData } from "../../Components/FeedCard/types";
 import { shallowEqual } from "react-redux";
 import Loader from "../../Components/loader";
@@ -25,9 +24,7 @@ const Feed: React.FC<any> = () => {
   const [loading, setLoading] = useState(true);
   const [loadedImagesCount, setLoadedImagesCount] = useState(0);
 
-  const state = useAppSelector((state) => state.feed);
-
-  console.log(state, "state");
+  console.log(feed, "feed");
 
   useEffect(() => {
     dispatch(fetchFeedByUserId(id) as any).then(() => setLoading(false));
@@ -53,20 +50,22 @@ const Feed: React.FC<any> = () => {
             loader={<Loader />}
             endMessage={<p>No more posts</p>}
           >
-            {feed?.map((item: IPostData) => (
-              <FeedCardMemo
-                fullName={item.user.username}
-                likes={item.post.likeCount}
-                avatar={`${process.env.REACT_APP_S3_URL + item.user.avatar}`}
-                content={item.post.caption}
-                image={`${
-                  (process.env.REACT_APP_S3_URL as string) +
-                  item?.images?.[0]?.mediaFileId
-                }`}
-                postId={item.post?.id}
-                filter={item?.images?.[0]?.filter || ""}
-              />
-            ))}
+            {feed
+              ?.filter((x: IPostData) => x.images.length)
+              ?.map((item: IPostData) => (
+                <FeedCardMemo
+                  fullName={item.user.username}
+                  likes={item.post.likeCount}
+                  avatar={`${process.env.REACT_APP_S3_URL + item.user.avatar}`}
+                  content={item.post.caption}
+                  image={`${
+                    (process.env.REACT_APP_S3_URL as string) +
+                    item?.images?.[0]?.mediaFileId
+                  }`}
+                  postId={item.post?.id}
+                  filter={item?.images?.[0]?.filter || ""}
+                />
+              ))}
           </InfiniteScroll>
         </div>
       </LeftContainer>

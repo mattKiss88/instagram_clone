@@ -47,7 +47,6 @@ const NavbarMb: React.FC = () => {
     if (isPostModalOpen) {
       dispatch(toggleViewPostModal());
     }
-    console.log("hereeeee");
 
     switch (name) {
       case "Home":

@@ -24,7 +24,6 @@ import {
 } from "../../Components/Reusable/PostFooter/styles";
 import { XIcon } from "@heroicons/react/outline";
 import { useEffect, useState, useRef } from "react";
-import { useIsClickOutside } from "../../Hooks/useClickOutside";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import {
   fetchCommentsByPostId,

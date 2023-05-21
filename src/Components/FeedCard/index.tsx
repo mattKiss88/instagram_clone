@@ -40,7 +40,7 @@ const FeedCard: React.FC<IFeedCardProps> = ({
 
   const onDoubleClick = (): void | null => {
     setLiked(true);
-    if (post?.post.likes) return null;
+    if (post?.post.isLiked) return null;
     dispatch(updatePostLikes(postId) as any);
     handleLike();
   };

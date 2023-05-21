@@ -1,5 +1,5 @@
 import { SearchIcon } from "@heroicons/react/outline";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Avatar,
   Header,
@@ -13,7 +13,6 @@ import {
   SearchContainer as SearchBarCtn,
   Search as SearchBar,
 } from "../Navbar/styles";
-import { useIsClickOutside } from "../../Hooks/useClickOutside";
 import { useAppDispatch, useAppSelector } from "../../Redux/hooks";
 import {
   fetchUsers,
@@ -22,30 +21,24 @@ import {
 } from "../../Redux/searchUsersSlice";
 import { useNavigate } from "react-router-dom";
 import { useDebounce } from "../../Hooks/useDebounce";
-// import useIsClickOutside from "../../Hooks/useIsClickOutside";
 
 interface SearchProps {
-  setShowSearch: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowSearch: React.Dispatch<React.SetStateAction<boolean | null>>;
+  showSearch: boolean | null;
 }
 
-const Search: React.FC<SearchProps> = ({ setShowSearch }) => {
+const Search: React.FC<SearchProps> = ({ setShowSearch, showSearch }) => {
   const [showSearchIcon, setShowSearchIcon] = useState<boolean>(true);
   const [search, setSearch] = useState<string>("");
-  const { ref, isClickOutside } = useIsClickOutside(false);
+  const [open, setOpen] = useState<boolean>(true);
   const searchResults = useAppSelector(searchResult);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const debouncedSearchTerm: string = useDebounce(search, 500); // debounce delay is 500 milliseconds
-
+  const ref = useRef(null);
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearch(e.target.value);
   };
-
-  useEffect(() => {
-    if (isClickOutside) {
-      setShowSearch(false);
-    }
-  }, [isClickOutside]);
 
   const handleClick = (
     e: React.MouseEvent<HTMLDivElement>,
@@ -64,8 +57,12 @@ const Search: React.FC<SearchProps> = ({ setShowSearch }) => {
     }
   }, [debouncedSearchTerm]);
 
+  if (showSearch === null) {
+    return null;
+  }
+
   return (
-    <SearchContainer showAnimation={true} ref={ref}>
+    <SearchContainer showAnimation={!!showSearch} ref={ref}>
       <Header>Search</Header>
       <SearchBarCtn>
         {/* {showSearchIcon && <SearchIcon style={{ width: "20px" }} />} */}

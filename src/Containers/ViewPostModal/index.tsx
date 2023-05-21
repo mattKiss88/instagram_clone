@@ -56,6 +56,7 @@ const ViewPostModal: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [reply, setReply] = useState<IReplyData | null>(null);
   const [imgHeight, setImgHeight] = useState<number | null | undefined>(null);
+  const [news, setNew] = useState(false);
 
   const dispatch = useAppDispatch();
   const MyFacebookLoader = () => <Facebook />;
@@ -63,7 +64,7 @@ const ViewPostModal: React.FC = () => {
   const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    if (isModalOpen && (isClickOutside || isEscapeEvent) && !isSettingsOpen) {
+    if (isModalOpen && (isClickOutside || isEscapeEvent)) {
       setisClickOutside(false);
       dispatch(toggleModal());
       setIsEscapeEvent(false);
@@ -98,79 +99,71 @@ const ViewPostModal: React.FC = () => {
     setImgHeight(imgRef.current?.clientHeight);
   }, [imgRef.current]);
 
-  console.log(modalData, "modal data");
 
+  const handleClose = () => {
+
+  }
   return (
-    <>
-      <Container>
-        <>
-          <XIcon className="x" />
-          <Modal ref={ref} height={imgHeight}>
-            {!imgHeight && (width as number) > 600 ? <Loader /> : null}
-            {(width as number) > 600 && (
-              <ImageContainer onDoubleClick={onDoubleClick}>
-                <HeartIcon className={liked && "liked"} />
-                <Image
-                  src={`${
-                    process.env.REACT_APP_S3_URL + images?.[0]?.mediaFileId
-                  }`}
-                  className={`filter-${images[0]?.filter}`}
-                  ref={imgRef}
-                  onLoad={() => setImgHeight(imgRef.current?.clientHeight)}
-                />
-              </ImageContainer>
-            )}
+    <Container>
+      <XIcon className="x" />
+      <Modal ref={ref} height={imgHeight}>
+        {!imgHeight && (width as number) > 600 ? <Loader /> : null}
+        {(width as number) > 600 && (
+          <ImageContainer onDoubleClick={onDoubleClick}>
+            <HeartIcon className={liked && "liked"} />
+            <Image
+              src={`${process.env.REACT_APP_S3_URL + images?.[0]?.mediaFileId}`}
+              className={`filter-${images[0]?.filter}`}
+              ref={imgRef}
+              onLoad={() => setImgHeight(imgRef.current?.clientHeight)}
+            />
+          </ImageContainer>
+        )}
 
-            <SideBar height={imgHeight as number}>
-              {(width as number) > 600 && (
-                <PostHeader
-                  avatar={`${process.env.REACT_APP_S3_URL + user.avatar}`}
-                  fullName={user.username}
-                  postId={post?.id}
-                  userId={user.id}
-                />
-              )}
-              <CommentsWrapper height={imgHeight}>
-                <CaptionContainer>
-                  <ProfilePic
-                    src={`${process.env.REACT_APP_S3_URL + user.avatar}`}
-                  />
-                  <Caption>
-                    <span className="username">{user.username} </span>{" "}
-                    {post?.caption}
-                  </Caption>
-                </CaptionContainer>
-                {comments?.map((c: IComment) =>
-                  loading ? (
-                    MyFacebookLoader()
-                  ) : (
-                    <>
-                      <Comment comment={c} type="new" setReply={setReply}>
-                        {c?.subComments.map((sub: IComment) => (
-                          <Comment
-                            comment={sub}
-                            type="sub"
-                            setReply={setReply}
-                          />
-                        ))}
-                      </Comment>
-                    </>
-                  )
-                )}
-              </CommentsWrapper>
-              <PostFooter
-                likes={post?.likeCount}
-                fullName={user?.fullName}
-                postData={{ user, post, images }}
-                location="modal"
-                replyData={reply}
-                setReply={setReply}
+        <SideBar height={imgHeight as number}>
+          {(width as number) > 600 && (
+            <PostHeader
+              avatar={`${process.env.REACT_APP_S3_URL + user.avatar}`}
+              fullName={user.username}
+              postId={post?.id}
+              userId={user.id}
+            />
+          )}
+          <CommentsWrapper height={imgHeight}>
+            <CaptionContainer>
+              <ProfilePic
+                src={`${process.env.REACT_APP_S3_URL + user.avatar}`}
               />
-            </SideBar>
-          </Modal>
-        </>
-      </Container>
-    </>
+              <Caption>
+                <span className="username">{user.username} </span>{" "}
+                {post?.caption}
+              </Caption>
+            </CaptionContainer>
+            {comments?.map((c: IComment) =>
+              loading ? (
+                MyFacebookLoader()
+              ) : (
+                <>
+                  <Comment comment={c} type="new" setReply={setReply}>
+                    {c?.subComments.map((sub: IComment) => (
+                      <Comment comment={sub} type="sub" setReply={setReply} />
+                    ))}
+                  </Comment>
+                </>
+              )
+            )}
+          </CommentsWrapper>
+          <PostFooter
+            likes={post?.likeCount}
+            fullName={user?.fullName}
+            postData={{ user, post, images }}
+            location="modal"
+            replyData={reply}
+            setReply={setReply}
+          />
+        </SideBar>
+      </Modal>
+    </Container>
   );
 };
 

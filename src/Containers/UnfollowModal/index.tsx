@@ -24,6 +24,8 @@ const UnfollowModal = () => {
   Modal.setAppElement("#root");
 
   function closeModal(): void {
+    // stop propogation to prevent modal from closing when clicking on modal content
+    // e.stopPropagation();
     dispatch(toggleUnfollowModal());
     dispatch(resetUnfollowModal());
   }
@@ -46,6 +48,7 @@ const UnfollowModal = () => {
       backgroundColor: "rgba(0, 0, 0, 0.5)",
       zIndex: 1000,
     },
+    className: "ReactModal--content",
   };
 
   const handleUnfollow = () => {
@@ -60,12 +63,21 @@ const UnfollowModal = () => {
       style={customStyles}
       contentLabel="Create post modal"
     >
-      <Avatar src={process.env.REACT_APP_S3_URL + avatar} />
-      <P>Unfollow @{username}</P>
-      <Btn style={{ color: "red", fontWeight: "600" }} onClick={handleUnfollow}>
+      <Avatar
+        src={process.env.REACT_APP_S3_URL + avatar}
+        className="ReactModal-avatar"
+      />
+      <P className="ReactModal-p">Unfollow @{username}</P>
+      <Btn
+        style={{ color: "red", fontWeight: "600" }}
+        onClick={handleUnfollow}
+        className="ReactModal-btn"
+      >
         Unfollow
       </Btn>
-      <Btn onClick={closeModal}>Close</Btn>
+      <Btn onClick={closeModal} className="ReactModal-btn">
+        Close
+      </Btn>
     </Modal>
   );
 };

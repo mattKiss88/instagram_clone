@@ -27,7 +27,6 @@ const Suggested: React.FC = () => {
   const goToAccount = (): void => {
     navigate("/profile");
   };
-  console.log(user);
   return (
     <SuggestedWrapper>
       <UserWrapper>

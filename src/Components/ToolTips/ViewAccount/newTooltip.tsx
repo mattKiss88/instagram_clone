@@ -82,7 +82,6 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
     dispatch(followRecommendedUsers(user.id) as any);
   };
   const onUnfollowClick = () => {
-    console.log("unfollow click");
     dispatch(
       setUnfollowModal({
         isOpen: true,
@@ -138,7 +137,7 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
           </>
         ) : (
           <Button onClick={onFollowClick} follow={true}>
-            <UserAddIcon color={"white"} /> Follow
+            Follow
           </Button>
         )}
       </ButtonContainer>

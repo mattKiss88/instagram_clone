@@ -34,6 +34,7 @@ export const StoriesWrapper = styled.div`
   overflow-x: scroll;
   margin-bottom: 20px;
   padding: 10px;
+  height: 120px;
 
   ::-webkit-scrollbar {
     display: none; /* for Chrome, Safari, and Opera */

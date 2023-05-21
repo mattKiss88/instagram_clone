@@ -11,6 +11,8 @@ import searchUserReducer from "./searchUsersSlice";
 import postSettingsReducer from "./postSettingsSlice";
 import unfollowModalReducer from "./unfollowModalSlice";
 
+// import other necessary modules...
+
 const reducer = combineReducers({
   postModal: modalReducer,
   userPosts: userPostReducer,
@@ -21,13 +23,28 @@ const reducer = combineReducers({
   postSettings: postSettingsReducer,
   unfollowModal: unfollowModalReducer,
 });
+
 const persistConfig = {
   key: "root",
   storage,
   blacklist: ["feed"],
 };
 
-const persistedReducer = persistReducer(persistConfig, reducer);
+const RESET_STATE = "RESET_STATE";
+
+export const resetState = () => ({
+  type: RESET_STATE,
+});
+
+const rootReducer = (state: any, action: any) => {
+  if (action.type === RESET_STATE) {
+    state = undefined; // If the action is RESET_STATE, we reset the state.
+  }
+
+  return reducer(state, action);
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,

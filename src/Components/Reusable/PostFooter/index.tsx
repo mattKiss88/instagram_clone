@@ -93,8 +93,8 @@ const PostFooter: React.FC<IPostFooter> = ({
   };
 
   useEffect(() => {
-    setLiked(postData?.post?.likes || false);
-  }, [feed, postData?.post?.likes]);
+    setLiked(postData?.post?.isLiked || false);
+  }, [feed, postData?.post?.isLiked]);
 
   const handleLike = async () => {
     setLiked(!liked);
@@ -158,8 +158,6 @@ const PostFooter: React.FC<IPostFooter> = ({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-
-  console.log("username clicked", postData);
 
   const handleUsernameClick = () => {
     console.log("username clicked");

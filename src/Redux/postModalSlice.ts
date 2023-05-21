@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { useAppDispatch } from "./hooks";
 import { IComment, IUser } from "../Components/Comment/types";
 import { IImages, IPost } from "../Components/FeedCard/types";
 
@@ -37,7 +36,7 @@ const initialState: InitialState = {
     createdAt: "",
     updatedAt: "",
     likeCount: 0,
-    likes: false,
+    isLiked: false,
     commentCount: 0,
   },
   images: [],
@@ -63,7 +62,6 @@ export const fetchCommentsByPostId = createAsyncThunk(
 export const likeComment = createAsyncThunk(
   "comments/postLikeStatus",
   async ({ commentId, commentType }: likeCommentPayload, { dispatch }) => {
-    console.log(commentId, "commentId");
     const response = await axios.post(
       `${process.env.REACT_APP_API_URL}/comment/post/like`,
       {
@@ -99,8 +97,8 @@ export const modalSlice = createSlice({
         ...state,
         post: {
           ...state.post,
-          likes: !state.post.likes,
-          likeCount: !state.post.likes
+          isLiked: !state.post.isLiked,
+          likeCount: !state.post.isLiked
             ? state.post.likeCount + 1
             : state.post.likeCount - 1,
         },
