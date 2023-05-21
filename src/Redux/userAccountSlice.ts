@@ -70,7 +70,7 @@ export const loginUser = createAsyncThunk(
 
 export const signUpUser = createAsyncThunk(
   "userAccount/signUpUserStatus",
-  async (user: SignUpDetails, thunkAPI) => {
+  async (user: SignUpDetails, { dispatch }) => {
     const response = await axios.post(
       `${process.env.REACT_APP_API_URL}/auth/signup`,
       {
@@ -83,7 +83,7 @@ export const signUpUser = createAsyncThunk(
       }
     );
 
-    return response.data;
+    dispatch(logUserIn(response.data));
   }
 );
 
@@ -128,6 +128,13 @@ export const userAccountSlice = createSlice({
     getUserData: (state, action: PayloadAction<any>) => {
       return action.payload;
     },
+    logUserIn: (state, action: PayloadAction<any>) => {
+      return {
+        ...state,
+        token: action.payload.token,
+        ...action.payload.user,
+      };
+    },
     updateAvatar: (state, action: PayloadAction<File>) => {
       return {
         ...state,
@@ -163,13 +170,6 @@ export const userAccountSlice = createSlice({
         friends: action.payload?.followingUsers,
       };
     });
-    builder.addCase(signUpUser.fulfilled, (state, action) => {
-      return {
-        ...state,
-        token: action.payload.token,
-        ...action.payload.user,
-      };
-    });
     builder.addCase(patchProfileImage.fulfilled, (state, action) => {
       return {
         ...state,
@@ -186,8 +186,13 @@ export const userAccountSlice = createSlice({
   },
 });
 
-export const { getUserData, followUser, unfollowUser, setImgLoading } =
-  userAccountSlice.actions;
+export const {
+  getUserData,
+  followUser,
+  unfollowUser,
+  setImgLoading,
+  logUserIn,
+} = userAccountSlice.actions;
 
 export const user = (state: RootState) => state.userAccount;
 export const authToken = (state: RootState) => state.userAccount.token;
