@@ -49,3 +49,27 @@ export const ImgSpinner = styled.span`
     z-index: 100;
   }
 `;
+
+export const ButtonSpinner = styled.span`
+  display: block;
+  height: 18px;
+  width: 18px;
+  position: relative;
+  margin: 0 auto;
+
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: calc(50% - 9px);
+    left: calc(50% - 9px);
+    transform: translate(-50%, -50%);
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid white;
+    border-color: white transparent white transparent;
+    animation: ${rotate} 1.2s linear infinite;
+    z-index: 100;
+  }
+`;

@@ -8,6 +8,7 @@ import { signUpUser } from "../../Redux/userAccountSlice";
 import { Notify } from "notiflix";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { ButtonSpinner } from "../../Components/loader/styles";
 
 interface IForm {
   email: string;
@@ -41,16 +42,26 @@ const SignUp: React.FC = () => {
     password: false,
   });
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault();
     try {
       setErrors({ email: false, username: false, password: false }); // reset the errors state
       await validationSchema.validate(signUpDetails);
-      await dispatch(signUpUser(signUpDetails) as any);
-      navigate("/");
+      const actionResult: any = await dispatch(
+        signUpUser(signUpDetails) as any
+      );
+      if (signUpUser.fulfilled.match(actionResult)) {
+        navigate("/");
+      } else if (signUpUser.rejected.match(actionResult)) {
+        console.log(actionResult);
+        throw actionResult?.payload;
+      }
     } catch (err: any) {
       Notify.failure(err.message);
 
@@ -63,6 +74,8 @@ const SignUp: React.FC = () => {
         setErrors((errors) => ({ ...errors, password: true }));
       }
     }
+
+    setLoading(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,7 +155,9 @@ const SignUp: React.FC = () => {
           name="password"
           style={{ borderColor: errors.password ? "red" : "#dbdbdb" }}
         />
-        <SignUpBtn type="submit">Create Account</SignUpBtn>
+        <SignUpBtn type="submit" disabled={loading}>
+          {loading ? <ButtonSpinner /> : "Create Account"}
+        </SignUpBtn>
       </Top>
       <Bottom>
         <P>

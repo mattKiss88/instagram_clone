@@ -14,6 +14,7 @@ import logo from "../../Assets/instagram-text-icon.png";
 import { Link } from "react-router-dom";
 import { Notify } from "notiflix";
 import { useNavigate } from "react-router-dom";
+import { ButtonSpinner } from "../../Components/loader/styles";
 
 interface IForm {
   email: string;
@@ -26,19 +27,25 @@ const Form: React.FC = () => {
     password: "",
   });
   const [error, setError] = useState<null | string>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
 
     let res = await dispatch(loginUser(userDetails) as any);
     if (res?.type === "userAccount/loginUserStatus/fulfilled") {
       return navigate("/");
     }
 
-    return Notify.failure(`${res.payload}`);
-    // setError(res.payload)
+    setLoading(false);
+
+    return Notify.failure(
+      `${res.payload ? res.payload : "Error, please try again later"} `
+    );
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,8 +67,11 @@ const Form: React.FC = () => {
           onChange={handleChange}
           name="password"
         />
-        <LoginBtn type="submit">Log in</LoginBtn>
-        <ForgotPassword type="button">Forgotten your password?</ForgotPassword>
+        <LoginBtn type="submit" disabled={loading}>
+          {loading ? <ButtonSpinner /> : "Log In"}
+        </LoginBtn>
+        <ForgotPassword type="button"></ForgotPassword>
+        {/* <ForgotPassword type="button">Forgotten your password?</ForgotPassword> */}
       </Top>
       <Bottom>
         <NoAccount>

@@ -70,20 +70,39 @@ export const loginUser = createAsyncThunk(
 
 export const signUpUser = createAsyncThunk(
   "userAccount/signUpUserStatus",
-  async (user: SignUpDetails, { dispatch }) => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_URL}/auth/signup`,
-      {
-        userData: {
-          email: user.email,
-          password: user.password,
-          username: user.username,
-          fullName: user.fullName,
-        },
-      }
-    );
+  async (user: SignUpDetails, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/auth/signup`,
+        {
+          userData: {
+            email: user.email,
+            password: user.password,
+            username: user.username,
+            fullName: user.fullName,
+          },
+        }
+      );
+      console.log(response.status, "response");
 
-    dispatch(logUserIn(response.data));
+      if (response.status === 201) {
+        return dispatch(logUserIn(response.data));
+      } else {
+        return rejectWithValue(response.data);
+      }
+    } catch (err: any) {
+      let error = err;
+      // This is likely an error coming from Axios, so we'll try to get its response
+      if (err.response) {
+        error = err.response.data;
+      }
+      // We reject with value here to customize the error message
+      return rejectWithValue({
+        message:
+          err?.response?.data?.message ||
+          "Something went wrong, please try again later",
+      });
+    }
   }
 );
 

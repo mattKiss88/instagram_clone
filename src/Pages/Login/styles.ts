@@ -78,6 +78,10 @@ export const LoginBtn = styled.button`
   font-weight: bold;
   cursor: pointer;
   font-size: 1.6rem;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 export const ForgotPassword = styled.button`
@@ -88,7 +92,7 @@ export const ForgotPassword = styled.button`
   width: 90%;
   display: block;
   font-weight: 500;
-  cursor: pointer;
+  // cursor: pointer;
   font-size: 1.4rem;
 `;
 
