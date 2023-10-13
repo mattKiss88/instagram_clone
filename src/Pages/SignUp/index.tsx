@@ -52,33 +52,60 @@ const SignUp: React.FC = () => {
     e.preventDefault();
     try {
       setErrors({ email: false, username: false, password: false }); // reset the errors state
-      await validationSchema.validate(signUpDetails);
+      await validationSchema.validate(signUpDetails, { abortEarly: false });
+
       const actionResult: any = await dispatch(
         signUpUser(signUpDetails) as any
       );
+
       if (signUpUser.fulfilled.match(actionResult)) {
-        navigate("/");
-      } else if (signUpUser.rejected.match(actionResult)) {
-        console.log(actionResult);
-        throw actionResult?.payload;
+        return navigate("/");
       }
+
+      const errorMsg = (actionResult?.payload as any).message;
+
+      console.log(errorMsg, "errorMsg");
+
+      Notify.failure(errorMsg);
+
+      switch (errorMsg) {
+        case "Username already exists":
+          setErrors((errors) => ({ ...errors, username: true }));
+          break;
+        case "Email already exists":
+          setErrors((errors) => ({ ...errors, email: true }));
+          break;
+        default:
+          break;
+      }
+
+      setLoading(false);
     } catch (err: any) {
-      Notify.failure(err.message);
+      const errorArray = err.inner.map((a: any) => a.path);
+
+      // remove duplicates from array
+      const errorArrayFiltered = errorArray.filter(
+        (item: string, index: number) => {
+          return errorArray.indexOf(item) === index;
+        }
+      );
 
       // Update errors state based on validation error
-      if (err.path === "email") {
-        setErrors((errors) => ({ ...errors, email: true }));
-      } else if (err.path === "username") {
-        setErrors((errors) => ({ ...errors, username: true }));
-      } else if (err.path === "password") {
-        setErrors((errors) => ({ ...errors, password: true }));
-      }
+
+      errorArrayFiltered.forEach((field: string) => {
+        if (errorArrayFiltered.includes(field)) {
+          setErrors((errors) => ({ ...errors, [field]: true }));
+        }
+      });
     }
 
     setLoading(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name === "username") {
+      e.target.value = e.target.value.replace(/\s/g, "");
+    }
     setSignUpDetails({
       ...signUpDetails,
       [e.target.name]: e.target.value.trim(),
@@ -91,7 +118,7 @@ const SignUp: React.FC = () => {
       await validationSchema.validateAt("email", signUpDetails);
       setErrors({ ...errors, email: false });
     } catch (err: any) {
-      Notify.failure(err.message);
+      signUpDetails.email && Notify.failure(err.message);
       setErrors({ ...errors, email: true });
     }
   };
@@ -102,7 +129,7 @@ const SignUp: React.FC = () => {
       await validationSchema.validateAt("username", signUpDetails);
       setErrors({ ...errors, username: false });
     } catch (err: any) {
-      Notify.failure(err.message);
+      signUpDetails.username && Notify.failure(err.message);
       setErrors({ ...errors, username: true });
     }
   };
@@ -113,7 +140,7 @@ const SignUp: React.FC = () => {
       await validationSchema.validateAt("password", signUpDetails);
       setErrors({ ...errors, password: false });
     } catch (err: any) {
-      Notify.failure(err.message);
+      signUpDetails.password && Notify.failure(err.message);
       setErrors({ ...errors, password: true });
     }
   };
@@ -132,12 +159,14 @@ const SignUp: React.FC = () => {
           name="email"
           onBlur={handleEmailBlur}
           style={{ borderColor: errors.email ? "red" : "#dbdbdb" }}
+          value={signUpDetails.email}
         />
         <Input
           type="text"
           placeholder="Full Name"
           onChange={handleChange}
           name="fullName"
+          value={signUpDetails.fullName}
         />
         <Input
           type="text"
@@ -146,6 +175,7 @@ const SignUp: React.FC = () => {
           onBlur={handleUsernameBlur}
           name="username"
           style={{ borderColor: errors.username ? "red" : "#dbdbdb" }}
+          value={signUpDetails.username}
         />
         <Input
           type="password"
@@ -154,6 +184,7 @@ const SignUp: React.FC = () => {
           onBlur={handlePasswordBlur}
           name="password"
           style={{ borderColor: errors.password ? "red" : "#dbdbdb" }}
+          value={signUpDetails.password}
         />
         <SignUpBtn type="submit" disabled={loading}>
           {loading ? <ButtonSpinner /> : "Create Account"}
@@ -169,3 +200,12 @@ const SignUp: React.FC = () => {
 };
 
 export default SignUp;
+
+// "inner":[{"value":"","path":"email","type":"required","errors":["Required"],
+// "params":{"value":"","originalValue":"","path":"email","spec":{"strip":false,"strict":false,"abortEarly":true,"recursive":true,"nullable":false,"optional":false,"coerce":true}},
+// "inner":[],"name":"ValidationError","message":"Required"},
+// {"value":"","path":"username","type":"required","errors":["Required"],"params":{"value":"","originalValue":"","path":"username","spec":{"strip":false,"strict":false,"abortEarly":true,"recursive":true,"nullable":false,"optional":false,"coerce":true}},
+// "inner":[],"name":"ValidationError","message":"Required"},
+// {"value":"","path":"password","type":"min","errors":["Password must be at least 6 characters"],
+// "params":{"value":"","originalValue":"","path":"password","spec":{"strip":false,"strict":false,"abortEarly":true,"recursive":true,"nullable":false,"optional":false,"coerce":true},"min":6},"inner":[],"name":"ValidationError","message":"Password must be at least 6 characters"},
+// {"value":"","path":"password","type":"required","errors":["Required"],"params":{"value":"","originalValue":"","path":"password","spec":{"strip":false,"strict":false,"abortEarly":true,"recursive":true,"nullable":false,"optional":false,"coerce":true}},"inner":[],"name":"ValidationError","message":"Required"}]

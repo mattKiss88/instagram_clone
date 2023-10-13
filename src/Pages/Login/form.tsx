@@ -36,6 +36,12 @@ const Form: React.FC = () => {
     e.preventDefault();
     setLoading(true);
 
+    if (!userDetails.email || !userDetails.password) {
+      setLoading(false);
+
+      return Notify.failure("Please fill in all fields");
+    }
+
     let res = await dispatch(loginUser(userDetails) as any);
     if (res?.type === "userAccount/loginUserStatus/fulfilled") {
       return navigate("/");
@@ -43,8 +49,14 @@ const Form: React.FC = () => {
 
     setLoading(false);
 
+    console.log(res, "res23");
+
     return Notify.failure(
-      `${res.payload ? res.payload : "Error, please try again later"} `
+      `${
+        res.payload.message
+          ? res.payload.message
+          : "Error, please try again later"
+      } `
     );
   };
 
@@ -57,7 +69,7 @@ const Form: React.FC = () => {
         <img src={logo} className="logo" />
         <Input
           type="text"
-          placeholder="Phone number, username, or email"
+          placeholder="Email"
           onChange={handleChange}
           name="email"
         />

@@ -15,7 +15,9 @@ const fileTypes: string[] = ["JPG", "PNG", "GIF"];
 const StepOne: React.FC = () => {
   const newImg: File | null = useAppSelector(newImage);
   const dispatch = useAppDispatch();
+
   const handleChange = (file: File | null): void => {
+    console.log(file, "file01");
     file && dispatch(addImage(file));
   };
 

@@ -31,16 +31,9 @@ const Feed: React.FC<any> = () => {
     dispatch(fetchRecommendedUsers() as any);
   }, []);
 
-  // console.log(loading ? "loading" : "loaded", loadedImagesCount);
-
-  // useEffect(() => {
-  //   console.log("useEffect", feed);
-  // }, [feed.hasMore]);
-
   return (
     <Section>
       <LeftContainer>
-        {/* {loading && <Loader />} */}
         <Stories feed={feed} />
         <div>
           <InfiniteScroll

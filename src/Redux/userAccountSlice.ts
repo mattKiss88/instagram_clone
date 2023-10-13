@@ -83,19 +83,9 @@ export const signUpUser = createAsyncThunk(
           },
         }
       );
-      console.log(response.status, "response");
 
-      if (response.status === 201) {
-        return dispatch(logUserIn(response.data));
-      } else {
-        return rejectWithValue(response.data);
-      }
+      return dispatch(logUserIn(response.data));
     } catch (err: any) {
-      let error = err;
-      // This is likely an error coming from Axios, so we'll try to get its response
-      if (err.response) {
-        error = err.response.data;
-      }
       // We reject with value here to customize the error message
       return rejectWithValue({
         message:

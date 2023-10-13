@@ -28,7 +28,6 @@ const PostSettingsModal = () => {
   function closeModal(): void {
     dispatch(togglePostSettingsModal());
     dispatch(resetPostSettingsModal());
-    // dispatch(toggleModal());
   }
 
   const customStyles = {
