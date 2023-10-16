@@ -49,8 +49,6 @@ const Form: React.FC = () => {
 
     setLoading(false);
 
-    console.log(res, "res23");
-
     return Notify.failure(
       `${
         res.payload.message

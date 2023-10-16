@@ -76,6 +76,7 @@
     "@types/react-modal": "^3.13.1",
     "@types/react-show-more-text": "^1.4.2",
     "@types/styled-components": "^5.1.26",
-    "cypress": "^13.3.0"
+    "cypress": "^13.3.0",
+    "cypress-real-events": "^1.10.3"
   }
 }

@@ -172,13 +172,14 @@ const PostFooter: React.FC<IPostFooter> = ({
           <HeartIcon
             className={liked ? "heart activeHeart" : "heart"}
             onClick={handleLike}
+            data-cypress="like-button"
           />
-          <ChatIcon onClick={openModal} />
+          <ChatIcon onClick={openModal} data-cypress="view-post-button" />
           <PaperAirplaneIcon className="messages" />
         </Left>
         <BookmarkIcon />
       </IconContainer>
-      <Likes>{likes} likes</Likes>
+      <Likes data-cypress="like-count">{likes} likes</Likes>
       {showCaption && (
         <Caption>
           <ReadMore>
@@ -238,6 +239,7 @@ const PostFooter: React.FC<IPostFooter> = ({
             onChange={handleInputChange}
             onKeyDown={onKeyDown}
             ref={inputRef}
+            name="comment-box"
           />
         </div>
         <PostButton onClick={onSubmit}>Post</PostButton>

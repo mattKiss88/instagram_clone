@@ -84,6 +84,8 @@ const PostSettingsModal = () => {
       );
     }
 
+    console.log(isFollowing, isLoggedInUser, "isFollowing, isLoggedInUser");
+
     if (!isFollowing && !isLoggedInUser) {
       btnArr.push(
         <Btn onClick={handleFollow} className="ReactModal--btn">

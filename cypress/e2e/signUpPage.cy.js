@@ -15,7 +15,6 @@ describe("Sign Up Tests", () => {
     cy.get("input[name=username]").type("testuser12");
     cy.get("button[type=submit]").click();
 
-    // Check that the URL is now /home
     cy.url().should("eq", "http://localhost:3000/");
   });
 
@@ -25,7 +24,6 @@ describe("Sign Up Tests", () => {
     cy.get("input[name=username]").type("testuser12");
     cy.get("button[type=submit]").click();
 
-    // Check that the URL is now /home
     cy.url().should("eq", "http://localhost:3000/");
   });
 

@@ -142,6 +142,7 @@ export const userAccountSlice = createSlice({
         ...state,
         token: action.payload.token,
         ...action.payload.user,
+        friends: action.payload?.followingUsers,
       };
     },
     updateAvatar: (state, action: PayloadAction<File>) => {

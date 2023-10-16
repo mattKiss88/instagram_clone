@@ -1,6 +1,5 @@
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import React from "react";
-// import ViewAccount from "../../ToolTips/ViewAccount";
 import { shallowEqual } from "react-redux";
 import { feed } from "../../../Redux/feedSlice";
 import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
@@ -26,14 +25,8 @@ const PostHeader: React.FC<IPostHeader> = ({
   userId,
   postData,
 }) => {
-  const [hoveredOnName, setHoveredOnName] = React.useState<boolean>(false);
-  const [hoveredOnToolTip, setHoveredOnToolTip] =
-    React.useState<boolean>(false);
   const loggedInUserId = useAppSelector((state) => state.userAccount.id);
   const followingUsers = useAppSelector((state) => state.userAccount.friends);
-  const isPostSettingsOpen = useAppSelector(
-    (state) => state.postSettings.isOpen
-  );
 
   const feedState = useAppSelector(feed, shallowEqual);
   const post: IPostData = feedState.find(
@@ -47,34 +40,6 @@ const PostHeader: React.FC<IPostHeader> = ({
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const hovered = (name: string) => {
-    if (name === "accountName") {
-      setHoveredOnName(true);
-
-      return;
-    }
-
-    if (name === "toolTip") {
-      setHoveredOnToolTip(true);
-
-      return;
-    }
-  };
-
-  const unhovered = (name: string) => {
-    if (name === "accountName") {
-      setHoveredOnName(false);
-
-      return;
-    }
-
-    if (name === "toolTip") {
-      setHoveredOnToolTip(false);
-
-      return;
-    }
-  };
-
   const handleProfileClick = (): void => {
     if (modalIsOpen) {
       dispatch(toggleModal());
@@ -84,6 +49,8 @@ const PostHeader: React.FC<IPostHeader> = ({
 
     navigate(`/profile/${userId}`);
   };
+
+  console.log(followingUsers, "followingUsers");
 
   const handleDotsClick = (): void => {
     dispatch(
@@ -112,17 +79,21 @@ const PostHeader: React.FC<IPostHeader> = ({
         <div
           ref={setTooltipRef}
           {...getTooltipProps({ className: "user-tooltip-container" })}
+          id="user-tooltip"
         >
           <ViewAccount post={post} />
         </div>
       )}
       <LeftContainer onClick={handleProfileClick}>
-        <ProfilePic src={avatar} />
-        <AccountName ref={setTriggerRef}>{fullName}</AccountName>
+        <ProfilePic src={avatar} data-cypress="profile-pic" />
+        <AccountName ref={setTriggerRef} data-cypress="username">
+          {fullName}
+        </AccountName>
       </LeftContainer>
       <DotsHorizontalIcon
         style={{ width: "24px", cursor: "pointer" }}
         onClick={handleDotsClick}
+        data-cypress="post-settings-button"
       />
     </CardHeader>
   );
