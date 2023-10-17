@@ -42,7 +42,7 @@ const Feed: React.FC<any> = () => {
             hasMore={hasMore}
             loader={<Loader />}
             endMessage={<p>No more posts</p>}
-            data-cypress="feed-container"
+            data-cy="feed-container"
           >
             {feed
               ?.filter((x: IPostData) => x.images.length)

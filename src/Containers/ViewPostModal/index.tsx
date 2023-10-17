@@ -101,7 +101,7 @@ const ViewPostModal: React.FC = () => {
 
   const handleClose = () => {};
   return (
-    <Container data-cypress="post-modal">
+    <Container data-cy="post-modal">
       <XIcon className="x" />
       <Modal ref={ref} height={imgHeight}>
         {!imgHeight && (width as number) > 600 ? <Loader /> : null}

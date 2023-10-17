@@ -87,7 +87,7 @@ const FeedCard: React.FC<IFeedCardProps> = ({
             src={image}
             className={`filter-${filter}`}
             onLoad={handleImageLoad}
-            data-cypress="feed-image"
+            data-cy="feed-image"
           />
         </ImageContainer>
         <PostFooter

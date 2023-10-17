@@ -35,3 +35,7 @@
 //     }
 //   }
 // }
+
+// Cypress.Commands.add("shadow", { prevSubject: "element" }, (subject) => {
+//   return subject[0].shadowRoot;
+// });

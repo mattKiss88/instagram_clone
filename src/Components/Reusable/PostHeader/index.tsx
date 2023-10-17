@@ -85,15 +85,15 @@ const PostHeader: React.FC<IPostHeader> = ({
         </div>
       )}
       <LeftContainer onClick={handleProfileClick}>
-        <ProfilePic src={avatar} data-cypress="profile-pic" />
-        <AccountName ref={setTriggerRef} data-cypress="username">
+        <ProfilePic src={avatar} data-cy="profile-pic" />
+        <AccountName ref={setTriggerRef} data-cy="username">
           {fullName}
         </AccountName>
       </LeftContainer>
       <DotsHorizontalIcon
         style={{ width: "24px", cursor: "pointer" }}
         onClick={handleDotsClick}
-        data-cypress="post-settings-button"
+        data-cy="post-settings-button"
       />
     </CardHeader>
   );

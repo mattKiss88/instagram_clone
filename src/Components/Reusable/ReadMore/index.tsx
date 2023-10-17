@@ -12,7 +12,7 @@ const ReadMore: React.FC<ReadMoreProps> = ({ children }) => {
     setIsReadMore(!isReadMore);
   };
   return (
-    <p className="text" data-cypress="comment">
+    <p className="text" data-cy="comment">
       {children[0]}
       {isReadMore ? text?.slice(0, 120) : text}
       <span onClick={toggleReadMore} className="more">
