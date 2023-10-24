@@ -21,13 +21,9 @@ const Feed: React.FC<any> = () => {
   let hasMore = useAppSelector((state) => state.feed.hasMore);
   const { width }: { width: number | undefined } = useWindowSize();
   const id: number = useAppSelector((state) => state.userAccount.id);
-  const [loading, setLoading] = useState(true);
-  const [loadedImagesCount, setLoadedImagesCount] = useState(0);
-
-  console.log(feed, "feed");
 
   useEffect(() => {
-    dispatch(fetchFeedByUserId(id) as any).then(() => setLoading(false));
+    dispatch(fetchFeedByUserId(id) as any);
     dispatch(fetchRecommendedUsers() as any);
   }, []);
 
@@ -46,18 +42,18 @@ const Feed: React.FC<any> = () => {
           >
             {feed
               ?.filter((x: IPostData) => x.images.length)
-              ?.map((item: IPostData) => (
+              ?.map(({ user, post, images }: IPostData) => (
                 <FeedCardMemo
-                  fullName={item.user.username}
-                  likes={item.post.likeCount}
-                  avatar={`${process.env.REACT_APP_S3_URL + item.user.avatar}`}
-                  content={item.post.caption}
+                  fullName={user.username}
+                  likes={post.likeCount}
+                  avatar={`${process.env.REACT_APP_S3_URL + user.avatar}`}
+                  content={post.caption}
                   image={`${
                     (process.env.REACT_APP_S3_URL as string) +
-                    item?.images?.[0]?.mediaFileId
+                    images?.[0]?.mediaFileId
                   }`}
-                  postId={item.post?.id}
-                  filter={item?.images?.[0]?.filter || ""}
+                  postId={post?.id}
+                  filter={images?.[0]?.filter || ""}
                 />
               ))}
           </InfiniteScroll>

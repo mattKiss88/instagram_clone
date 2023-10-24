@@ -76,6 +76,7 @@ const Navbar: React.FC = () => {
       setShowSearch(false);
     }
   });
+
   return (
     <Section collapse={!!showSearch}>
       <Logo

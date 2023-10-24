@@ -22,10 +22,10 @@ interface ILayoutProps {
 const ViewPostModal = lazy(() => import("../ViewPostModal"));
 
 const Layout: React.FC<ILayoutProps> = ({ children }) => {
-  const isPostModalOpen: boolean = useAppSelector(isOpen);
-  const isCreatePostModalOpen: boolean = useAppSelector(isModalOpen);
-  const isPostSettingsOpen: boolean = useAppSelector(isPostSettingsModalOpen);
-  const isUnFollowModalOpen: boolean = useAppSelector(isUnfollowModalOpen);
+  const isPostModalOpen = useAppSelector(isOpen);
+  const isCreatePostModalOpen = useAppSelector(isModalOpen);
+  const isPostSettingsOpen = useAppSelector(isPostSettingsModalOpen);
+  const isUnFollowModalOpen = useAppSelector(isUnfollowModalOpen);
   const size = useWindowSize();
 
   const isMobile = (size.width as number) < 700;
@@ -37,9 +37,8 @@ const Layout: React.FC<ILayoutProps> = ({ children }) => {
       {isMobile ? <NavbarMb /> : <Navbar />}
       {children}
       <Suspense fallback={<Loader />}>
-        {isPostModalOpen && (
-          <>{isMobile ? <ViewPostModalMobile /> : <ViewPostModal />}</>
-        )}
+        {isPostModalOpen &&
+          (isMobile ? <ViewPostModalMobile /> : <ViewPostModal />)}
         {isCreatePostModalOpen && <CreatePostModal />}
         {isPostSettingsOpen && <PostSettingsModal />}
         {isUnFollowModalOpen && <UnfollowModal />}

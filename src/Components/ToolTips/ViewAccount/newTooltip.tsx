@@ -30,10 +30,14 @@ import { IImages, IPost, IPostData } from "../../FeedCard/types";
 import { useAppSelector } from "../../../Redux/hooks";
 import { followRecommendedUsers } from "../../../Redux/feedSlice";
 import { setUnfollowModal } from "../../../Redux/unfollowModalSlice";
-import { UserAddIcon } from "@heroicons/react/outline";
+import { usePopperTooltip } from "react-popper-tooltip";
 
 interface IViewAccountProps {
-  post: { user: IUser };
+  user: IUser;
+  // id?: string;
+  // className?: string;
+  // placement?: "top" | "bottom" | "left" | "right";
+  // reff: React.Ref<HTMLDivElement>;
 }
 
 interface IStats {
@@ -41,31 +45,43 @@ interface IStats {
   number: number;
 }
 
-const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
-  const [buttonName, setButtonName] = useState<"Follow" | "Following">(
-    "Follow"
-  );
+const ViewAccount: React.FC<IViewAccountProps> = ({
+  user,
+  // id,
+  // className,
+  // placement,
+}) => {
   const loggedInUserId = useAppSelector((state) => state.userAccount.id);
   const loggedInUserFriends = useAppSelector(
     (state) => state.userAccount.friends
   );
   const isModalOpen = useAppSelector(isOpen);
 
+  // show
+
+  // const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+  //   usePopperTooltip({
+  //     placement: placement || "auto",
+  //     delayHide: 100,
+  //     delayShow: 100,
+  //     interactive: true,
+
+  //   });
+
   const stats: IStats[] = [
-    { key: "posts", number: post?.user?.posts?.length || 0 },
-    { key: "followers", number: post?.user?.followers },
-    { key: "following", number: post?.user?.following },
+    { key: "posts", number: user.posts?.length || 0 },
+    { key: "followers", number: user.followers },
+    { key: "following", number: user.following },
   ];
 
-  const { user } = post;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const openModal = (postData: IPostData): void => {
     dispatch(addModalData(postData));
     navigate(`/profile/${postData.post.id}`);
-    if (!isModalOpen) dispatch(toggleModal());
 
+    if (!isModalOpen) dispatch(toggleModal());
     if (user.id === loggedInUserId) return navigate(`/profile`);
 
     navigate(`/profile/${user.id}`);
@@ -81,6 +97,7 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
   const onFollowClick = () => {
     dispatch(followRecommendedUsers(user.id) as any);
   };
+
   const onUnfollowClick = () => {
     dispatch(
       setUnfollowModal({
@@ -92,7 +109,10 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
     );
   };
 
+  // if (!visible) return null;
+
   return (
+    // <div ref={setTooltipRef} {...getTooltipProps({ className })} id={id}>
     <Container style={{ display: "block", position: "static" }}>
       <Header>
         <Left>
@@ -102,21 +122,21 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
           />
         </Left>
         <Right>
-          <Username onClick={onProfileClick}>{user?.username}</Username>
-          <Name>{user?.fullName}</Name>
+          <Username onClick={onProfileClick}>{user.username}</Username>
+          <Name>{user.fullName}</Name>
           <Bio>{user?.bio}</Bio>
         </Right>
       </Header>
       <StatsContainer>
         {stats.map((stat: IStats) => (
           <Stats>
-            <Number>{stat?.number}</Number>
-            <Stat>{stat?.key}</Stat>
+            <Number>{stat.number}</Number>
+            <Stat>{stat.key}</Stat>
           </Stats>
         ))}
       </StatsContainer>
       <Posts>
-        {user?.posts
+        {user.posts
           ?.slice(0, 3)
           .map((post: { images: IImages[]; post: IPost }) => (
             <PostWrapper onClick={() => openModal({ ...post, user })}>
@@ -130,7 +150,7 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
           ))}
       </Posts>
       <ButtonContainer>
-        {loggedInUserFriends?.includes(post?.user?.id) ? (
+        {loggedInUserFriends?.includes(user?.id) ? (
           <>
             <Button>Message</Button>
             <Button onClick={onUnfollowClick}>Following</Button>
@@ -142,6 +162,7 @@ const ViewAccount: React.FC<IViewAccountProps> = ({ post }) => {
         )}
       </ButtonContainer>
     </Container>
+    // </div>
   );
 };
 

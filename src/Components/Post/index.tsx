@@ -5,12 +5,17 @@ import { useAppDispatch } from "../../Redux/hooks";
 import { addModalData, toggleModal } from "../../Redux/postModalSlice";
 import { IPostData } from "../FeedCard/types";
 import { CommentContainer, DataCtn, Img, Wrapper } from "./styles";
+import { getFullImageUrl, getImageFilterClass } from "../../Helpers/img";
 interface IPost {
   post: IPostData;
 }
 const Post: React.FC<IPost> = ({ post }) => {
   const [hovered, setHovered] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+
+  // variables
+  const imageUrl = getFullImageUrl(post.images[0].mediaFileId);
+  const filterClass = getImageFilterClass(post.images[0].filter || "");
 
   const openModal = () => {
     dispatch(addModalData(post));
@@ -23,13 +28,7 @@ const Post: React.FC<IPost> = ({ post }) => {
       onMouseLeave={() => setHovered(false)}
       onClick={openModal}
     >
-      <Img
-        src={
-          (process.env.REACT_APP_S3_URL as string) +
-          post?.images?.[0]?.mediaFileId
-        }
-        className={`filter-${post?.images[0]?.filter}`}
-      />
+      <Img src={imageUrl} className={filterClass} />
       {hovered && (
         <CommentContainer>
           <DataCtn>

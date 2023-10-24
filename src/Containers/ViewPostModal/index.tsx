@@ -56,12 +56,12 @@ const ViewPostModal: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [reply, setReply] = useState<IReplyData | null>(null);
   const [imgHeight, setImgHeight] = useState<number | null | undefined>(null);
-  const [news, setNew] = useState(false);
 
   const dispatch = useAppDispatch();
   const MyFacebookLoader = () => <Facebook />;
 
   const imgRef = useRef<HTMLImageElement>(null);
+  const s3Url = process.env.REACT_APP_S3_URL;
 
   useEffect(() => {
     if (isModalOpen && (isClickOutside || isEscapeEvent)) {
@@ -74,7 +74,7 @@ const ViewPostModal: React.FC = () => {
 
   const onDoubleClick = (): void => {
     setLiked(true);
-    dispatch(updatePostLikes(post?.id) as any);
+    dispatch(updatePostLikes(post.id) as any);
 
     handleLike();
 
@@ -86,20 +86,19 @@ const ViewPostModal: React.FC = () => {
   const handleLike = async () => {
     setLiked(!liked);
 
-    await likePost(post?.id, id);
+    await likePost(post.id, id);
   };
 
   useEffect(() => {
-    Promise.resolve(dispatch(fetchCommentsByPostId(post?.id) as any)).then(() =>
+    Promise.resolve(dispatch(fetchCommentsByPostId(post.id) as any)).then(() =>
       setLoading(false)
     );
-  }, []);
+  }, [post.id]);
 
   useEffect(() => {
     setImgHeight(imgRef.current?.clientHeight);
   }, [imgRef.current]);
 
-  const handleClose = () => {};
   return (
     <Container data-cy="post-modal">
       <XIcon className="x" />
@@ -109,7 +108,7 @@ const ViewPostModal: React.FC = () => {
           <ImageContainer onDoubleClick={onDoubleClick}>
             <HeartIcon className={liked && "liked"} />
             <Image
-              src={`${process.env.REACT_APP_S3_URL + images?.[0]?.mediaFileId}`}
+              src={`${s3Url + images?.[0]?.mediaFileId}`}
               className={`filter-${images[0]?.filter}`}
               ref={imgRef}
               onLoad={() => setImgHeight(imgRef.current?.clientHeight)}
@@ -120,17 +119,16 @@ const ViewPostModal: React.FC = () => {
         <SideBar height={imgHeight as number}>
           {(width as number) > 600 && (
             <PostHeader
-              avatar={`${process.env.REACT_APP_S3_URL + user.avatar}`}
+              avatar={`${s3Url + user.avatar}`}
               fullName={user.username}
-              postId={post?.id}
+              postId={post.id}
               userId={user.id}
+              postData={modalData}
             />
           )}
           <CommentsWrapper height={imgHeight}>
             <CaptionContainer>
-              <ProfilePic
-                src={`${process.env.REACT_APP_S3_URL + user.avatar}`}
-              />
+              <ProfilePic src={`${s3Url + user.avatar}`} />
               <Caption>
                 <span className="username">{user.username} </span>{" "}
                 {post?.caption}

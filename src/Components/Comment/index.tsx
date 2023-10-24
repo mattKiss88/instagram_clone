@@ -23,9 +23,6 @@ import { useNavigate } from "react-router-dom";
 
 dayjs.extend(relativeTime);
 
-// let relativeTime = require("dayjs/plugin/relativeTime");
-// dayjs.extend(relativeTime);
-
 interface CommentProps {
   comment: IComment;
   children?: React.ReactNode;
@@ -53,6 +50,7 @@ const Comment: React.FC<CommentProps> = ({
       delayShow: 100,
       interactive: true,
     });
+  const s3Url = process.env.REACT_APP_S3_URL;
 
   const handleLike = async (e: React.MouseEvent<HTMLDivElement>) => {
     setLiked(!liked);
@@ -85,7 +83,7 @@ const Comment: React.FC<CommentProps> = ({
     <CommentContainer type={type}>
       <div>
         <ProfilePic
-          src={`${process.env.REACT_APP_S3_URL + avatar}`}
+          src={`${s3Url + avatar}`}
           ref={setTriggerRef}
           onClick={handleClick}
         />
@@ -94,7 +92,7 @@ const Comment: React.FC<CommentProps> = ({
             ref={setTooltipRef}
             {...getTooltipProps({ className: "tooltip-container" })}
           >
-            <ViewAccount post={comment} />
+            {/* <ViewAccount user={comment.user} /> */}
           </div>
         )}
         <Container onDoubleClick={handleLike}>

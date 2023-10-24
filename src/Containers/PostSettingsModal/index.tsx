@@ -11,6 +11,7 @@ import {
   togglePostSettingsModal,
 } from "../../Redux/postSettingsSlice";
 import { Btn } from "./styles";
+import { customStyles } from "./styles";
 
 const PostSettingsModal = () => {
   const isOpen: boolean = useAppSelector(isPostSettingsModalOpen);
@@ -29,27 +30,6 @@ const PostSettingsModal = () => {
     dispatch(togglePostSettingsModal());
     dispatch(resetPostSettingsModal());
   }
-
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      width: "400px",
-      height: "auto",
-      borderRadius: "15px",
-      padding: "0",
-    },
-
-    overlay: {
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-      zIndex: 1000,
-    },
-    className: "ReactModal--content",
-  };
 
   const handleFollow = () => {
     dispatch(followRecommendedUsers(userId as number) as any);
@@ -70,51 +50,36 @@ const PostSettingsModal = () => {
     closeModal();
   };
 
-  const renderButtons = (): JSX.Element[] => {
-    const btnArr: JSX.Element[] = [];
-    if (isFollowing && !isLoggedInUser) {
-      btnArr.push(
-        <Btn
-          style={{ color: "red", fontWeight: "600" }}
+  const renderButtons = (): any[] => {
+    const ReactModalButton = ({ children, onClick, style }: any) => (
+      <Btn style={style} onClick={onClick} className="ReactModal--btn">
+        {children}
+      </Btn>
+    );
+
+    return [
+      !isLoggedInUser && (
+        <ReactModalButton
+          style={isFollowing ? { color: "red", fontWeight: "600" } : {}}
           onClick={handleFollow}
-          className="ReactModal--btn"
         >
-          Unfollow
-        </Btn>
-      );
-    }
-
-    console.log(isFollowing, isLoggedInUser, "isFollowing, isLoggedInUser");
-
-    if (!isFollowing && !isLoggedInUser) {
-      btnArr.push(
-        <Btn onClick={handleFollow} className="ReactModal--btn">
-          Follow
-        </Btn>
-      );
-    }
-
-    if (isLoggedInUser) {
-      btnArr.push(
-        <Btn
+          {isFollowing ? "Unfollow" : "Follow"}
+        </ReactModalButton>
+      ),
+      isLoggedInUser && (
+        <ReactModalButton
           style={{ color: "red", fontWeight: "600" }}
           onClick={handleDelete}
-          className="ReactModal--btn"
         >
           Delete
-        </Btn>
-      );
-    }
-
-    if (!isPostModalOpen) {
-      btnArr.push(
-        <Btn onClick={handleOpenViewPostModal} className="ReactModal--btn">
+        </ReactModalButton>
+      ),
+      !isPostModalOpen && (
+        <ReactModalButton onClick={handleOpenViewPostModal}>
           View Post
-        </Btn>
-      );
-    }
-
-    return btnArr;
+        </ReactModalButton>
+      ),
+    ].filter(Boolean);
   };
 
   return (

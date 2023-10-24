@@ -66,7 +66,7 @@ const User: React.FC<IUserProps> = ({ user }) => {
             ref={setTooltipRef}
             {...getTooltipProps({ className: "tooltip-container" })}
           >
-            <ViewAccount post={{ user }} />
+            {/* <ViewAccount user={user} /> */}
           </div>
         )}
 

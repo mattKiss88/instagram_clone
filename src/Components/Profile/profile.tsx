@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "../Navbar";
 import Post from "../Post";
 import {
   Avatar,
@@ -24,9 +23,19 @@ import Loader from "../loader";
 import { followRecommendedUsers } from "../../Redux/feedSlice";
 import useWindowSize from "../../Hooks/useWindowSize";
 import { isOpen } from "../../Redux/postModalSlice";
+import { IUser } from "../Comment/types";
+import { IImages, IPost } from "../FeedCard/types";
+import { getFullImageUrl } from "../../Helpers/img";
 interface IProfile {
   ownAccount: boolean;
   userId?: number;
+}
+
+interface IUserProfile extends IUser {
+  posts: {
+    images: IImages[];
+    post: IPost;
+  }[];
 }
 
 const Profile: React.FC<IProfile> = ({ ownAccount }) => {
@@ -36,16 +45,7 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
-  const [user, setUser] = useState({
-    avatar: "",
-    username: "",
-    posts: [{}],
-    followers: 0,
-    following: 0,
-    fullName: "",
-    id: 0,
-    isFollowing: false,
-  });
+  const [user, setUser] = useState<IUserProfile | null>(null);
 
   const [buttonName, setButtonName] = useState<"Follow" | "Following">(
     "Follow"
@@ -55,20 +55,19 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/user/${id}`)
       .then((res) => {
+        const btnName = res.data.user.isFollowing ? "Following" : "Follow";
         setUser(res.data.user);
         setIsLoading(false);
-        setButtonName(res.data.user.isFollowing ? "Following" : "Follow");
+        setButtonName(btnName);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [id, isPostModalOpen]);
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   const handleFollow = () => {
+    if (!user) return;
+
     if (buttonName === "Follow") {
       setButtonName("Following");
     } else {
@@ -78,22 +77,28 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
     dispatch(followRecommendedUsers(user.id) as any);
   };
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  const isFollowing = buttonName === "Follow";
+
+  const editBtnStyle = {
+    backgroundColor: isFollowing ? "#0095f6" : "initial",
+    color: isFollowing ? "white" : "initial",
+  };
+
+  const imgUrl = getFullImageUrl(user!.avatar);
+
   return (
     <>
       <Section>
         <Container>
-          <Avatar src={`${process.env.REACT_APP_S3_URL + user.avatar}`} />
+          <Avatar src={imgUrl} />
           <ProfileDetails>
             <TopRow>
-              <Username>{user.username}</Username>
-              <EditButton
-                onClick={handleFollow}
-                style={{
-                  backgroundColor:
-                    buttonName === "Follow" ? "#0095f6" : "initial",
-                  color: buttonName === "Follow" ? "white" : "initial",
-                }}
-              >
+              <Username>{user!.username}</Username>
+              <EditButton onClick={handleFollow} style={editBtnStyle}>
                 {buttonName}
               </EditButton>
             </TopRow>
@@ -101,23 +106,23 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
               <>
                 <MiddleRow>
                   <Posts>
-                    <span>{user.posts?.length}</span> Posts
+                    <span>{user!.posts.length}</span> Posts
                   </Posts>
                   <Followers>
-                    <span>{user.followers}</span> Followers
+                    <span>{user!.followers}</span> Followers
                   </Followers>
                   <Following>
-                    <span>{user.following}</span> Following
+                    <span>{user!.following}</span> Following
                   </Following>
                 </MiddleRow>
-                <FullName>{user.fullName}</FullName>
+                <FullName>{user!.fullName}</FullName>
               </>
             )}
           </ProfileDetails>
         </Container>
         <Tabs ownAccount={ownAccount} active={active} setActive={setActive} />
         <BottomContainer>
-          {user.posts.map((post, x) => {
+          {user?.posts.map((post, x) => {
             return (
               <Post post={{ ...post, user: { ...user } } as any} key={x} />
             );

@@ -31,3 +31,23 @@ export const Button = styled.button`
     opacity: 1;
   }
 `;
+
+export const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "min(90%, 500px)",
+    height: "auto",
+    borderRadius: "15px",
+    padding: "25px",
+  },
+
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    zIndex: 1000,
+  },
+};

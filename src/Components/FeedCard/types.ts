@@ -11,7 +11,7 @@ export interface IImages {
   filter: string | null;
   filterId: number | null;
   id: number;
-  mediaFileId: number;
+  mediaFileId: string;
   position: number;
   postId: number;
   updatedAt: string;

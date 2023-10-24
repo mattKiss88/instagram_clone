@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import navData from "./NavData";
 import {
   Right,
@@ -35,11 +35,7 @@ const Navbar: React.FC = () => {
     setSearch(e.target.value);
 
     if (search.length > 2) {
-      axios
-        .get(`${process.env.REACT_APP_API_URL}/user?search=${search}`)
-        .then((res) => {
-          console.log(res.data);
-        });
+      axios.get(`${process.env.REACT_APP_API_URL}/user?search=${search}`);
     }
   };
 

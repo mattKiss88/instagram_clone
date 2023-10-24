@@ -1,7 +1,5 @@
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
-import React from "react";
-import { shallowEqual } from "react-redux";
-import { feed } from "../../../Redux/feedSlice";
+import React, { memo, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../../Redux/hooks";
 import { CardHeader, LeftContainer, ProfilePic, AccountName } from "./styles";
 import { useNavigate } from "react-router-dom";
@@ -10,13 +8,52 @@ import { IPostData } from "../../FeedCard/types";
 import { setPostSettingsModal } from "../../../Redux/postSettingsSlice";
 import { usePopperTooltip } from "react-popper-tooltip";
 import ViewAccount from "../../ToolTips/ViewAccount/newTooltip";
+import isEqual from "lodash/isEqual";
+
+// function Tooltip({ children }: any) {
+//   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+//     usePopperTooltip({
+//       placement: "bottom",
+//       delayHide: 100,
+//       delayShow: 100,
+//       interactive: true,
+//     });
+
+//   const value = { getTooltipProps, setTooltipRef, setTriggerRef, visible };
+
+//   return (
+//     <TooltipContext.Provider value={value as any}>
+//       {children}
+//     </TooltipContext.Provider>
+//   );
+// }
+
+// const TooltipContext = React.createContext<any>(null);
+
+// function TooltipTrigger({ children }: any) {
+//   const { setTriggerRef } = React.useContext(TooltipContext);
+//   return React.cloneElement(children, { ref: setTriggerRef });
+// }
+
+// function TooltipContent({ children }: any) {
+//   const { getTooltipProps, setTooltipRef, visible } =
+//     React.useContext(TooltipContext);
+//   return visible ? (
+//     <div
+//       ref={setTooltipRef}
+//       {...getTooltipProps({ className: "user-tooltip-container" })}
+//     >
+//       {children}
+//     </div>
+//   ) : null;
+// }
 
 interface IPostHeader {
   avatar: string;
   fullName: string;
   postId: number;
   userId: number;
-  postData?: IPostData;
+  postData: IPostData;
 }
 const PostHeader: React.FC<IPostHeader> = ({
   avatar,
@@ -27,11 +64,7 @@ const PostHeader: React.FC<IPostHeader> = ({
 }) => {
   const loggedInUserId = useAppSelector((state) => state.userAccount.id);
   const followingUsers = useAppSelector((state) => state.userAccount.friends);
-
-  const feedState = useAppSelector(feed, shallowEqual);
-  const post: IPostData = feedState.find(
-    (item: any) => item.post.id === postId
-  );
+  const ref = useRef<HTMLDivElement>(null);
 
   const modalIsOpen: boolean = useAppSelector(
     (state) => state.postModal.isOpen
@@ -50,8 +83,6 @@ const PostHeader: React.FC<IPostHeader> = ({
     navigate(`/profile/${userId}`);
   };
 
-  console.log(followingUsers, "followingUsers");
-
   const handleDotsClick = (): void => {
     dispatch(
       setPostSettingsModal({
@@ -65,30 +96,19 @@ const PostHeader: React.FC<IPostHeader> = ({
     );
   };
 
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    usePopperTooltip({
-      placement: "bottom",
-      delayHide: 100,
-      delayShow: 100,
-      interactive: true,
-    });
-
   return (
     <CardHeader>
-      {visible && (
-        <div
-          ref={setTooltipRef}
-          {...getTooltipProps({ className: "user-tooltip-container" })}
-          id="user-tooltip"
-        >
-          <ViewAccount post={post} />
-        </div>
-      )}
+      {/* <ViewAccount
+            user={postData.user}
+            className="user-tooltip-container"
+            id="user-tooltip"
+            placement="bottom"
+            reff={ref}
+          /> */}
+
       <LeftContainer onClick={handleProfileClick}>
         <ProfilePic src={avatar} data-cy="profile-pic" />
-        <AccountName ref={setTriggerRef} data-cy="username">
-          {fullName}
-        </AccountName>
+        <AccountName data-cy="username">{fullName}</AccountName>
       </LeftContainer>
       <DotsHorizontalIcon
         style={{ width: "24px", cursor: "pointer" }}
@@ -99,4 +119,8 @@ const PostHeader: React.FC<IPostHeader> = ({
   );
 };
 
-export default PostHeader;
+function arePropsEqual(prevProps: any, nextProps: any) {
+  return isEqual(prevProps, nextProps);
+}
+
+export default memo(PostHeader, arePropsEqual);

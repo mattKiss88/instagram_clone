@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { StoriesContainer, StoriesWrapper } from "./styles";
-import { ISeedData, seedData } from "../Feed/data";
 import { getFriends as retrieveFriends } from "../../Api";
 import { IUser } from "../../Components/Comment/types";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +11,7 @@ interface StoriesProps {
 const Stories: React.FC<StoriesProps> = ({ feed }) => {
   const [friends, setFriends] = React.useState<IUser[]>([]);
   const navigate = useNavigate();
+  const s3Url = process.env.REACT_APP_S3_URL;
 
   useEffect(() => {
     getFriends();
@@ -29,7 +29,7 @@ const Stories: React.FC<StoriesProps> = ({ feed }) => {
     <StoriesWrapper>
       {friends?.map((user: IUser) => (
         <StoriesContainer onClick={() => handleClick(user.id)}>
-          <img src={process.env.REACT_APP_S3_URL + user.avatar} alt="avatar" />
+          <img src={s3Url + user.avatar} alt="avatar" />
           <p>{user.username}</p>
         </StoriesContainer>
       ))}

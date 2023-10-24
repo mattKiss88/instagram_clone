@@ -1,8 +1,7 @@
 import Modal from "react-modal";
-import { useAppSelector } from "../../Redux/hooks";
-import { isPostSettingsModalOpen } from "../../Redux/postSettingsSlice";
 import { Button, Content, Title } from "./styles";
 import { useState } from "react";
+import { customStyles } from "./styles";
 
 const WelcomeModal = () => {
   const hideModal = !!localStorage.getItem("welcomeModal");
@@ -13,26 +12,6 @@ const WelcomeModal = () => {
     localStorage.setItem("welcomeModal", "true");
     setShowModal(false);
   }
-
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      width: "min(90%, 500px)",
-      height: "auto",
-      borderRadius: "15px",
-      padding: "25px",
-    },
-
-    overlay: {
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-      zIndex: 1000,
-    },
-  };
 
   return (
     <Modal

@@ -23,6 +23,7 @@ const Suggested: React.FC = () => {
     (state) => state.feed.recommendedUsers,
     shallowEqual
   );
+  const s3Url = process.env.REACT_APP_S3_URL;
 
   const goToAccount = (): void => {
     navigate("/profile");
@@ -30,10 +31,7 @@ const Suggested: React.FC = () => {
   return (
     <SuggestedWrapper>
       <UserWrapper>
-        <Avatar
-          src={`${process.env.REACT_APP_S3_URL + user?.avatar}`}
-          onClick={goToAccount}
-        />
+        <Avatar src={`${s3Url + user?.avatar}`} onClick={goToAccount} />
         <UsernameContainer onClick={goToAccount}>
           <Username>{user?.username}</Username>
           <Name>{user?.fullName}</Name>

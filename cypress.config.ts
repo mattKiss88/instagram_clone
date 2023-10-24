@@ -1,4 +1,5 @@
 import { defineConfig } from "cypress";
+require("dotenv").config();
 
 export default defineConfig({
   e2e: {
@@ -7,7 +8,10 @@ export default defineConfig({
     },
     baseUrl: "http://localhost:3000",
     env: {
-      REACT_APP_API_URL: "http://localhost:8001",
+      REACT_APP_API_URL:
+        process.env.REACT_APP_ENV === "dev"
+          ? "http://localhost:8001"
+          : "http://api.myinstacloneapp.ninja",
     },
   },
 });

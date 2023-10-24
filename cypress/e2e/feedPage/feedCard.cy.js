@@ -191,10 +191,23 @@ describe("Feed Card Footer", () => {
 
       cy.wait("@apiCheck").should((interception) => {
         expect(interception.response.statusCode).to.eq(201);
-        // expect(interception.response.body.comment).to.eq(
-        //   "This is a test comment"
-        // );
       });
+    });
+  });
+  it("should not POST comment if comment box is empty", () => {
+    let requestMade = false;
+    cy.intercept("POST", "/comment/*", () => {
+      request = true;
+    }).as("apiCheck");
+
+    cy.get("@firstPost")
+      .find('[data-cy="submit-comment-button"]')
+      .click({ force: true });
+
+    // Assert that the API was not called
+
+    cy.wait(1000).should(() => {
+      expect(requestMade).to.be.false;
     });
   });
 });

@@ -68,8 +68,6 @@ const Profile: React.FC<IProfile> = ({ ownAccount }) => {
     }
   };
 
-  console.log(posts, "posts");
-
   return (
     <>
       <Section>

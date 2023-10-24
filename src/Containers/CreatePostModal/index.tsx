@@ -13,6 +13,7 @@ import StepTwo from "./StepTwo";
 import Loader from "../../Components/loader";
 import { ReactElement, useEffect, useState } from "react";
 import useWindowSize from "../../Hooks/useWindowSize";
+import { createModalStyle } from "./styles";
 
 const CreatePostModal: React.FC = () => {
   const isOpen: boolean = useAppSelector(isModalOpen);
@@ -43,45 +44,17 @@ const CreatePostModal: React.FC = () => {
     }
   };
 
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      width: width,
-      minWidth: (size.width as number) > 500 ? "500px" : "auto",
-      height: height,
-      borderRadius: (size.width as number) < 500 ? "0px" : "15px",
-      padding: "0",
-      transition:
-        (size.width as number) > 700 ? "all 0.5s ease-in-out" : "none",
-    },
-
-    overlay: {
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-      zIndex: 1000,
-    },
-  };
-
   useEffect(() => {
-    if (step === 3 || step === 4) {
-      setWidth("849px");
-    }
-
-    if ((size.width as number) < 860) {
+    if ((size.width as number) < 500) {
+      setWidth("100vw");
+      setHeight(`${size.height}px`);
+    } else if ((size.width as number) < 860) {
       setWidth("70vw");
-
       if (step === 3) {
         setHeight("722px");
       }
-    }
-
-    if ((size.width as number) < 500) {
-      setWidth("100vw");
-      setHeight(String(size.height) + "px");
+    } else if (step === 3 || step === 4) {
+      setWidth("849px");
     }
   }, [step, size.width]);
 
@@ -89,7 +62,7 @@ const CreatePostModal: React.FC = () => {
     <Modal
       isOpen={isOpen}
       onRequestClose={closeModal}
-      style={customStyles}
+      style={createModalStyle(width, height, size.width as number)}
       contentLabel="Create post modal"
     >
       {isLoading ? (

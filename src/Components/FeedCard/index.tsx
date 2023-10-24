@@ -19,7 +19,6 @@ interface IFeedCardProps {
   image: string;
   postId: number;
   filter?: string;
-  // onImageLoad: () => void;
 }
 const FeedCard: React.FC<IFeedCardProps> = ({
   fullName,
@@ -29,7 +28,6 @@ const FeedCard: React.FC<IFeedCardProps> = ({
   image,
   postId,
   filter,
-  // onImageLoad,
 }) => {
   const [liked, setLiked] = useState<boolean>(false);
   const [post, setPost] = useState<IPostData>();
@@ -62,10 +60,6 @@ const FeedCard: React.FC<IFeedCardProps> = ({
     setPost(feed.find((item: IPostData) => item.post.id === postId));
   }, [feed]);
 
-  // function handleImageLoad(): void {
-  //   setLoading(false);
-  // }
-
   const handleImageLoad = () => {
     setLoading(false);
   };
@@ -79,7 +73,7 @@ const FeedCard: React.FC<IFeedCardProps> = ({
           fullName={fullName}
           postId={postId}
           userId={post?.user?.id || 0}
-          postData={post}
+          postData={post as any}
         />
         <ImageContainer onDoubleClick={onDoubleClick}>
           <HeartIcon className={liked && "liked"} />

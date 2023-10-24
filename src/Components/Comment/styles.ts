@@ -20,8 +20,6 @@ interface props {
 }
 export const CommentContainer = styled.div<props>`
   margin-bottom: 16px;
-  // display: flex;
-  // justify-content: space-between;
   ${(props) => props.type === "sub" && "margin-left: 50px"};
 
   > div {
